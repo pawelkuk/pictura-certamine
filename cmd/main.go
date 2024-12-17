@@ -34,22 +34,7 @@ func serve() error {
 	}
 
 	r := gin.Default()
-	r.Use(sentrygin.New(sentrygin.Options{
-		Repanic: true,
-	}))
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.GET("/error", func(c *gin.Context) {
-		c.JSON(400, gin.H{
-			"message": "bang!",
-		})
-	})
-	r.GET("/panic", func(c *gin.Context) {
-		panic("panic!")
-	})
+	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 	err := r.Run(":8080")
 	return err
 }

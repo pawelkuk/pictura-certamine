@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS contestants;
+DROP TABLE IF EXISTS contests;
+DROP TABLE IF EXISTS entries;
+DROP TABLE IF EXISTS art_pieces;

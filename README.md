@@ -15,7 +15,7 @@
 
 - s3 (research free quotas)
 - email (sendgrid or other service which is cheaper)
-  - sendgrid 100 emails/day
+  - sendgrid 100 emails/day (won because easy integration)
   - mailgun 100 emails/day (only 1 api key)
   - emaillabs 800 email/day (dunno if integration is hard)
   - mailhog for testing

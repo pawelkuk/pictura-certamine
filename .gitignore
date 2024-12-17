@@ -1,0 +1,6 @@
+out/
+build/
+data/
+.envrc
+vendor/
+__debug_bin*

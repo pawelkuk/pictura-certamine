@@ -17,6 +17,10 @@ type SQLiteRepo struct {
 }
 
 func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
+	_, err := r.DB.ExecContext(ctx, `PRAGMA foreign_keys = ON;`)
+	if err != nil {
+		return fmt.Errorf("could not turn on foreign keys: %w", err)
+	}
 	tx, err := r.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
 		return fmt.Errorf("could not start transaction: %w", err)
@@ -150,6 +154,10 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	return nil
 }
 func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
+	_, err := r.DB.ExecContext(ctx, `PRAGMA foreign_keys = ON;`)
+	if err != nil {
+		return fmt.Errorf("could not turn on foreign keys: %w", err)
+	}
 	tx, err := r.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
 		return fmt.Errorf("could not start transaction: %w", err)

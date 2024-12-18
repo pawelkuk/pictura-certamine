@@ -8,7 +8,7 @@
 - [ ] anonymous sessions (which are tied to email address if the user submits the form)
 - [ ] confirmation email
 - [ ] saving progress of form
-- [ ] being able to have multiple
+- [ ] being able to have multiple contests
 - [ ] sending errors to sentry
 
 ## External Systems
@@ -23,6 +23,7 @@
 - [ ] captcha (google reCaptcha v2 - I'm not a robot - easier to integrate then v3)
 - [x] sentry (hope for a generous free trial - 5k errors - should be plenty)
 - [ ] prometheus for metrics (free tier on grafana labs)
+- [x] sqlite
 
 ## Tech Stack
 

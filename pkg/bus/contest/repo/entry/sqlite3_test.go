@@ -27,7 +27,7 @@ func TestSqliteRepoEntryCRUD(t *testing.T) {
 	}
 	repo := SQLiteRepo{DB: db}
 	entry := model.Entry{
-		ID:           "abcdefgh",
+		ID:           "abcdefghijklmnop",
 		ContestantID: "c1",
 		SessionID:    "s1",
 		Status:       model.EntryStatusPending,
@@ -41,7 +41,8 @@ func TestSqliteRepoEntryCRUD(t *testing.T) {
 	}
 	fmt.Println("entry created:", entry.ID)
 	entry.Status = model.EntryStatusConfirmationEmailSent
-	entry.ArtPieces = append(entry.ArtPieces, model.ArtPiece{Key: "/photo/5.png"})
+	entry.ArtPieces = entry.ArtPieces[1:]
+	entry.ArtPieces = append(entry.ArtPieces, model.ArtPiece{Key: "/photo/5.png"}, model.ArtPiece{Key: "/photo/6.png"})
 	err = repo.Update(ctx, &entry)
 	if err != nil {
 		log.Fatalf("error: %v", err)
@@ -51,6 +52,7 @@ func TestSqliteRepoEntryCRUD(t *testing.T) {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
+	// 5 because one was deleted and two were added
 	if len(entryRead.ArtPieces) != 5 || entryRead.Status != model.EntryStatusConfirmationEmailSent {
 		log.Fatalf("did not update: %v, %v", entryRead.ArtPieces, entryRead.Status)
 	}

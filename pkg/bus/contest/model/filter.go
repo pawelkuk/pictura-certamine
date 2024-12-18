@@ -1,13 +1,31 @@
 package model
 
+import (
+	"net/mail"
+	"time"
+)
+
 type ContestQueryFilter struct {
-	ID *string
+	ID       *string
+	Name     *string
+	Slug     *Slug
+	Start    *time.Time
+	End      *time.Time
+	IsActive *bool
 }
 
 type ContestantQueryFilter struct {
-	ID *string
+	ID             *string
+	Email          *mail.Address
+	FirstName      *string
+	Surname        *string
+	Birthdate      *time.Time
+	PolicyAccepted *bool
 }
 
 type EntryQueryFilter struct {
-	ID *string
+	ID           *string
+	ContestantID *string
+	SessionID    *string
+	Status       *EntryStatus
 }

@@ -5,6 +5,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
@@ -173,6 +174,35 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 			return fmt.Errorf("could not rollback: %w", err)
 		}
 		return fmt.Errorf("could not update entry: %w", err)
+	}
+	remainingIds := lo.FilterMap(e.ArtPieces, func(ap model.ArtPiece, idx int) (int64, bool) {
+		if ap.ID == 0 {
+			return -1, false
+		} else {
+			return ap.ID, true
+		}
+	})
+	remainingIdStr := lo.Reduce(remainingIds, func(acc string, val int64, idx int) string {
+		if idx == 0 {
+			return strconv.Itoa(int(val))
+		} else {
+			return acc + ", " + strconv.Itoa(int(val))
+		}
+	}, "")
+	_, err = tx.ExecContext(ctx,
+		fmt.Sprintf(`DELETE FROM
+			art_piece
+		WHERE
+			entry_id = ? AND
+			id NOT IN (%s)`, remainingIdStr),
+		e.ID,
+	)
+	if err != nil {
+		errRollback := tx.Rollback()
+		if errRollback != nil {
+			return fmt.Errorf("could not rollback: %w", err)
+		}
+		return fmt.Errorf("could not delete art piece: %w", err)
 	}
 	for _, p := range e.ArtPieces {
 		for idx := range e.ArtPieces {

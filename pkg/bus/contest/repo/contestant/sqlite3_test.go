@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/mail"
 	"os"
 	"testing"
 	"time"
@@ -19,7 +20,7 @@ func skipCI(t *testing.T) {
 	}
 }
 
-func TestSqliteRepoContestCRUD(t *testing.T) {
+func TestSqliteRepoContestantCRUD(t *testing.T) {
 	skipCI(t)
 	ctx := context.Background()
 	db, err := sql.Open("sqlite3", "./data/pictura-certamine.db")
@@ -27,28 +28,31 @@ func TestSqliteRepoContestCRUD(t *testing.T) {
 		panic(err)
 	}
 	repo := SQLiteRepo{DB: db}
-	cc := model.Contest{
-		ID:       "abcd",
-		Name:     "best picture",
-		Slug:     model.ParseSlug("best picture"),
-		Start:    time.Now(),
-		End:      time.Now(),
-		IsActive: false,
+	cc := model.Contestant{
+		ID:             "abcd",
+		Email:          mail.Address{Address: "test@example.com"},
+		FirstName:      "Alice",
+		Surname:        "Doe",
+		Birthdate:      time.Now(),
+		PolicyAccepted: true,
 	}
 	err = repo.Create(ctx, &cc)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
 	fmt.Println("contest created:", cc.ID)
-	cc.End = cc.End.Add(24 * time.Hour)
+	cc.PolicyAccepted = false
 	err = repo.Update(ctx, &cc)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	contestRead := model.Contest{ID: cc.ID}
+	contestRead := model.Contestant{ID: cc.ID}
 	err = repo.Read(ctx, &contestRead)
 	if err != nil {
 		log.Fatalf("error: %v", err)
+	}
+	if contestRead.PolicyAccepted {
+		log.Fatalf("policy_accepted not updated")
 	}
 	err = repo.Delete(ctx, &cc)
 	if err != nil {

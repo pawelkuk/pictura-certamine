@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"net/mail"
 	"time"
 
@@ -15,6 +16,13 @@ var (
 	EntryStatusConfirmationEmailSent EntryStatus = "ConfirmationEmailSent"
 	EntryStatusConfirmed             EntryStatus = "Confirmed"
 )
+
+var validEntryStatusMap = map[string]EntryStatus{
+	"Pending":               EntryStatusPending,
+	"Submitted":             EntryStatusSubmitted,
+	"ConfirmationEmailSent": EntryStatusConfirmationEmailSent,
+	"Confirmed":             EntryStatusConfirmed,
+}
 
 type Entry struct {
 	ID           string
@@ -57,4 +65,12 @@ func ParseSlug(raw string) Slug {
 	return Slug{
 		Value: val,
 	}
+}
+
+func ParseStatus(status string) (EntryStatus, error) {
+	s, ok := validEntryStatusMap[status]
+	if !ok {
+		return "", fmt.Errorf("invalid status: %s", status)
+	}
+	return s, nil
 }

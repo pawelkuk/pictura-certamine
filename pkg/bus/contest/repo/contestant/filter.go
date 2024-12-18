@@ -6,7 +6,7 @@ import (
 	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
 )
 
-func applyFilter(filter model.ContestQueryFilter, args *[]any, buf *bytes.Buffer) {
+func applyFilter(filter model.ContestantQueryFilter, args *[]any, buf *bytes.Buffer) {
 	var wc []string
 
 	if filter.ID != nil {

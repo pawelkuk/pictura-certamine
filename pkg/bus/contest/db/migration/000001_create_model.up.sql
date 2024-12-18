@@ -28,9 +28,10 @@ CREATE TABLE entry (
     ),
     FOREIGN KEY (contestant_id) REFERENCES contestant(id) ON DELETE CASCADE
 );
-CREATE TABLE art_pieces (
+CREATE TABLE art_piece (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     entry_id TEXT NOT NULL,
     key TEXT NOT NULL,
+    created_at TEXT NOT NULL,
     foreign KEY (entry_id) REFERENCES entry(id) ON DELETE CASCADE
 );

@@ -106,7 +106,7 @@ func (r *SQLiteRepo) Delete(ctx context.Context, c *model.Contest) error {
 	return nil
 }
 
-func (r *SQLiteRepo) Query(ctx context.Context, filter model.QueryFilter) ([]model.Contest, error) {
+func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestQueryFilter) ([]model.Contest, error) {
 	q := `
 	select
 		id,
@@ -156,18 +156,4 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.QueryFilter) ([]mod
 		return nil, fmt.Errorf("could not close rows: %w", err)
 	}
 	return contests, nil
-}
-
-func btoi(val bool) int {
-	if val {
-		return 1
-	}
-	return 0
-}
-
-func itob(val int) bool {
-	if val == 0 {
-		return false
-	}
-	return true
 }

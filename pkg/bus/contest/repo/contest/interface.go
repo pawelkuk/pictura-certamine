@@ -11,5 +11,5 @@ type Repo interface {
 	Read(context.Context, *model.Contest) error
 	Update(context.Context, *model.Contest) error
 	Delete(context.Context, *model.Contest) error
-	Query(context.Context, model.QueryFilter) ([]model.Contest, error)
+	Query(context.Context, model.ContestQueryFilter) ([]model.Contest, error)
 }

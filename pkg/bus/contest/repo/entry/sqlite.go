@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/samber/lo"
 )
 
 type SQLiteRepo struct {
@@ -24,8 +25,9 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 			id,
 			contestant_id,
 			session_id,
-			status,
-		) VALUES(?, ?, ?, ?,)
+			status
+		)
+		VALUES(?, ?, ?, ?)
 		RETURNING id`,
 		e.ID,
 		e.ContestantID,
@@ -33,11 +35,16 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 		string(e.Status),
 	)
 	if err != nil {
-		tx.Rollback()
+		errRollback := tx.Rollback()
+		if errRollback != nil {
+			return fmt.Errorf("could not rollback: %w", err)
+		}
 		return fmt.Errorf("could not create entry: %w", err)
 	}
-	for _, p := range e.ArtPieces {
-		p.CreatedAt = time.Now()
+	for idx := range e.ArtPieces {
+		e.ArtPieces[idx].CreatedAt = time.Now()
+	}
+	for idx, p := range e.ArtPieces {
 		result, err := tx.ExecContext(ctx,
 			`INSERT INTO
 				art_piece(
@@ -45,7 +52,7 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 					created_at,
 					key
 				)
-			VALUES(?, ?, ?, ?,)
+			VALUES(?, ?, ?)
 			RETURNING
 				id`,
 			e.ID,
@@ -53,19 +60,28 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 			p.Key,
 		)
 		if err != nil {
-			tx.Rollback()
+			errRollback := tx.Rollback()
+			if errRollback != nil {
+				return fmt.Errorf("could not rollback: %w", err)
+			}
 			return fmt.Errorf("could not create art piece: %w", err)
 		}
 		id, err := result.LastInsertId()
 		if err != nil {
-			tx.Rollback()
+			errRollback := tx.Rollback()
+			if errRollback != nil {
+				return fmt.Errorf("could not rollback: %w", err)
+			}
 			return fmt.Errorf("could not get last inserted id: %w", err)
 		}
-		p.ID = id
+		e.ArtPieces[idx].ID = id
 	}
 	err = tx.Commit()
 	if err != nil {
-		tx.Rollback()
+		errRollback := tx.Rollback()
+		if errRollback != nil {
+			return fmt.Errorf("could not rollback: %w", err)
+		}
 		return fmt.Errorf("could not commit transaction: %w", err)
 	}
 	return nil
@@ -75,7 +91,7 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 		`SELECT
 			contestant_id,
 			session_id,
-			status,
+			status
 		FROM 
 			entry
 		WHERE id = ?`,
@@ -101,12 +117,13 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 			created_at,
 			key
 		FROM
-			entry
-		WHERE entry_id = ?`,
+			art_piece
+		WHERE
+			entry_id = ?`,
 		e.ID)
 
 	if err != nil {
-		return fmt.Errorf("could not query rows with entry_id=%s: %w", e.ID, row.Err())
+		return fmt.Errorf("could not query rows with entry_id=%s: %w", e.ID, err)
 	}
 	for rows.Next() {
 		p := model.ArtPiece{}
@@ -136,7 +153,6 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 	if err != nil {
 		return fmt.Errorf("could not start transaction: %w", err)
 	}
-
 	_, err = tx.ExecContext(ctx,
 		`UPDATE 
 			entry 
@@ -152,40 +168,91 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 		e.ID,
 	)
 	if err != nil {
-		tx.Rollback()
+		errRollback := tx.Rollback()
+		if errRollback != nil {
+			return fmt.Errorf("could not rollback: %w", err)
+		}
 		return fmt.Errorf("could not update entry: %w", err)
 	}
 	for _, p := range e.ArtPieces {
-		p.CreatedAt = time.Now()
-		_, err := r.DB.ExecContext(ctx,
-			`UPDATE
-				art_piece
-			SET
-				entry_id = ?,
-				created_at = ?,
-				key = ?
-			WHERE
-				id = ?`,
-			e.ID,
-			p.CreatedAt.Format(time.RFC3339),
-			p.Key,
-			p.ID,
-		)
-		if err != nil {
-			tx.Rollback()
-			return fmt.Errorf("could not update art piece: %w", err)
+		for idx := range e.ArtPieces {
+			if !e.ArtPieces[idx].CreatedAt.IsZero() {
+				continue
+			}
+			e.ArtPieces[idx].CreatedAt = time.Now()
+		}
+		if p.ID == 0 {
+			result, err := tx.ExecContext(ctx,
+				`INSERT INTO
+					art_piece(
+						entry_id,
+						created_at,
+						key
+					)
+				VALUES( ?, ?, ?)
+				RETURNING
+					id`,
+				e.ID,
+				p.CreatedAt.Format(time.RFC3339),
+				p.Key,
+			)
+			if err != nil {
+				errRollback := tx.Rollback()
+				if errRollback != nil {
+					return fmt.Errorf("could not rollback: %w", err)
+				}
+				return fmt.Errorf("could not create art piece: %w", err)
+			}
+			id, err := result.LastInsertId()
+			if err != nil {
+				errRollback := tx.Rollback()
+				if errRollback != nil {
+					return fmt.Errorf("could not rollback: %w", err)
+				}
+				return fmt.Errorf("could not get last inserted id: %w", err)
+			}
+			p.ID = id
+		} else {
+			_, err := tx.ExecContext(ctx,
+				`UPDATE
+					art_piece
+				SET
+					entry_id = ?,
+					created_at = ?,
+					key = ?
+				WHERE
+					id = ?`,
+				e.ID,
+				p.CreatedAt.Format(time.RFC3339),
+				p.Key,
+				p.ID,
+			)
+			if err != nil {
+				errRollback := tx.Rollback()
+				if errRollback != nil {
+					return fmt.Errorf("could not rollback: %w", err)
+				}
+				return fmt.Errorf("could not update art piece: %w", err)
+			}
 		}
 	}
 	err = tx.Commit()
 	if err != nil {
-		tx.Rollback()
+		errRollback := tx.Rollback()
+		if errRollback != nil {
+			return fmt.Errorf("could not rollback: %w", err)
+		}
 		return fmt.Errorf("could not commit transaction: %w", err)
 	}
 	return nil
 }
 func (r *SQLiteRepo) Delete(ctx context.Context, c *model.Entry) error {
-	// Art pieces are cascade deleted
-	_, err := r.DB.ExecContext(ctx, `DELETE FROM entry WHERE id = ?`, c.ID)
+	// necessary for on cascade deletion
+	_, err := r.DB.ExecContext(ctx, `PRAGMA foreign_keys = ON;`)
+	if err != nil {
+		return fmt.Errorf("could not turn on foreign keys: %w", err)
+	}
+	_, err = r.DB.ExecContext(ctx, `DELETE FROM entry WHERE id = ?`, c.ID)
 	if err != nil {
 		return fmt.Errorf("could not delete entry: %w", err)
 	}
@@ -218,17 +285,41 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 	}
 	entries := map[string]model.Entry{}
 	for rows.Next() {
-		var eid, econtestantid, esessionid, estatus, aid, acreatedat, akey string
+		var eid, econtestantid, esessionid, estatus, acreatedat, akey string
+		var aid int64
 		err := rows.Scan(&eid, &econtestantid, &esessionid, &estatus, &aid, &acreatedat, &akey)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
-
-		entries = append(entries, *e)
+		status, err := model.ParseStatus(estatus)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse status: %w", err)
+		}
+		createdAt, err := time.Parse(time.RFC3339, acreatedat)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse created at: %w", err)
+		}
+		p := model.ArtPiece{
+			ID:        aid,
+			CreatedAt: createdAt,
+			Key:       akey,
+		}
+		if e, ok := entries[eid]; ok {
+			e.ArtPieces = append(e.ArtPieces, p)
+		} else {
+			e := model.Entry{
+				ID:           eid,
+				ContestantID: econtestantid,
+				SessionID:    esessionid,
+				Status:       status,
+				ArtPieces:    []model.ArtPiece{p},
+			}
+			entries[eid] = e
+		}
 	}
 	err = rows.Close()
 	if err != nil {
 		return nil, fmt.Errorf("could not close rows: %w", err)
 	}
-	return entries, nil
+	return lo.MapToSlice(entries, func(key string, entry model.Entry) model.Entry { return entry }), nil
 }

@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"testing"
-	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
@@ -19,7 +18,7 @@ func skipCI(t *testing.T) {
 	}
 }
 
-func TestSqliteRepoContestCRUD(t *testing.T) {
+func TestSqliteRepoEntryCRUD(t *testing.T) {
 	skipCI(t)
 	ctx := context.Background()
 	db, err := sql.Open("sqlite3", "./data/pictura-certamine.db")
@@ -27,30 +26,35 @@ func TestSqliteRepoContestCRUD(t *testing.T) {
 		panic(err)
 	}
 	repo := SQLiteRepo{DB: db}
-	cc := model.Contest{
-		ID:       "abcd",
-		Name:     "best picture",
-		Slug:     model.ParseSlug("best picture"),
-		Start:    time.Now(),
-		End:      time.Now(),
-		IsActive: false,
+	entry := model.Entry{
+		ID:           "abcdefgh",
+		ContestantID: "c1",
+		SessionID:    "s1",
+		Status:       model.EntryStatusPending,
+		ArtPieces: []model.ArtPiece{
+			{Key: "/photo/1.png"}, {Key: "/photo/2.png"}, {Key: "/photo/3.png"}, {Key: "/photo/4.png"},
+		},
 	}
-	err = repo.Create(ctx, &cc)
+	err = repo.Create(ctx, &entry)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	fmt.Println("contest created:", cc.ID)
-	cc.End = cc.End.Add(24 * time.Hour)
-	err = repo.Update(ctx, &cc)
+	fmt.Println("entry created:", entry.ID)
+	entry.Status = model.EntryStatusConfirmationEmailSent
+	entry.ArtPieces = append(entry.ArtPieces, model.ArtPiece{Key: "/photo/5.png"})
+	err = repo.Update(ctx, &entry)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	contestRead := model.Contest{ID: cc.ID}
-	err = repo.Read(ctx, &contestRead)
+	entryRead := model.Entry{ID: entry.ID}
+	err = repo.Read(ctx, &entryRead)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	err = repo.Delete(ctx, &cc)
+	if len(entryRead.ArtPieces) != 5 || entryRead.Status != model.EntryStatusConfirmationEmailSent {
+		log.Fatalf("did not update: %v, %v", entryRead.ArtPieces, entryRead.Status)
+	}
+	err = repo.Delete(ctx, &entry)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}

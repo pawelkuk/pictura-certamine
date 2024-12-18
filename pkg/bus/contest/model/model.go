@@ -3,6 +3,8 @@ package model
 import (
 	"net/mail"
 	"time"
+
+	"github.com/gosimple/slug"
 )
 
 type EntryStatus string
@@ -48,4 +50,11 @@ type Contest struct {
 
 type Slug struct {
 	Value string
+}
+
+func ParseSlug(raw string) Slug {
+	val := slug.Make(raw)
+	return Slug{
+		Value: val,
+	}
 }

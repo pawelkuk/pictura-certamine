@@ -5,6 +5,8 @@ go 1.23.3
 require (
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/gin-gonic/gin v1.10.0
+	github.com/gosimple/slug v1.14.0
+	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/minio/minio-go/v7 v7.0.82
 	github.com/sendgrid/sendgrid-go v3.16.0+incompatible
 )
@@ -23,6 +25,7 @@ require (
 	github.com/go-playground/validator/v10 v10.20.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.8 // indirect

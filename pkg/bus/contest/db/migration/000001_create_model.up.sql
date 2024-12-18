@@ -1,4 +1,4 @@
-CREATE TABLE contestants (
+CREATE TABLE contestant (
     id TEXT PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     first_name TEXT NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE contestants (
     birthdate DATE NOT NULL,
     policy_accepted BOOLEAN NOT NULL CHECK (policy_accepted IN (0, 1))
 );
-CREATE TABLE contests (
+CREATE TABLE contest (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
@@ -14,7 +14,7 @@ CREATE TABLE contests (
     end_time TEXT NOT NULL,
     is_active BOOLEAN NOT NULL CHECK (is_active IN (0, 1))
 );
-CREATE TABLE entries (
+CREATE TABLE entry (
     id TEXT PRIMARY KEY,
     contestant_id TEXT NOT NULL,
     session_id TEXT NOT NULL,
@@ -26,11 +26,11 @@ CREATE TABLE entries (
             'Confirmed'
         )
     ),
-    FOREIGN KEY (contestant_id) REFERENCES contestants(id) ON DELETE CASCADE
+    FOREIGN KEY (contestant_id) REFERENCES contestant(id) ON DELETE CASCADE
 );
 CREATE TABLE art_pieces (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     entry_id TEXT NOT NULL,
     key TEXT NOT NULL,
-    foreign KEY (entry_id) REFERENCES entries(id) ON DELETE CASCADE
+    foreign KEY (entry_id) REFERENCES entry(id) ON DELETE CASCADE
 );

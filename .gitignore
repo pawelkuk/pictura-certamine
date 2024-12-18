@@ -4,3 +4,4 @@ data/
 .envrc
 vendor/
 __debug_bin*
+__*

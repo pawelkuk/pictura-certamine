@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
 
 func skipCI(t *testing.T) {

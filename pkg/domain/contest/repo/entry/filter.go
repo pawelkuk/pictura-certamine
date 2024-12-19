@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
 
 func applyFilter(filter model.EntryQueryFilter, args *[]any, buf *bytes.Buffer) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
 
 func applyFilter(filter model.ContestQueryFilter, args *[]any, buf *bytes.Buffer) {

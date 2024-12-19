@@ -5,3 +5,4 @@ data/
 vendor/
 __debug_bin*
 __*
+node_modules/

@@ -3,7 +3,7 @@ package repo
 import (
 	"context"
 
-	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
 
 type Repo interface {

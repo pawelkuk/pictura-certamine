@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/pawelkuk/pictura-certamine/pkg/bus/contest/model"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 	"github.com/samber/lo"
 )
 

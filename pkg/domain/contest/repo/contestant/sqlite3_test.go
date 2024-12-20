@@ -32,7 +32,7 @@ func TestSqliteRepoContestantCRUD(t *testing.T) {
 		ID:             "abcd",
 		Email:          mail.Address{Address: "test@example.com"},
 		FirstName:      "Alice",
-		Surname:        "Doe",
+		LastName:       "Doe",
 		Birthdate:      time.Now(),
 		PolicyAccepted: true,
 	}

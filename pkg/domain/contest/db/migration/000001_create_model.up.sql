@@ -2,7 +2,8 @@ CREATE TABLE contestant (
     id TEXT PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     first_name TEXT NOT NULL,
-    surname TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    phone_number TEXT NOT NULL,
     birthdate DATE NOT NULL,
     policy_accepted BOOLEAN NOT NULL CHECK (policy_accepted IN (0, 1))
 );

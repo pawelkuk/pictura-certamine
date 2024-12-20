@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gosimple/slug"
+	"github.com/nyaruka/phonenumbers"
 )
 
 type EntryStatus string
@@ -41,8 +42,9 @@ type ArtPiece struct {
 type Contestant struct {
 	ID             string
 	Email          mail.Address
+	PhoneNumber    phonenumbers.PhoneNumber
 	FirstName      string
-	Surname        string
+	LastName       string
 	Birthdate      time.Time
 	PolicyAccepted bool
 }

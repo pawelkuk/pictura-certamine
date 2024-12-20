@@ -23,9 +23,9 @@ func applyFilter(filter model.ContestantQueryFilter, args *[]any, buf *bytes.Buf
 		wc = append(wc, "first_name = ?")
 		*args = append(*args, *filter.FirstName)
 	}
-	if filter.Surname != nil {
+	if filter.LastName != nil {
 		wc = append(wc, "last_name = ?")
-		*args = append(*args, *filter.Surname)
+		*args = append(*args, *filter.LastName)
 	}
 	if filter.Birthdate != nil {
 		wc = append(wc, "birthdate = ?")

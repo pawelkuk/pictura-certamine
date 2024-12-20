@@ -8,6 +8,7 @@ import (
 	sentry "github.com/getsentry/sentry-go"
 	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/handler"
 )
 
 func main() {
@@ -35,6 +36,13 @@ func serve() error {
 
 	r := gin.Default()
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
+
+	h := handler.ContestHandler{}
+
+	r.GET("/", h.HandleGet)
+	r.POST("/", h.HandlePost)
+	r.GET("/success", h.HandlePostSuccess)
+
 	err := r.Run(":8080")
 	return err
 }

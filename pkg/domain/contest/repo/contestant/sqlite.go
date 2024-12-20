@@ -21,7 +21,7 @@ func (r *SQLiteRepo) Create(ctx context.Context, c *model.Contestant) error {
 			id,
 			email,
 			first_name,
-			surname,
+			last_name,
 			birthdate,
 			policy_accepted
 		) VALUES(?, ?, ?, ?, ?, ?)
@@ -29,7 +29,7 @@ func (r *SQLiteRepo) Create(ctx context.Context, c *model.Contestant) error {
 		c.ID,
 		c.Email.Address,
 		c.FirstName,
-		c.Surname,
+		c.LastName,
 		c.Birthdate.Format(time.DateOnly),
 		c.PolicyAccepted,
 	)
@@ -43,7 +43,7 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 		`SELECT 
 			email,
 			first_name,
-			surname,
+			last_name,
 			birthdate,
 			policy_accepted
 		FROM 
@@ -53,9 +53,9 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", c.ID, row.Err())
 	}
-	var emailStr, firstname, surname, endStr string
+	var emailStr, firstname, lastName, endStr string
 	var isActive bool
-	err := row.Scan(&emailStr, &firstname, &surname, &endStr, &isActive)
+	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &isActive)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -69,7 +69,7 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 	}
 	c.Email = *email
 	c.FirstName = firstname
-	c.Surname = surname
+	c.LastName = lastName
 	c.Birthdate = end
 	c.PolicyAccepted = isActive
 	return nil
@@ -81,14 +81,14 @@ func (r *SQLiteRepo) Update(ctx context.Context, c *model.Contestant) error {
 		SET 
 			email = ?,
 			first_name = ?,
-			surname = ?,
+			last_name = ?,
 			birthdate = ?,
 			policy_accepted = ?
 		WHERE
 			id = ?`,
 		c.Email.Address,
 		c.FirstName,
-		c.Surname,
+		c.LastName,
 		c.Birthdate.Format(time.DateOnly),
 		c.PolicyAccepted,
 		c.ID,
@@ -112,7 +112,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		id,
 		email,
 		first_name,
-		surname,
+		last_name,
 		birthdate,
 		policy_accepted
 	from
@@ -128,9 +128,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 	contestants := []model.Contestant{}
 	for rows.Next() {
 		c := &model.Contestant{}
-		var id, emailStr, firstname, surname, endStr string
+		var id, emailStr, firstname, lastname, endStr string
 		var isActive bool
-		err := rows.Scan(&id, &emailStr, &firstname, &surname, &endStr, &isActive)
+		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &isActive)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -145,7 +145,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		c.ID = id
 		c.Email = *email
 		c.FirstName = firstname
-		c.Surname = surname
+		c.LastName = lastname
 		c.Birthdate = end
 		c.PolicyAccepted = isActive
 		contestants = append(contestants, *c)

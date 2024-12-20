@@ -1,0 +1,87 @@
+package view
+
+templ ContestForm(contestID string) {
+	@Base() {
+		<h1>Contest Form</h1>
+		<form action="" method="post" enctype="multipart/form-data">
+			<div>
+				<label for="first-name">First name: </label>
+				<input
+					type="text"
+					name="first-name"
+					id="first-name"
+					value={  }
+					required
+				/>
+			</div>
+			<div>
+				<label for="last-name">Last name: </label>
+				<input
+					type="text"
+					name="last-name"
+					id="last-name"
+					value={  }
+					required
+				/>
+			</div>
+			<div>
+				<label for="email">Email: </label>
+				<input
+					type="email"
+					name="email"
+					id="email"
+					value={  }
+					required
+				/>
+			</div>
+			<div>
+				<label for="birthday">Birthday date: </label>
+				<input
+					type="date"
+					name="birthday"
+					id="birthday"
+					value={  }
+					required
+				/>
+			</div>
+			<div>
+				<label for="phone">Phone number: </label>
+				<input
+					type="tel"
+					name="phone"
+					id="phone"
+					value={  }
+					required
+				/>
+			</div>
+			<div>
+				<label for="art-piece">Add art piece:</label>
+				<input
+					type="file"
+					id="art-piece"
+					name="art-piece"
+					accept="image/png, image/jpeg"
+					multiple
+				/>
+			</div>
+			<div>
+				<input
+					type="checkbox"
+					id="conditions"
+					name="conditions"
+					value={  }
+				/>
+				<label for="conditions">I accept contest conditions</label>
+			</div>
+			<input
+				type="hidden"
+				id="contest-id"
+				name="contest-id"
+				value={ contestID }
+			/>
+			<div>
+				<input type="submit" value="Submit"/>
+			</div>
+		</form>
+	}
+}

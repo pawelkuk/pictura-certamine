@@ -3,11 +3,13 @@ module github.com/pawelkuk/pictura-certamine
 go 1.23.3
 
 require (
+	github.com/a-h/templ v0.2.793
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/gosimple/slug v1.14.0
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/minio/minio-go/v7 v7.0.82
+	github.com/nyaruka/phonenumbers v1.4.3
 	github.com/samber/lo v1.47.0
 	github.com/sendgrid/sendgrid-go v3.16.0+incompatible
 )

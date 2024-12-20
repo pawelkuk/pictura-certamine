@@ -18,7 +18,7 @@ type ContestantQueryFilter struct {
 	ID             *string
 	Email          *mail.Address
 	FirstName      *string
-	Surname        *string
+	LastName       *string
 	Birthdate      *time.Time
 	PolicyAccepted *bool
 }

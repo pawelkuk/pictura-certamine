@@ -1,11 +1,13 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 	"net/mail"
 	"time"
 
 	"github.com/gosimple/slug"
+	"github.com/hashicorp/go-multierror"
 	"github.com/nyaruka/phonenumbers"
 )
 
@@ -42,7 +44,7 @@ type ArtPiece struct {
 type Contestant struct {
 	ID             string
 	Email          mail.Address
-	PhoneNumber    phonenumbers.PhoneNumber
+	PhoneNumber    *phonenumbers.PhoneNumber
 	FirstName      string
 	LastName       string
 	Birthdate      time.Time
@@ -75,4 +77,59 @@ func ParseStatus(status string) (EntryStatus, error) {
 		return "", fmt.Errorf("invalid status: %s", status)
 	}
 	return s, nil
+}
+
+func ParseContestant(
+	id string,
+	email string,
+	phoneNumber string,
+	firstName string,
+	lastName string,
+	birthdate string,
+	policyAccepted string,
+) (*Contestant, error) {
+	var errs *multierror.Error
+	if id == "" {
+		id = generateID()
+	}
+	a, err := mail.ParseAddress(email)
+	if err != nil {
+		errs = multierror.Append(errs, err)
+	}
+	pn, err := phonenumbers.Parse(phoneNumber, "us")
+	if err != nil {
+		errs = multierror.Append(errs, err)
+	}
+	if firstName == "" {
+		errs = multierror.Append(errs, errors.New("first name can't be empty"))
+	}
+	if lastName == "" {
+		errs = multierror.Append(errs, errors.New("last name can't be empty"))
+	}
+	b, err := time.Parse(time.DateOnly, birthdate)
+	if err != nil {
+		errs = multierror.Append(errs, err)
+	}
+	var pa bool
+	if policyAccepted != "" && policyAccepted != "no" {
+		pa = true
+	}
+
+	if errs.Len() == 0 {
+		return &Contestant{
+			ID:             id,
+			Email:          *a,
+			PhoneNumber:    pn,
+			FirstName:      firstName,
+			LastName:       lastName,
+			Birthdate:      b,
+			PolicyAccepted: pa,
+		}, nil
+	} else {
+		return nil, errs
+	}
+}
+
+func generateID() string {
+	return "abcd"
 }

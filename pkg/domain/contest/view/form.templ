@@ -1,6 +1,17 @@
 package view
 
-templ ContestForm(contestID string) {
+type ContestFormInput struct {
+	FirstName   string
+	LastName    string
+	PhoneNumber string
+	Email       string
+	Birthday    string
+	ArtPiece    string
+	ContestID   string
+	ErrMap      map[string]string
+}
+
+templ ContestForm(data ContestFormInput) {
 	@Base() {
 		<h1>Contest Form</h1>
 		<form action="" method="post" enctype="multipart/form-data">
@@ -10,9 +21,12 @@ templ ContestForm(contestID string) {
 					type="text"
 					name="first-name"
 					id="first-name"
-					value={  }
+					value={ data.FirstName }
 					required
 				/>
+				if errMessage, ok :=data.ErrMap["FirstName"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<label for="last-name">Last name: </label>
@@ -20,9 +34,12 @@ templ ContestForm(contestID string) {
 					type="text"
 					name="last-name"
 					id="last-name"
-					value={  }
+					value={ data.LastName }
 					required
 				/>
+				if errMessage, ok :=data.ErrMap["LastName"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<label for="email">Email: </label>
@@ -30,9 +47,12 @@ templ ContestForm(contestID string) {
 					type="email"
 					name="email"
 					id="email"
-					value={  }
+					value={ data.Email }
 					required
 				/>
+				if errMessage, ok :=data.ErrMap["Email"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<label for="birthday">Birthday date: </label>
@@ -40,9 +60,12 @@ templ ContestForm(contestID string) {
 					type="date"
 					name="birthday"
 					id="birthday"
-					value={  }
+					value={ data.Birthday }
 					required
 				/>
+				if errMessage, ok :=data.ErrMap["Birthday"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<label for="phone">Phone number: </label>
@@ -50,9 +73,12 @@ templ ContestForm(contestID string) {
 					type="tel"
 					name="phone"
 					id="phone"
-					value={  }
+					value={ data.PhoneNumber }
 					required
 				/>
+				if errMessage, ok :=data.ErrMap["Phone"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<label for="art-piece">Add art piece:</label>
@@ -63,21 +89,27 @@ templ ContestForm(contestID string) {
 					accept="image/png, image/jpeg"
 					multiple
 				/>
+				if errMessage, ok :=data.ErrMap["ArtPiece"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<div>
 				<input
 					type="checkbox"
 					id="conditions"
 					name="conditions"
-					value={  }
+					required
 				/>
 				<label for="conditions">I accept contest conditions</label>
+				if errMessage, ok :=data.ErrMap["ConditionsConsent"]; ok {
+					<div>{ errMessage }</div>
+				}
 			</div>
 			<input
 				type="hidden"
 				id="contest-id"
 				name="contest-id"
-				value={ contestID }
+				value={ data.ContestID }
 			/>
 			<div>
 				<input type="submit" value="Submit"/>

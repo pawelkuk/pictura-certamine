@@ -76,7 +76,7 @@ templ ContestForm(data ContestFormInput) {
 					value={ data.PhoneNumber }
 					required
 				/>
-				if errMessage, ok :=data.ErrMap["Phone"]; ok {
+				if errMessage, ok :=data.ErrMap["PhoneNumber"]; ok {
 					<div>{ errMessage }</div>
 				}
 			</div>

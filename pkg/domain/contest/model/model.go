@@ -12,6 +12,14 @@ import (
 )
 
 type EntryStatus string
+type ParseError struct {
+	Field string
+	Err   error
+}
+
+func (e *ParseError) Error() string {
+	return fmt.Sprintf("%s: %e", e.Field, e.Err)
+}
 
 var (
 	EntryStatusPending               EntryStatus = "Pending"
@@ -94,21 +102,21 @@ func ParseContestant(
 	}
 	a, err := mail.ParseAddress(email)
 	if err != nil {
-		errs = multierror.Append(errs, err)
+		errs = multierror.Append(errs, &ParseError{Field: "Email", Err: err})
 	}
 	pn, err := phonenumbers.Parse(phoneNumber, "us")
 	if err != nil {
-		errs = multierror.Append(errs, err)
+		errs = multierror.Append(errs, &ParseError{Field: "PhoneNumber", Err: err})
 	}
 	if firstName == "" {
-		errs = multierror.Append(errs, errors.New("first name can't be empty"))
+		errs = multierror.Append(errs, &ParseError{Field: "FirstName", Err: errors.New("first name can't be empty")})
 	}
 	if lastName == "" {
-		errs = multierror.Append(errs, errors.New("last name can't be empty"))
+		errs = multierror.Append(errs, &ParseError{Field: "LastName", Err: errors.New("last name can't be empty")})
 	}
 	b, err := time.Parse(time.DateOnly, birthdate)
 	if err != nil {
-		errs = multierror.Append(errs, err)
+		errs = multierror.Append(errs, &ParseError{Field: "Birthdate", Err: err})
 	}
 	var pa bool
 	if policyAccepted != "" && policyAccepted != "no" {

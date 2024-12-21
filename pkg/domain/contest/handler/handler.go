@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"runtime"
+
+	"github.com/hashicorp/go-multierror"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -28,12 +31,11 @@ var errMessagesFuncs = map[string]func(validator.FieldError) string{
 	"required": func(err validator.FieldError) string { return "field is required" },
 }
 
-func checkValidationErrors(err error) map[string]string {
+func checkValidationErrors(err error, errMap map[string]string) {
 	validationErrors := err.(validator.ValidationErrors)
 	if len(validationErrors) == 0 {
-		return nil
+		return
 	}
-	errMap := map[string]string{}
 	for _, e := range validationErrors {
 		fn, ok := errMessagesFuncs[e.Tag()]
 		if !ok {
@@ -41,7 +43,7 @@ func checkValidationErrors(err error) map[string]string {
 		}
 		errMap[e.Field()] = fn(e)
 	}
-	return errMap
+	return
 }
 
 func (h *ContestHandler) HandlePost(c *gin.Context) {
@@ -54,11 +56,24 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		ConditionsConsent string `form:"conditions" binding:"required"`
 		ContestID         string `form:"contest-id" binding:"required"`
 	}
-	var errMap map[string]string
+	errMap := map[string]string{}
 	var form contestantForm
 	err := c.ShouldBind(&form)
 	if err != nil {
-		errMap = checkValidationErrors(err)
+		checkValidationErrors(err, errMap)
+	}
+	_, err = model.ParseContestant(
+		"",
+		form.Email,
+		form.Phone,
+		form.FirstName,
+		form.LastName,
+		form.Birthday,
+		form.ConditionsConsent,
+	)
+	if err != nil {
+		formatParseError(err, errMap)
+		fmt.Println()
 		err := view.ContestForm(view.ContestFormInput{
 			ContestID:   form.ContestID,
 			FirstName:   form.FirstName,
@@ -73,22 +88,6 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		}
 		return
 	}
-	contestant, err := model.ParseContestant(
-		"",
-		form.Email,
-		form.Phone,
-		form.FirstName,
-		form.LastName,
-		form.Birthday,
-		form.ConditionsConsent,
-	)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	} else {
-		fmt.Println(*contestant)
-	}
-
 	multiForm, _ := c.MultipartForm()
 	fmt.Println(multiForm.File)
 	files := multiForm.File["art-piece"]
@@ -111,6 +110,18 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		fmt.Println(fileHeader.Size)
 	}
 	c.Redirect(http.StatusFound, "/success")
+}
+
+func formatParseError(err error, errMap map[string]string) {
+	runtime.Breakpoint()
+	multierr := err.(*multierror.Error)
+	if len(multierr.Errors) == 0 {
+		return
+	}
+	for _, e := range multierr.Errors {
+		pe := e.(*model.ParseError)
+		errMap[pe.Field] = pe.Err.Error()
+	}
 }
 
 func (h *ContestHandler) HandlePostSuccess(c *gin.Context) {

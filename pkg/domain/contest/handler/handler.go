@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"runtime"
 
 	"github.com/hashicorp/go-multierror"
 
@@ -73,7 +72,6 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 	)
 	if err != nil {
 		formatParseError(err, errMap)
-		fmt.Println()
 		err := view.ContestForm(view.ContestFormInput{
 			ContestID:   form.ContestID,
 			FirstName:   form.FirstName,
@@ -113,7 +111,6 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 }
 
 func formatParseError(err error, errMap map[string]string) {
-	runtime.Breakpoint()
 	multierr := err.(*multierror.Error)
 	if len(multierr.Errors) == 0 {
 		return

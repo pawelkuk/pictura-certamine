@@ -33,7 +33,6 @@ func (c *MinioClient) GetObject(ctx context.Context, objName string) ([]byte, er
 	if err != nil {
 		return nil, fmt.Errorf("could not get object stat: %w", err)
 	}
-	// runtime.Breakpoint()
 	buff := make([]byte, stat.Size)
 	n, err := reader.Read(buff)
 	if err != nil && !errors.Is(err, io.EOF) {

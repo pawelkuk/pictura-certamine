@@ -35,6 +35,7 @@ func serve() error {
 	}
 
 	r := gin.Default()
+	r.Static("/assets", "./frontend")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 
 	h := handler.ContestHandler{}

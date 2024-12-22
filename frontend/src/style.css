@@ -1,3 +1,50 @@
-.hello {
-  color: red;
+.contest sl-input,
+.contest sl-checkbox {
+  display: block;
+  margin-bottom: var(--sl-spacing-medium);
+}
+
+/* user invalid styles */
+.contest sl-input[data-user-invalid]::part(base),
+.contest sl-checkbox[data-user-invalid]::part(control) {
+  border-color: var(--sl-color-danger-600);
+}
+
+.contest [data-user-invalid]::part(form-control-label),
+.contest [data-user-invalid]::part(form-control-help-text),
+.contest sl-checkbox[data-user-invalid]::part(label) {
+  color: var(--sl-color-danger-700);
+}
+
+.contest sl-checkbox[data-user-invalid]::part(control) {
+  outline: none;
+}
+
+.contest sl-input:focus-within[data-user-invalid]::part(base),
+.contest sl-checkbox:focus-within[data-user-invalid]::part(control) {
+  border-color: var(--sl-color-danger-600);
+  box-shadow: 0 0 0 var(--sl-focus-ring-width) var(--sl-color-danger-300);
+}
+
+/* User valid styles */
+.contest sl-input[data-user-valid]::part(base),
+.contest sl-checkbox[data-user-valid]::part(control) {
+  border-color: var(--sl-color-success-600);
+}
+
+.contest [data-user-valid]::part(form-control-label),
+.contest [data-user-valid]::part(form-control-help-text),
+.contest sl-checkbox[data-user-valid]::part(label) {
+  color: var(--sl-color-success-700);
+}
+
+.contest sl-checkbox[data-user-valid]::part(control) {
+  background-color: var(--sl-color-success-600);
+  outline: none;
+}
+
+.contest sl-input:focus-within[data-user-valid]::part(base),
+.contest sl-checkbox:focus-within[data-user-valid]::part(control) {
+  border-color: var(--sl-color-success-600);
+  box-shadow: 0 0 0 var(--sl-focus-ring-width) var(--sl-color-success-300);
 }

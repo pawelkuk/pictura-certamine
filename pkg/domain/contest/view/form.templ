@@ -14,72 +14,45 @@ type ContestFormInput struct {
 templ ContestForm(data ContestFormInput) {
 	@Base() {
 		<h1>Contest Form</h1>
-		<form action="" method="post" enctype="multipart/form-data">
-			<div>
-				<label for="first-name">First name: </label>
-				<input
-					type="text"
-					name="first-name"
-					id="first-name"
-					value={ data.FirstName }
-					required
-				/>
-				if errMessage, ok :=data.ErrMap["FirstName"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
-			<div>
-				<label for="last-name">Last name: </label>
-				<input
-					type="text"
-					name="last-name"
-					id="last-name"
-					value={ data.LastName }
-					required
-				/>
-				if errMessage, ok :=data.ErrMap["LastName"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
-			<div>
-				<label for="email">Email: </label>
-				<input
-					type="email"
-					name="email"
-					id="email"
-					value={ data.Email }
-					required
-				/>
-				if errMessage, ok :=data.ErrMap["Email"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
-			<div>
-				<label for="birthday">Birthday date: </label>
-				<input
-					type="date"
-					name="birthday"
-					id="birthday"
-					value={ data.Birthday }
-					required
-				/>
-				if errMessage, ok :=data.ErrMap["Birthday"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
-			<div>
-				<label for="phone">Phone number: </label>
-				<input
-					type="tel"
-					name="phone"
-					id="phone"
-					value={ data.PhoneNumber }
-					required
-				/>
-				if errMessage, ok :=data.ErrMap["PhoneNumber"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
+		<form class="contest" action="" method="post" enctype="multipart/form-data">
+			<sl-input
+				name="first-name"
+				label="First name"
+				value={ data.FirstName }
+				required
+			></sl-input>
+			<br/>
+			<sl-input
+				name="last-name"
+				label="Last name"
+				value={ data.FirstName }
+				required
+			></sl-input>
+			<br/>
+			<sl-input
+				type="email"
+				name="email"
+				label="Email"
+				value={ data.Email }
+				required
+			></sl-input>
+			<br/>
+			<sl-input
+				name="birthday"
+				label="Birthday date"
+				value={ data.Birthday }
+				type="date"
+				required
+			></sl-input>
+			<br/>
+			<sl-input
+				name="phone"
+				label="Phone number"
+				value={ data.PhoneNumber }
+				type="tel"
+				required
+			></sl-input>
+			<br/>
 			<div>
 				<label for="art-piece">Add art piece:</label>
 				<input
@@ -93,27 +66,20 @@ templ ContestForm(data ContestFormInput) {
 					<div>{ errMessage }</div>
 				}
 			</div>
-			<div>
-				<input
-					type="checkbox"
-					id="conditions"
-					name="conditions"
-					required
-				/>
-				<label for="conditions">I accept contest conditions</label>
-				if errMessage, ok :=data.ErrMap["ConditionsConsent"]; ok {
-					<div>{ errMessage }</div>
-				}
-			</div>
+			<br/>
+			<sl-checkbox
+				name="conditions"
+				required
+			>I accept contest conditions</sl-checkbox>
+			<br/>
 			<input
 				type="hidden"
 				id="contest-id"
 				name="contest-id"
 				value={ data.ContestID }
 			/>
-			<div>
-				<input type="submit" value="Submit"/>
-			</div>
+			<br/>
+			<sl-button type="submit" variant="primary">Submit</sl-button>
 		</form>
 	}
 }

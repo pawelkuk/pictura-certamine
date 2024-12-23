@@ -8,7 +8,6 @@ import (
 
 	"github.com/gosimple/slug"
 	"github.com/hashicorp/go-multierror"
-	"github.com/nyaruka/phonenumbers"
 )
 
 type EntryStatus string
@@ -50,13 +49,17 @@ type ArtPiece struct {
 }
 
 type Contestant struct {
-	ID             string
-	Email          mail.Address
-	PhoneNumber    *phonenumbers.PhoneNumber
-	FirstName      string
-	LastName       string
-	Birthdate      time.Time
-	PolicyAccepted bool
+	ID                string
+	Email             mail.Address
+	PhoneNumber       PhoneNumber
+	FirstName         string
+	LastName          string
+	ConsentConditions bool
+	ConsentMarketing  bool
+}
+
+type PhoneNumber struct {
+	Value string
 }
 
 type Contest struct {
@@ -93,8 +96,8 @@ func ParseContestant(
 	phoneNumber string,
 	firstName string,
 	lastName string,
-	birthdate string,
-	policyAccepted string,
+	consentConditions string,
+	consentMarketing string,
 ) (*Contestant, error) {
 	var errs *multierror.Error
 	if id == "" {
@@ -104,38 +107,45 @@ func ParseContestant(
 	if err != nil {
 		errs = multierror.Append(errs, &ParseError{Field: "Email", Err: err})
 	}
-	pn, err := phonenumbers.Parse(phoneNumber, "us")
-	if err != nil {
-		errs = multierror.Append(errs, &ParseError{Field: "PhoneNumber", Err: err})
-	}
 	if firstName == "" {
 		errs = multierror.Append(errs, &ParseError{Field: "FirstName", Err: errors.New("first name can't be empty")})
 	}
 	if lastName == "" {
 		errs = multierror.Append(errs, &ParseError{Field: "LastName", Err: errors.New("last name can't be empty")})
 	}
-	b, err := time.Parse(time.DateOnly, birthdate)
+	pn, err := ParsePhoneNumber(phoneNumber)
 	if err != nil {
-		errs = multierror.Append(errs, &ParseError{Field: "Birthdate", Err: err})
+		errs = multierror.Append(errs, &ParseError{Field: "PhoneNumber", Err: err})
 	}
-	var pa bool
-	if policyAccepted != "" && policyAccepted != "no" {
-		pa = true
+	var cc bool
+	if consentConditions != "" && consentConditions != "no" {
+		cc = true
+	}
+	var cm bool
+	if consentMarketing != "" && consentMarketing != "no" {
+		cm = true
 	}
 
-	if errs.Len() == 0 {
+	if errs == nil || errs.Len() == 0 {
 		return &Contestant{
-			ID:             id,
-			Email:          *a,
-			PhoneNumber:    pn,
-			FirstName:      firstName,
-			LastName:       lastName,
-			Birthdate:      b,
-			PolicyAccepted: pa,
+			ID:                id,
+			Email:             *a,
+			PhoneNumber:       *pn,
+			FirstName:         firstName,
+			LastName:          lastName,
+			ConsentConditions: cc,
+			ConsentMarketing:  cm,
 		}, nil
 	} else {
 		return nil, errs
 	}
+}
+
+func ParsePhoneNumber(phoneNumber string) (*PhoneNumber, error) {
+	if phoneNumber == "" {
+		return nil, fmt.Errorf("invalid phone number")
+	}
+	return &PhoneNumber{Value: phoneNumber}, nil
 }
 
 func generateID() string {

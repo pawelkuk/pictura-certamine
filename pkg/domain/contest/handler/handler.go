@@ -51,8 +51,8 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		Phone             string `form:"phone" binding:"required"`
 		FirstName         string `form:"first-name" binding:"required"`
 		LastName          string `form:"last-name" binding:"required"`
-		Birthday          string `form:"birthday" binding:"required"`
-		ConditionsConsent string `form:"conditions" binding:"required"`
+		ConsentConditions string `form:"consent-conditions" binding:"required"`
+		ConsentMarketing  string `form:"consent-marketing" binding:"required"`
 		ContestID         string `form:"contest-id" binding:"required"`
 	}
 	errMap := map[string]string{}
@@ -67,8 +67,8 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		form.Phone,
 		form.FirstName,
 		form.LastName,
-		form.Birthday,
-		form.ConditionsConsent,
+		form.ConsentConditions,
+		form.ConsentMarketing,
 	)
 	if err != nil {
 		formatParseError(err, errMap)
@@ -78,7 +78,6 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 			LastName:    form.LastName,
 			PhoneNumber: form.Phone,
 			Email:       form.Email,
-			Birthday:    form.Birthday,
 			ErrMap:      errMap,
 		}).Render(c.Request.Context(), c.Writer)
 		if err != nil {

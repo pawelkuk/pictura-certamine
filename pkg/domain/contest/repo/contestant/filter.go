@@ -3,7 +3,6 @@ package repo
 import (
 	"bytes"
 	"strings"
-	"time"
 
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
@@ -27,13 +26,13 @@ func applyFilter(filter model.ContestantQueryFilter, args *[]any, buf *bytes.Buf
 		wc = append(wc, "last_name = ?")
 		*args = append(*args, *filter.LastName)
 	}
-	if filter.Birthdate != nil {
-		wc = append(wc, "birthdate = ?")
-		*args = append(*args, filter.Birthdate.Format(time.DateOnly))
+	if filter.ConsentConditions != nil {
+		wc = append(wc, "consent_conditions = ?")
+		*args = append(*args, *filter.ConsentConditions)
 	}
-	if filter.PolicyAccepted != nil {
-		wc = append(wc, "policy_accepted = ?")
-		*args = append(*args, *filter.PolicyAccepted)
+	if filter.ConsentConditions != nil {
+		wc = append(wc, "consent_marketing = ?")
+		*args = append(*args, *filter.ConsentMarketing)
 	}
 
 	if len(wc) > 0 {

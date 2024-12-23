@@ -4,8 +4,8 @@ CREATE TABLE contestant (
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     phone_number TEXT NOT NULL,
-    birthdate DATE NOT NULL,
-    policy_accepted BOOLEAN NOT NULL CHECK (policy_accepted IN (0, 1))
+    consent_conditions BOOLEAN NOT NULL CHECK (consent_conditions IN (0, 1)),
+    consent_marketing BOOLEAN NOT NULL CHECK (consent_marketing IN (0, 1))
 );
 CREATE TABLE contest (
     id TEXT PRIMARY KEY,

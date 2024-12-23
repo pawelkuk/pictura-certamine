@@ -6,7 +6,6 @@ import (
 	"database/sql"
 	"fmt"
 	"net/mail"
-	"time"
 
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
 )
@@ -22,16 +21,16 @@ func (r *SQLiteRepo) Create(ctx context.Context, c *model.Contestant) error {
 			email,
 			first_name,
 			last_name,
-			birthdate,
-			policy_accepted
+			consent_conditions,
+			consent_marketing
 		) VALUES(?, ?, ?, ?, ?, ?)
 		RETURNING id`,
 		c.ID,
 		c.Email.Address,
 		c.FirstName,
 		c.LastName,
-		c.Birthdate.Format(time.DateOnly),
-		c.PolicyAccepted,
+		c.ConsentConditions,
+		c.ConsentMarketing,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create contestant: %w", err)
@@ -44,8 +43,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 			email,
 			first_name,
 			last_name,
-			birthdate,
-			policy_accepted
+			consent_conditions,
+			consent_marketing
 		FROM 
 			contestant
 		WHERE id = ?`,
@@ -54,14 +53,10 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 		return fmt.Errorf("could not query row with id=%s: %w", c.ID, row.Err())
 	}
 	var emailStr, firstname, lastName, endStr string
-	var isActive bool
-	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &isActive)
+	var cc, cm bool
+	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &cc, &cm)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
-	}
-	end, err := time.Parse(time.RFC3339, endStr)
-	if err != nil {
-		return fmt.Errorf("could not parse timestamp: %w", err)
 	}
 	email, err := mail.ParseAddress(emailStr)
 	if err != nil {
@@ -70,8 +65,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 	c.Email = *email
 	c.FirstName = firstname
 	c.LastName = lastName
-	c.Birthdate = end
-	c.PolicyAccepted = isActive
+	c.ConsentConditions = cc
+	c.ConsentMarketing = cm
 	return nil
 }
 func (r *SQLiteRepo) Update(ctx context.Context, c *model.Contestant) error {
@@ -82,15 +77,14 @@ func (r *SQLiteRepo) Update(ctx context.Context, c *model.Contestant) error {
 			email = ?,
 			first_name = ?,
 			last_name = ?,
-			birthdate = ?,
-			policy_accepted = ?
+			consent_conditions = ?,
+			consent_marketing = ?
 		WHERE
 			id = ?`,
 		c.Email.Address,
 		c.FirstName,
 		c.LastName,
-		c.Birthdate.Format(time.DateOnly),
-		c.PolicyAccepted,
+		c.ConsentConditions,
 		c.ID,
 	)
 	if err != nil {
@@ -113,8 +107,8 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		email,
 		first_name,
 		last_name,
-		birthdate,
-		policy_accepted
+		consent_conditions,
+		consent_marketing
 	from
 		contestant
 	`
@@ -129,14 +123,10 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 	for rows.Next() {
 		c := &model.Contestant{}
 		var id, emailStr, firstname, lastname, endStr string
-		var isActive bool
-		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &isActive)
+		var cc, cm bool
+		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &cc, &cm)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
-		}
-		end, err := time.Parse(time.RFC3339, endStr)
-		if err != nil {
-			return nil, fmt.Errorf("could not parse timestamp: %w", err)
 		}
 		email, err := mail.ParseAddress(emailStr)
 		if err != nil {
@@ -146,8 +136,8 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		c.Email = *email
 		c.FirstName = firstname
 		c.LastName = lastname
-		c.Birthdate = end
-		c.PolicyAccepted = isActive
+		c.ConsentConditions = cc
+		c.ConsentMarketing = cm
 		contestants = append(contestants, *c)
 	}
 	err = rows.Close()

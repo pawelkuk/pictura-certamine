@@ -8,7 +8,6 @@ import (
 	"net/mail"
 	"os"
 	"testing"
-	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
@@ -29,19 +28,19 @@ func TestSqliteRepoContestantCRUD(t *testing.T) {
 	}
 	repo := SQLiteRepo{DB: db}
 	cc := model.Contestant{
-		ID:             "abcd",
-		Email:          mail.Address{Address: "test@example.com"},
-		FirstName:      "Alice",
-		LastName:       "Doe",
-		Birthdate:      time.Now(),
-		PolicyAccepted: true,
+		ID:                "abcd",
+		Email:             mail.Address{Address: "test@example.com"},
+		FirstName:         "Alice",
+		LastName:          "Doe",
+		ConsentConditions: true,
+		ConsentMarketing:  true,
 	}
 	err = repo.Create(ctx, &cc)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
 	fmt.Println("contest created:", cc.ID)
-	cc.PolicyAccepted = false
+	cc.ConsentConditions = false
 	err = repo.Update(ctx, &cc)
 	if err != nil {
 		log.Fatalf("error: %v", err)
@@ -51,8 +50,8 @@ func TestSqliteRepoContestantCRUD(t *testing.T) {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	if contestRead.PolicyAccepted {
-		log.Fatalf("policy_accepted not updated")
+	if contestRead.ConsentConditions {
+		log.Fatalf("consent conditions not updated")
 	}
 	err = repo.Delete(ctx, &cc)
 	if err != nil {

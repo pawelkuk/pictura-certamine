@@ -11,7 +11,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/minio/minio-go/v7 v7.0.82
-	github.com/nyaruka/phonenumbers v1.4.3
 	github.com/samber/lo v1.47.0
 	github.com/sendgrid/sendgrid-go v3.16.0+incompatible
 )

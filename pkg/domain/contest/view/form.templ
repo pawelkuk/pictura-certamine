@@ -5,7 +5,6 @@ type ContestFormInput struct {
 	LastName    string
 	PhoneNumber string
 	Email       string
-	Birthday    string
 	ArtPiece    string
 	ContestID   string
 	ErrMap      map[string]string
@@ -19,6 +18,9 @@ templ ContestForm(data ContestFormInput) {
 				name="first-name"
 				label="First name"
 				value={ data.FirstName }
+				if _, ok := data.ErrMap["FirstName"]; ok {
+					data-invalid
+				}
 				required
 			></sl-input>
 			<br/>
@@ -26,6 +28,9 @@ templ ContestForm(data ContestFormInput) {
 				name="last-name"
 				label="Last name"
 				value={ data.FirstName }
+				if _, ok := data.ErrMap["LastName"]; ok {
+					data-invalid
+				}
 				required
 			></sl-input>
 			<br/>
@@ -34,43 +39,42 @@ templ ContestForm(data ContestFormInput) {
 				name="email"
 				label="Email"
 				value={ data.Email }
+				if _, ok := data.ErrMap["Email"]; ok {
+					data-invalid
+				}
 				required
 			></sl-input>
 			<br/>
-			<sl-input
-				name="birthday"
-				label="Birthday date"
-				value={ data.Birthday }
-				type="date"
-				required
-			></sl-input>
 			<br/>
 			<sl-input
 				name="phone"
 				label="Phone number"
 				value={ data.PhoneNumber }
 				type="tel"
+				if _, ok := data.ErrMap["PhoneNumber"]; ok {
+					data-invalid
+				}
 				required
 			></sl-input>
 			<br/>
 			<div>
-				<label for="art-piece">Add art piece:</label>
+				<label for="art-piece">Contest files*</label>
 				<input
 					type="file"
 					id="art-piece"
 					name="art-piece"
-					accept="image/png, image/jpeg"
+					accept="image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4"
 					multiple
 				/>
-				if errMessage, ok :=data.ErrMap["ArtPiece"]; ok {
-					<div>{ errMessage }</div>
-				}
 			</div>
 			<br/>
 			<sl-checkbox
-				name="conditions"
+				name="consent-conditions"
 				required
 			>I accept contest conditions</sl-checkbox>
+			<sl-checkbox
+				name="consent-marketing"
+			>I consent to marketing materials</sl-checkbox>
 			<br/>
 			<input
 				type="hidden"

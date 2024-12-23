@@ -15,12 +15,12 @@ type ContestQueryFilter struct {
 }
 
 type ContestantQueryFilter struct {
-	ID             *string
-	Email          *mail.Address
-	FirstName      *string
-	LastName       *string
-	Birthdate      *time.Time
-	PolicyAccepted *bool
+	ID                *string
+	Email             *mail.Address
+	FirstName         *string
+	LastName          *string
+	ConsentConditions *bool
+	ConsentMarketing  *bool
 }
 
 type EntryQueryFilter struct {

@@ -140,20 +140,20 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><div><label for=\"art-piece\">Contest files*</label> <input type=\"file\" id=\"art-piece\" name=\"art-piece\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\" multiple></div><br><sl-checkbox name=\"consent-conditions\" required>I accept contest conditions</sl-checkbox> <sl-checkbox name=\"consent-marketing\">I consent to marketing materials</sl-checkbox><br><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><div><label for=\"art-piece\">Contest files*</label> <input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox name=\"consent-conditions\" required>I accept contest conditions</sl-checkbox> <sl-checkbox name=\"consent-marketing\">I consent to marketing materials</sl-checkbox><br><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(data.ContestID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 83, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 80, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><br><sl-button type=\"submit\" variant=\"primary\">Submit</sl-button></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <sl-button type=\"submit\" variant=\"primary\">Submit</sl-button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

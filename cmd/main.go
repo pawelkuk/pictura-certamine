@@ -1,14 +1,21 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
+	"github.com/caarlos0/env/v11"
 	sentry "github.com/getsentry/sentry-go"
 	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/config"
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/handler"
+	contestant "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/contestant"
+	entry "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/entry"
+	"github.com/pawelkuk/pictura-certamine/pkg/sdk/mail"
+	"github.com/pawelkuk/pictura-certamine/pkg/sdk/s3"
 )
 
 func main() {
@@ -20,8 +27,13 @@ func main() {
 }
 
 func serve() error {
+	cfg := &config.Config{}
+	err := env.Parse(cfg)
+	if err != nil {
+		return fmt.Errorf("could not parse config: %w", err)
+	}
 	if err := sentry.Init(sentry.ClientOptions{
-		Dsn:           os.Getenv("SENTRY_DSN"),
+		Dsn:           cfg.SentryDSN,
 		EnableTracing: true,
 		// Set TracesSampleRate to 1.0 to capture 100%
 		// of transactions for tracing.
@@ -33,17 +45,30 @@ func serve() error {
 	}); err != nil {
 		return fmt.Errorf("sentry initialization failed: %v", err)
 	}
+	db, err := sql.Open("sqlite3", "./data/pictura-certamine.db")
+	if err != nil {
+		return fmt.Errorf("could not open db: %w", err)
+	}
+	contestantrepo := &contestant.SQLiteRepo{DB: db}
+	entryrepo := &entry.SQLiteRepo{DB: db}
+	s3Client, err := s3.NewMinioClient(cfg.S3AccessKey, cfg.S3SecretKey, cfg.S3Endpoint)
+	if err != nil {
+		return fmt.Errorf("could not create s3 client: %w", err)
+	}
+	mailClient := mail.NewSendgridSender(cfg.SendgridApiKey)
+	h := handler.ContestHandler{
+		ContestantRepo: contestantrepo,
+		EntryRepo:      entryrepo,
+		S3:             s3Client,
+		MailClient:     mailClient,
+	}
 
 	r := gin.Default()
 	r.Static("/assets", "./frontend")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
-
-	h := handler.ContestHandler{}
-
 	r.GET("/", h.HandleGet)
 	r.POST("/", h.HandlePost)
-	r.GET("/success", h.HandlePostSuccess)
-
-	err := r.Run(":8080")
+	r.GET("/success/:contestantid", h.HandlePostSuccess)
+	err = r.Run(":8080")
 	return err
 }

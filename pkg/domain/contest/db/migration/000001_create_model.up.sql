@@ -18,7 +18,6 @@ CREATE TABLE contest (
 CREATE TABLE entry (
     id TEXT PRIMARY KEY,
     contestant_id TEXT NOT NULL,
-    session_id TEXT NOT NULL,
     status TEXT NOT NULL CHECK (
         status IN (
             'Pending',

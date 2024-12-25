@@ -26,6 +26,5 @@ type ContestantQueryFilter struct {
 type EntryQueryFilter struct {
 	ID           *string
 	ContestantID *string
-	SessionID    *string
 	Status       *EntryStatus
 }

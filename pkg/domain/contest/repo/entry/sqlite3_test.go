@@ -29,7 +29,6 @@ func TestSqliteRepoEntryCRUD(t *testing.T) {
 	entry := model.Entry{
 		ID:           "abcdefghijklmnop",
 		ContestantID: "c1",
-		SessionID:    "s1",
 		Status:       model.EntryStatusPending,
 		ArtPieces: []model.ArtPiece{
 			{Key: "/photo/1.png"}, {Key: "/photo/2.png"}, {Key: "/photo/3.png"}, {Key: "/photo/4.png"},

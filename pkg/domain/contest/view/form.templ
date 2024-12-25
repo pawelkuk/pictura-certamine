@@ -61,10 +61,7 @@ templ ContestForm(data ContestFormInput) {
 				<label for="art-piece">Contest files*</label>
 				<input
 					type="file"
-					id="art-piece"
-					name="art-piece"
 					accept="image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4"
-					multiple
 				/>
 			</div>
 			<br/>
@@ -82,7 +79,6 @@ templ ContestForm(data ContestFormInput) {
 				name="contest-id"
 				value={ data.ContestID }
 			/>
-			<br/>
 			<sl-button type="submit" variant="primary">Submit</sl-button>
 		</form>
 	}

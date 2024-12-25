@@ -3,12 +3,15 @@ package model
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"net/mail"
 	"time"
 
 	"github.com/gosimple/slug"
 	"github.com/hashicorp/go-multierror"
 )
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 type EntryStatus string
 type ParseError struct {
@@ -37,7 +40,6 @@ var validEntryStatusMap = map[string]EntryStatus{
 type Entry struct {
 	ID           string
 	ContestantID string
-	SessionID    string
 	Status       EntryStatus
 	ArtPieces    []ArtPiece
 }
@@ -88,6 +90,33 @@ func ParseStatus(status string) (EntryStatus, error) {
 		return "", fmt.Errorf("invalid status: %s", status)
 	}
 	return s, nil
+}
+func ParseEntry(
+	id string,
+	contestantid string,
+	status string,
+	artpieces []ArtPiece,
+) (*Entry, error) {
+	if id == "" {
+		id = generateID()
+	}
+	if contestantid != "" {
+		return nil, fmt.Errorf("can't be empty string")
+	}
+	s, err := ParseStatus(status)
+	if err != nil {
+		return nil, fmt.Errorf("invalid status: %w", err)
+	}
+	if len(artpieces) == 0 {
+		artpieces = []ArtPiece{}
+	}
+	return &Entry{
+		ID:           id,
+		ContestantID: contestantid,
+		Status:       s,
+		ArtPieces:    artpieces,
+	}, nil
+
 }
 
 func ParseContestant(
@@ -149,5 +178,9 @@ func ParsePhoneNumber(phoneNumber string) (*PhoneNumber, error) {
 }
 
 func generateID() string {
-	return "abcd"
+	b := make([]byte, 20)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
 }

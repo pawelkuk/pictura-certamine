@@ -5,11 +5,11 @@
 - [ ] form with user data nad multiple pictures
 - [ ] upload picture to file system and backup to s3
 - [ ] captcha
-- [ ] anonymous sessions (which are tied to email address if the user submits the form)
 - [ ] confirmation email
 - [ ] saving progress of form
 - [ ] being able to have multiple contests
 - [ ] sending errors to sentry
+- [ ] manage cookies (only required, used for performance and all)
 
 ## External Systems
 

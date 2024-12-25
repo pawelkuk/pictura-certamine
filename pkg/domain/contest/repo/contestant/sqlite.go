@@ -21,14 +21,16 @@ func (r *SQLiteRepo) Create(ctx context.Context, c *model.Contestant) error {
 			email,
 			first_name,
 			last_name,
+			phone_number,
 			consent_conditions,
 			consent_marketing
-		) VALUES(?, ?, ?, ?, ?, ?)
+		) VALUES(?, ?, ?, ?, ?, ?, ?)
 		RETURNING id`,
 		c.ID,
 		c.Email.Address,
 		c.FirstName,
 		c.LastName,
+		c.PhoneNumber.Value,
 		c.ConsentConditions,
 		c.ConsentMarketing,
 	)
@@ -44,17 +46,18 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 			first_name,
 			last_name,
 			consent_conditions,
-			consent_marketing
-		FROM 
+			consent_marketing,
+			phone_number
+		FROM
 			contestant
 		WHERE id = ?`,
 		c.ID)
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", c.ID, row.Err())
 	}
-	var emailStr, firstname, lastName, endStr string
+	var emailStr, firstname, lastName, endStr, phoneNumber string
 	var cc, cm bool
-	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &cc, &cm)
+	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &cc, &cm, &phoneNumber)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -67,6 +70,11 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 	c.LastName = lastName
 	c.ConsentConditions = cc
 	c.ConsentMarketing = cm
+	pn, err := model.ParsePhoneNumber(phoneNumber)
+	if err != nil {
+		return fmt.Errorf("could not parse phone number: %w", err)
+	}
+	c.PhoneNumber = *pn
 	return nil
 }
 func (r *SQLiteRepo) Update(ctx context.Context, c *model.Contestant) error {
@@ -78,13 +86,15 @@ func (r *SQLiteRepo) Update(ctx context.Context, c *model.Contestant) error {
 			first_name = ?,
 			last_name = ?,
 			consent_conditions = ?,
-			consent_marketing = ?
+			consent_marketing = ?,
+			phone_number = ?
 		WHERE
 			id = ?`,
 		c.Email.Address,
 		c.FirstName,
 		c.LastName,
 		c.ConsentConditions,
+		c.PhoneNumber.Value,
 		c.ID,
 	)
 	if err != nil {
@@ -108,7 +118,8 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		first_name,
 		last_name,
 		consent_conditions,
-		consent_marketing
+		consent_marketing,
+		phone_number
 	from
 		contestant
 	`
@@ -122,9 +133,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 	contestants := []model.Contestant{}
 	for rows.Next() {
 		c := &model.Contestant{}
-		var id, emailStr, firstname, lastname, endStr string
+		var id, emailStr, firstname, lastname, endStr, phoneNumber string
 		var cc, cm bool
-		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &cc, &cm)
+		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &cc, &cm, &phoneNumber)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -138,6 +149,11 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 		c.LastName = lastname
 		c.ConsentConditions = cc
 		c.ConsentMarketing = cm
+		pn, err := model.ParsePhoneNumber(phoneNumber)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse phone number: %w", err)
+		}
+		c.PhoneNumber = *pn
 		contestants = append(contestants, *c)
 	}
 	err = rows.Close()

@@ -29,14 +29,12 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 		`INSERT INTO entry(
 			id,
 			contestant_id,
-			session_id,
 			status
 		)
-		VALUES(?, ?, ?, ?)
+		VALUES(?, ?, ?)
 		RETURNING id`,
 		e.ID,
 		e.ContestantID,
-		e.SessionID,
 		string(e.Status),
 	)
 	if err != nil {
@@ -95,7 +93,6 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	row := r.DB.QueryRowContext(ctx,
 		`SELECT
 			contestant_id,
-			session_id,
 			status
 		FROM 
 			entry
@@ -104,8 +101,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", e.ID, row.Err())
 	}
-	var contestantid, sessionid, statusStr string
-	err := row.Scan(&contestantid, &sessionid, &statusStr)
+	var contestantid, statusStr string
+	err := row.Scan(&contestantid, &statusStr)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -114,7 +111,6 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 		return fmt.Errorf("could not parse status: %w", err)
 	}
 	e.ContestantID = contestantid
-	e.SessionID = sessionid
 	e.Status = status
 	rows, err := r.DB.QueryContext(ctx,
 		`SELECT
@@ -167,12 +163,10 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 			entry 
 		SET 
 			contestant_id = ?,
-			session_id = ?,
 			status = ?
 		WHERE
 			id = ?`,
 		e.ContestantID,
-		e.SessionID,
 		string(e.Status),
 		e.ID,
 	)
@@ -302,7 +296,6 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 	SELECT
 		entry.id,
 		entry.contestant_id,
-		entry.session_id,
 		entry.status,
 		art_pice.id,
 		art_pice.created_at,
@@ -323,9 +316,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 	}
 	entries := map[string]model.Entry{}
 	for rows.Next() {
-		var eid, econtestantid, esessionid, estatus, acreatedat, akey string
+		var eid, econtestantid, estatus, acreatedat, akey string
 		var aid int64
-		err := rows.Scan(&eid, &econtestantid, &esessionid, &estatus, &aid, &acreatedat, &akey)
+		err := rows.Scan(&eid, &econtestantid, &estatus, &aid, &acreatedat, &akey)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -348,7 +341,6 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 			e := model.Entry{
 				ID:           eid,
 				ContestantID: econtestantid,
-				SessionID:    esessionid,
 				Status:       status,
 				ArtPieces:    []model.ArtPiece{p},
 			}

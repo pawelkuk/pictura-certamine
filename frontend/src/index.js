@@ -23,7 +23,12 @@ const pond = FilePond.create(inputElement, {
   allowBrowse: true,
   allowRemove: true,
   allowMultiple: true,
+  storeAsFile: true,
   id: "art-piece",
+  name: "art-piece",
   className: "art-piece-file-upload",
-  credits: false,
+  multiple: true,
+  // credits: false,
+  // server: "/upload",
+  required: true,
 });

@@ -14,10 +14,6 @@ func applyFilter(filter model.EntryQueryFilter, args *[]any, buf *bytes.Buffer) 
 		wc = append(wc, "contestant_id = ?")
 		*args = append(*args, *filter.ContestantID)
 	}
-	if filter.SessionID != nil {
-		wc = append(wc, "session_id = ?")
-		*args = append(*args, *filter.SessionID)
-	}
 	if filter.Status != nil {
 		wc = append(wc, "status = ?")
 		*args = append(*args, string(*filter.Status))

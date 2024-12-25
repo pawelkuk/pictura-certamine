@@ -10,10 +10,10 @@ migrate_contest_down:
 	 -verbose down -all
 	rm ./**/pictura-certamine.db
 
-run: bundle templ
+run: templ
 	go run cmd/main.go
 
-templ:
+templ: bundle
 	templ generate
 
 debug: templ

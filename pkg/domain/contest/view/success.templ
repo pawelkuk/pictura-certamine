@@ -1,8 +1,9 @@
 package view
 
-templ Success() {
+templ Success(firstName string) {
 	@Base() {
-		<h1>Success!</h1>
-		<p>Check your email to confirm the contest registration</p>
+		<h1>Hi firstName,</h1>
+		<p>Your registration is almost successful.</p>
+		<p>Check your email to confirm it.</p>
 	}
 }

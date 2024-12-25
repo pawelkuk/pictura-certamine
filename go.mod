@@ -4,6 +4,7 @@ go 1.23.3
 
 require (
 	github.com/a-h/templ v0.2.793
+	github.com/caarlos0/env/v11 v11.3.1
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/validator/v10 v10.20.0

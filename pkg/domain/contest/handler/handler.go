@@ -1,28 +1,35 @@
 package handler
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/hashicorp/go-multierror"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/model"
+	contestant "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/contestant"
+	entry "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/entry"
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/view"
+	"github.com/pawelkuk/pictura-certamine/pkg/sdk/mail"
+	"github.com/pawelkuk/pictura-certamine/pkg/sdk/s3"
 )
 
 type ContestHandler struct {
-	DB *sql.DB
+	ContestantRepo contestant.Repo
+	EntryRepo      entry.Repo
+	S3             s3.Client
+	MailClient     mail.Sender
 }
 
 func (h *ContestHandler) HandleGet(c *gin.Context) {
 	err := view.ContestForm(view.ContestFormInput{ContestID: "abcd"}).Render(c.Request.Context(), c.Writer)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 }
 
@@ -61,7 +68,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 	if err != nil {
 		checkValidationErrors(err, errMap)
 	}
-	_, err = model.ParseContestant(
+	cont, err := model.ParseContestant(
 		"",
 		form.Email,
 		form.Phone,
@@ -81,32 +88,56 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 			ErrMap:      errMap,
 		}).Render(c.Request.Context(), c.Writer)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
+		c.Writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	err = h.ContestantRepo.Create(c.Request.Context(), cont)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	entr, err := model.ParseEntry("", cont.ID, string(model.EntryStatusPending), nil) // TODO make cleaner api
 	multiForm, _ := c.MultipartForm()
-	fmt.Println(multiForm.File)
-	files := multiForm.File["art-piece"]
-
+	files, ok := multiForm.File["art-piece"]
+	if !ok {
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "could not find art pieces under art-pice key"})
+			return
+		}
+	}
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		buff := make([]byte, fileHeader.Size)
 		_, err = file.Read(buff)
 		if err != nil && !errors.Is(err, io.EOF) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println(buff[:20])
-		fmt.Println(fileHeader.Filename)
-		fmt.Println(fileHeader.Header)
-		fmt.Println(fileHeader.Size)
+		err = h.S3.PutObject(
+			c.Request.Context(),
+			fileHeader.Filename,
+			buff,
+		)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		entr.ArtPieces = append(entr.ArtPieces, model.ArtPiece{Key: fileHeader.Filename, CreatedAt: time.Now()})
 	}
-	c.Redirect(http.StatusFound, "/success")
+	err = h.EntryRepo.Create(c.Request.Context(), entr)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Redirect(http.StatusFound, fmt.Sprintf("/success/%s", cont.ID))
 }
 
 func formatParseError(err error, errMap map[string]string) {
@@ -121,8 +152,16 @@ func formatParseError(err error, errMap map[string]string) {
 }
 
 func (h *ContestHandler) HandlePostSuccess(c *gin.Context) {
-	err := view.Success().Render(c.Request.Context(), c.Writer)
+	id := c.Param("contestantid")
+
+	cont := &model.Contestant{ID: id}
+	err := h.ContestantRepo.Read(c.Request.Context(), cont)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err = view.Success(cont.FirstName).Render(c.Request.Context(), c.Writer)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 }

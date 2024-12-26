@@ -9,11 +9,12 @@
 - [x] saving progress of form
 - [ ] being able to have multiple contests
 - [x] sending errors to sentry
-- [ ] manage cookies (only required, used for performance and all)
+- [x] manage cookies (only required, used for performance and all)
 - [x] handle duplicate email
 - [ ] translations
-- [ ] generic 404 page
+- [x] generic 404 page
 - [ ] list view crm
+- [ ] export to excel/csv
 
 ## External Systems
 

@@ -28,23 +28,23 @@
 
 /* User valid styles */
 .contest sl-input[data-user-valid]::part(base),
-.contest sl-checkbox[data-user-valid]::part(control) {
+.contest sl-checkbox.required[data-user-valid]::part(control) {
   border-color: var(--sl-color-success-600);
 }
 
 .contest [data-user-valid]::part(form-control-label),
 .contest [data-user-valid]::part(form-control-help-text),
-.contest sl-checkbox[data-user-valid]::part(label) {
+.contest sl-checkbox.required[data-user-valid]::part(label) {
   color: var(--sl-color-success-700);
 }
 
-.contest sl-checkbox[data-user-valid]::part(control) {
+.contest sl-checkbox.required[data-user-valid]::part(control) {
   background-color: var(--sl-color-success-600);
   outline: none;
 }
 
 .contest sl-input:focus-within[data-user-valid]::part(base),
-.contest sl-checkbox:focus-within[data-user-valid]::part(control) {
+.contest sl-checkbox.required:focus-within[data-user-valid]::part(control) {
   border-color: var(--sl-color-success-600);
   box-shadow: 0 0 0 var(--sl-focus-ring-width) var(--sl-color-success-300);
 }

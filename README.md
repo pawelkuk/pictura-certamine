@@ -15,6 +15,9 @@
 - [x] generic 404 page
 - [ ] list view crm
 - [ ] export to excel/csv
+- [ ] admin user that can view crm
+- [ ] (optional) maybe a rating module
+- [ ] typography
 
 ## External Systems
 

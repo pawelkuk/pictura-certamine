@@ -6,4 +6,12 @@ type Config struct {
 	S3SecretKey    string `env:"S3_SECRET_KEY"`
 	S3AccessKey    string `env:"S3_ACCESS_KEY"`
 	S3Endpoint     string `env:"S3_ENDPOINT"`
+	Env            string `env:"ENV"`
+	SenderEmail    string `env:"SENDER_EMAIL"`
+	BaseURL        string `env:"BASE_URL"`
 }
+
+const (
+	EnvDevelopment = "development"
+	EnvProduction  = "production"
+)

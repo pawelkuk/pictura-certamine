@@ -2,14 +2,18 @@
 
 ## Features
 
-- [ ] form with user data nad multiple pictures
+- [x] form with user data nad multiple pictures
 - [ ] upload picture to file system and backup to s3
 - [ ] captcha
-- [ ] confirmation email
-- [ ] saving progress of form
+- [x] confirmation email
+- [x] saving progress of form
 - [ ] being able to have multiple contests
-- [ ] sending errors to sentry
+- [x] sending errors to sentry
 - [ ] manage cookies (only required, used for performance and all)
+- [x] handle duplicate email
+- [ ] translations
+- [ ] generic 404 page
+- [ ] list view crm
 
 ## External Systems
 

@@ -23,7 +23,7 @@ func (e *ParseError) Error() string {
 	return fmt.Sprintf("%s: %e", e.Field, e.Err)
 }
 
-var (
+const (
 	EntryStatusPending               EntryStatus = "Pending"
 	EntryStatusSubmitted             EntryStatus = "Submitted"
 	EntryStatusConfirmationEmailSent EntryStatus = "ConfirmationEmailSent"
@@ -42,6 +42,8 @@ type Entry struct {
 	ContestantID string
 	Status       EntryStatus
 	ArtPieces    []ArtPiece
+	Token        string
+	TokenExpiry  time.Time
 }
 
 type ArtPiece struct {
@@ -92,16 +94,14 @@ func ParseStatus(status string) (EntryStatus, error) {
 	return s, nil
 }
 func ParseEntry(
-	id string,
 	contestantid string,
 	status string,
 	artpieces []ArtPiece,
 ) (*Entry, error) {
-	if id == "" {
-		id = generateID()
-	}
-	if contestantid != "" {
-		return nil, fmt.Errorf("can't be empty string")
+	id := generateRandomString(20)
+
+	if contestantid == "" {
+		return nil, fmt.Errorf("contestant id it can't be empty")
 	}
 	s, err := ParseStatus(status)
 	if err != nil {
@@ -115,6 +115,8 @@ func ParseEntry(
 		ContestantID: contestantid,
 		Status:       s,
 		ArtPieces:    artpieces,
+		Token:        generateRandomString(40),
+		TokenExpiry:  time.Now().Add(time.Hour * 24 * 7),
 	}, nil
 
 }
@@ -130,7 +132,7 @@ func ParseContestant(
 ) (*Contestant, error) {
 	var errs *multierror.Error
 	if id == "" {
-		id = generateID()
+		id = generateRandomString(20)
 	}
 	a, err := mail.ParseAddress(email)
 	if err != nil {
@@ -177,8 +179,8 @@ func ParsePhoneNumber(phoneNumber string) (*PhoneNumber, error) {
 	return &PhoneNumber{Value: phoneNumber}, nil
 }
 
-func generateID() string {
-	b := make([]byte, 20)
+func generateRandomString(n int) string {
+	b := make([]byte, n)
 	for i := range b {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}

@@ -1,0 +1,22 @@
+package view
+
+templ Confirm(firstName, confirmationLink string) {
+	@Base() {
+		<h1>Hi { firstName },</h1>
+		<p>Your registration is almost successful.</p>
+		<p>Click on the button below to confirm you participation in the contest.</p>
+		<sl-button href={ confirmationLink }>Confirm</sl-button>
+		<p>If you can not see the button please click the link below:</p>
+		<br/>
+		<p>
+			{ confirmationLink }
+		</p>
+	}
+}
+
+templ ConfirmSuccess() {
+	@Base() {
+		<h1>Success!</h1>
+		<p>You've entered the contest successfully. Good luck!</p>
+	}
+}

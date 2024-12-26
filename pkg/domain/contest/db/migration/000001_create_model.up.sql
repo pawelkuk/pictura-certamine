@@ -26,6 +26,8 @@ CREATE TABLE entry (
             'Confirmed'
         )
     ),
+    token TEXT NOT NULL,
+    token_expiry TEXT NOT NULL,
     FOREIGN KEY (contestant_id) REFERENCES contestant(id) ON DELETE CASCADE
 );
 CREATE TABLE art_piece (

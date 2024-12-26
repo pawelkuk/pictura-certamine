@@ -73,7 +73,7 @@ func (c *MinioClient) ListObjects(ctx context.Context) ([]string, error) {
 
 func NewMinioClient(idKey, secretKey, endpoint string) (*MinioClient, error) {
 	client, err := minio.New(
-		endpoint, // TODO change to some other object storage
+		endpoint,
 		&minio.Options{
 			Creds:  credentials.NewStaticV4(idKey, secretKey, ""),
 			Secure: true,

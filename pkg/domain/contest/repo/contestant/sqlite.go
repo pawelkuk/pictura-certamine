@@ -55,9 +55,9 @@ func (r *SQLiteRepo) Read(ctx context.Context, c *model.Contestant) error {
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", c.ID, row.Err())
 	}
-	var emailStr, firstname, lastName, endStr, phoneNumber string
+	var emailStr, firstname, lastName, phoneNumber string
 	var cc, cm bool
-	err := row.Scan(&emailStr, &firstname, &lastName, &endStr, &cc, &cm, &phoneNumber)
+	err := row.Scan(&emailStr, &firstname, &lastName, &cc, &cm, &phoneNumber)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -133,9 +133,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantQueryFilt
 	contestants := []model.Contestant{}
 	for rows.Next() {
 		c := &model.Contestant{}
-		var id, emailStr, firstname, lastname, endStr, phoneNumber string
+		var id, emailStr, firstname, lastname, phoneNumber string
 		var cc, cm bool
-		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &endStr, &cc, &cm, &phoneNumber)
+		err := rows.Scan(&id, &emailStr, &firstname, &lastname, &cc, &cm, &phoneNumber)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}

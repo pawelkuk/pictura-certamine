@@ -2,8 +2,9 @@ package view
 
 templ Success(firstName string) {
 	@Base() {
-		<h1>Hi firstName,</h1>
+		<h1>Hi { firstName },</h1>
 		<p>Your registration is almost successful.</p>
 		<p>Check your email to confirm it.</p>
+		<sl-button href="/">Go back</sl-button>
 	}
 }

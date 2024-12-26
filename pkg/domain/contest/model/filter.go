@@ -27,4 +27,6 @@ type EntryQueryFilter struct {
 	ID           *string
 	ContestantID *string
 	Status       *EntryStatus
+	Token        *string
+	TokenExpiry  *time.Time
 }

@@ -29,13 +29,17 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 		`INSERT INTO entry(
 			id,
 			contestant_id,
-			status
+			status,
+			token,
+			token_expiry
 		)
-		VALUES(?, ?, ?)
+		VALUES(?, ?, ?, ?, ?)
 		RETURNING id`,
 		e.ID,
 		e.ContestantID,
 		string(e.Status),
+		e.Token,
+		e.TokenExpiry.Format(time.RFC3339),
 	)
 	if err != nil {
 		errRollback := tx.Rollback()
@@ -94,6 +98,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 		`SELECT
 			contestant_id,
 			status
+			token,
+			token_expiry
 		FROM 
 			entry
 		WHERE id = ?`,
@@ -101,8 +107,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", e.ID, row.Err())
 	}
-	var contestantid, statusStr string
-	err := row.Scan(&contestantid, &statusStr)
+	var contestantid, statusStr, tokenStr, tokenExpiryStr string
+	err := row.Scan(&contestantid, &statusStr, &tokenStr, &tokenExpiryStr)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -112,6 +118,12 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	}
 	e.ContestantID = contestantid
 	e.Status = status
+	e.Token = tokenStr
+	tokenExpiry, err := time.Parse(time.RFC3339, tokenExpiryStr)
+	if err != nil {
+		return fmt.Errorf("could not parse token expiry: %w", err)
+	}
+	e.TokenExpiry = tokenExpiry
 	rows, err := r.DB.QueryContext(ctx,
 		`SELECT
 			id,
@@ -163,11 +175,15 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 			entry 
 		SET 
 			contestant_id = ?,
-			status = ?
+			status = ?,
+			token = ?,
+			token_expiry = ?
 		WHERE
 			id = ?`,
 		e.ContestantID,
 		string(e.Status),
+		e.Token,
+		e.TokenExpiry.Format(time.RFC3339),
 		e.ID,
 	)
 	if err != nil {
@@ -294,18 +310,20 @@ func (r *SQLiteRepo) Delete(ctx context.Context, c *model.Entry) error {
 func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) ([]model.Entry, error) {
 	q := `
 	SELECT
-		entry.id,
-		entry.contestant_id,
-		entry.status,
-		art_pice.id,
-		art_pice.created_at,
-		art_pice.key
+		e.id,
+		e.contestant_id,
+		e.status,
+		e.token,
+		e.token_expiry,
+		a.id,
+		a.created_at,
+		a.key
 	FROM
-		entry
+		entry AS e, art_piece AS a
 	INNER JOIN
 		art_piece
 	ON
-		art_pice.entry_id = entry.id
+		a.entry_id = e.id
 	`
 	buf := bytes.NewBufferString(q)
 	args := []any{}
@@ -316,9 +334,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 	}
 	entries := map[string]model.Entry{}
 	for rows.Next() {
-		var eid, econtestantid, estatus, acreatedat, akey string
+		var eid, econtestantid, estatus, etoken, etokenexpiry, acreatedat, akey string
 		var aid int64
-		err := rows.Scan(&eid, &econtestantid, &estatus, &aid, &acreatedat, &akey)
+		err := rows.Scan(&eid, &econtestantid, &estatus, &etoken, &etokenexpiry, &aid, &acreatedat, &akey)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -329,6 +347,10 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 		createdAt, err := time.Parse(time.RFC3339, acreatedat)
 		if err != nil {
 			return nil, fmt.Errorf("could not parse created at: %w", err)
+		}
+		tokenExpiryTime, err := time.Parse(time.RFC3339, etokenexpiry)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse token expiry: %w", err)
 		}
 		p := model.ArtPiece{
 			ID:        aid,
@@ -342,6 +364,8 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 				ID:           eid,
 				ContestantID: econtestantid,
 				Status:       status,
+				Token:        etoken,
+				TokenExpiry:  tokenExpiryTime,
 				ArtPieces:    []model.ArtPiece{p},
 			}
 			entries[eid] = e

@@ -55,12 +55,19 @@ func serve() error {
 	if err != nil {
 		return fmt.Errorf("could not create s3 client: %w", err)
 	}
-	mailClient := mail.NewSendgridSender(cfg.SendgridApiKey)
+
+	var mailClient mail.Sender
+	if cfg.Env == config.EnvDevelopment {
+		mailClient = mail.NewStdoutSender()
+	} else {
+		mailClient = mail.NewSendgridSender(cfg.SendgridApiKey)
+	}
 	h := handler.ContestHandler{
 		ContestantRepo: contestantrepo,
 		EntryRepo:      entryrepo,
 		S3:             s3Client,
 		MailClient:     mailClient,
+		Config:         *cfg,
 	}
 
 	r := gin.Default()
@@ -68,7 +75,9 @@ func serve() error {
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 	r.GET("/", h.HandleGet)
 	r.POST("/", h.HandlePost)
+	r.GET("/confirm/:token", h.HandleGetConfirm)
 	r.GET("/success/:contestantid", h.HandlePostSuccess)
+	r.NoRoute(h.HandleNotFound)
 	err = r.Run(":8080")
 	return err
 }

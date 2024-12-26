@@ -8,11 +8,22 @@ type ContestFormInput struct {
 	ArtPiece    string
 	ContestID   string
 	ErrMap      map[string]string
+	Error       error
 }
 
 templ ContestForm(data ContestFormInput) {
 	@Base() {
 		<h1>Contest Form</h1>
+		if data.Error != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>An error has occurred</strong>
+				<br/>
+				{ data.Error.Error() }
+			</sl-alert>
+			<br/>
+		}
 		<form class="contest" action="" method="post" enctype="multipart/form-data">
 			<sl-input
 				name="first-name"

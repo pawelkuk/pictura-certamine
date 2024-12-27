@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gosimple/slug"
 	"github.com/hashicorp/go-multierror"
 
 	"github.com/gin-gonic/gin"
@@ -158,7 +159,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		}
 		err = h.S3.PutObject(
 			c.Request.Context(),
-			fileHeader.Filename,
+			constructPath(h.Config.Env, fileHeader.Filename, entr),
 			buff,
 		)
 		if err != nil {
@@ -168,7 +169,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 			view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
 			return
 		}
-		entr.ArtPieces = append(entr.ArtPieces, model.ArtPiece{Key: fileHeader.Filename, CreatedAt: time.Now()})
+		entr.ArtPieces = append(entr.ArtPieces, model.ArtPiece{Key: constructPath(h.Config.Env, fileHeader.Filename, entr), CreatedAt: time.Now()})
 	}
 	err = h.EntryRepo.Create(c.Request.Context(), entr)
 	if err != nil {
@@ -200,6 +201,14 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		return
 	}
 	c.Redirect(http.StatusFound, fmt.Sprintf("/success/%s", cntstnt.ID))
+}
+
+func constructPath(env, filename string, entr *model.Entry) string {
+	extidx := strings.LastIndex(filename, ".")
+	if extidx == -1 {
+		return fmt.Sprintf("%s/%s/%s", env, entr.ID, slug.Make(filename))
+	}
+	return fmt.Sprintf("%s/%s/%s%s", env, entr.ID, slug.Make(filename[:extidx]), filename[extidx:])
 }
 
 func (h *ContestHandler) renderConfirmationEmail(c *gin.Context, cntstnt *model.Contestant, entr *model.Entry) mail.Email {

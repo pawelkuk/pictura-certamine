@@ -15,6 +15,7 @@ type ContestantEntry struct {
 	LastName          string
 	ConsentConditions bool
 	ConsentMarketing  bool
+	UpdatedAt         string
 }
 
 type ArtPiece struct {

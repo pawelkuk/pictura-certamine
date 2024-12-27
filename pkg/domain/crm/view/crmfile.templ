@@ -1,0 +1,14 @@
+package view
+
+templ CRMFileDownload(err error) {
+	@Base() {
+		<br/>
+		<sl-alert variant="danger" open>
+			<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+			<strong>An error has occurred</strong>
+			<br/>
+			{ err.Error() }
+		</sl-alert>
+		<br/>
+	}
+}

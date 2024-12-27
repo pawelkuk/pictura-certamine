@@ -8,7 +8,10 @@ package view
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/pawelkuk/pictura-certamine/pkg/domain/crm/model"
+import (
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/crm/model"
+	"strings"
+)
 
 func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -48,7 +51,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(err.Error())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 13, Col: 17}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 16, Col: 17}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -64,7 +67,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if len(arr) != 0 {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<table id=\"crm-contest-list\"><caption>All Contestants</caption> <thead><tr><th scope=\"col\">Email</th><th scope=\"col\">First Name</th><th scope=\"col\">Last Name</th><th scope=\"col\">Phone Number</th><th scope=\"col\">Status</th><th scope=\"col\">Conditions</th><th scope=\"col\">Marketing</th><th scope=\"col\">Uploaded Files</th></tr></thead> <tbody>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<table id=\"crm-contest-list\"><caption>All Contestants</caption> <thead><tr><th scope=\"col\">Email</th><th scope=\"col\">First Name</th><th scope=\"col\">Last Name</th><th scope=\"col\">Phone Number</th><th scope=\"col\">Entered At</th><th scope=\"col\">Status</th><th scope=\"col\">Conditions</th><th scope=\"col\">Marketing</th><th scope=\"col\">Uploaded Files</th></tr></thead> <tbody>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -76,7 +79,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 					var templ_7745c5c3_Var4 string
 					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(item.Email)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 37, Col: 23}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 41, Col: 23}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {
@@ -89,7 +92,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 					var templ_7745c5c3_Var5 string
 					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(item.FirstName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 38, Col: 27}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 42, Col: 27}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 					if templ_7745c5c3_Err != nil {
@@ -102,7 +105,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item.LastName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 39, Col: 26}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 43, Col: 26}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
@@ -115,7 +118,7 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.PhoneNumber)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 40, Col: 29}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 44, Col: 29}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -126,11 +129,24 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var8 string
-					templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.Status)
+					templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.UpdatedAt)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 41, Col: 24}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 45, Col: 27}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var9 string
+					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(item.Status)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 46, Col: 24}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -173,21 +189,21 @@ func CRMList(arr []model.ContestantEntry, err error) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						var templ_7745c5c3_Var9 templ.SafeURL = templ.URL(link.Key)
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var9)))
+						var templ_7745c5c3_Var10 templ.SafeURL = templ.URL(link.Key)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var10)))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" target=\"_blank\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						var templ_7745c5c3_Var10 string
-						templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(link.Key)
+						var templ_7745c5c3_Var11 string
+						templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Split(link.Key, "/")[2])
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 71, Col: 56}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/crm/view/crmlist.templ`, Line: 76, Col: 95}
 						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}

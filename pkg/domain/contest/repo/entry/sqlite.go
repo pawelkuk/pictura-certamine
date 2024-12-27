@@ -25,21 +25,24 @@ func (r *SQLiteRepo) Create(ctx context.Context, e *model.Entry) error {
 	if err != nil {
 		return fmt.Errorf("could not start transaction: %w", err)
 	}
+	e.UpdatedAt = time.Now()
 	_, err = tx.ExecContext(ctx,
 		`INSERT INTO entry(
 			id,
 			contestant_id,
 			status,
 			token,
-			token_expiry
+			token_expiry,
+			updated_at
 		)
-		VALUES(?, ?, ?, ?, ?)
+		VALUES(?, ?, ?, ?, ?, ?)
 		RETURNING id`,
 		e.ID,
 		e.ContestantID,
 		string(e.Status),
 		e.Token,
 		e.TokenExpiry.Format(time.RFC3339),
+		e.UpdatedAt.Format(time.RFC3339),
 	)
 	if err != nil {
 		errRollback := tx.Rollback()
@@ -99,7 +102,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 			contestant_id,
 			status
 			token,
-			token_expiry
+			token_expiry,
+			updated_at
 		FROM 
 			entry
 		WHERE id = ?`,
@@ -107,8 +111,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 	if row.Err() != nil {
 		return fmt.Errorf("could not query row with id=%s: %w", e.ID, row.Err())
 	}
-	var contestantid, statusStr, tokenStr, tokenExpiryStr string
-	err := row.Scan(&contestantid, &statusStr, &tokenStr, &tokenExpiryStr)
+	var contestantid, statusStr, tokenStr, tokenExpiryStr, updatedAtStr string
+	err := row.Scan(&contestantid, &statusStr, &tokenStr, &tokenExpiryStr, &updatedAtStr)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
@@ -124,6 +128,11 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.Entry) error {
 		return fmt.Errorf("could not parse token expiry: %w", err)
 	}
 	e.TokenExpiry = tokenExpiry
+	updatedAt, err := time.Parse(time.RFC3339, updatedAtStr)
+	if err != nil {
+		return fmt.Errorf("could not parse updated at: %w", err)
+	}
+	e.UpdatedAt = updatedAt
 	rows, err := r.DB.QueryContext(ctx,
 		`SELECT
 			id,
@@ -170,6 +179,7 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 	if err != nil {
 		return fmt.Errorf("could not start transaction: %w", err)
 	}
+	e.UpdatedAt = time.Now()
 	_, err = tx.ExecContext(ctx,
 		`UPDATE 
 			entry 
@@ -177,13 +187,15 @@ func (r *SQLiteRepo) Update(ctx context.Context, e *model.Entry) error {
 			contestant_id = ?,
 			status = ?,
 			token = ?,
-			token_expiry = ?
+			token_expiry = ?,
+			updated_at = ?
 		WHERE
 			id = ?`,
 		e.ContestantID,
 		string(e.Status),
 		e.Token,
 		e.TokenExpiry.Format(time.RFC3339),
+		e.UpdatedAt.Format(time.RFC3339),
 		e.ID,
 	)
 	if err != nil {
@@ -315,6 +327,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 		e.status,
 		e.token,
 		e.token_expiry,
+		e.updated_at,
 		a.id,
 		a.created_at,
 		a.key
@@ -334,9 +347,9 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 	}
 	entries := map[string]model.Entry{}
 	for rows.Next() {
-		var eid, econtestantid, estatus, etoken, etokenexpiry, acreatedat, akey string
+		var eid, econtestantid, estatus, etoken, etokenexpiry, eupdatedAt, acreatedat, akey string
 		var aid int64
-		err := rows.Scan(&eid, &econtestantid, &estatus, &etoken, &etokenexpiry, &aid, &acreatedat, &akey)
+		err := rows.Scan(&eid, &econtestantid, &estatus, &etoken, &etokenexpiry, &eupdatedAt, &aid, &acreatedat, &akey)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -349,6 +362,10 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 			return nil, fmt.Errorf("could not parse created at: %w", err)
 		}
 		tokenExpiryTime, err := time.Parse(time.RFC3339, etokenexpiry)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse token expiry: %w", err)
+		}
+		updatedAtTime, err := time.Parse(time.RFC3339, eupdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("could not parse token expiry: %w", err)
 		}
@@ -367,6 +384,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 				Status:       status,
 				Token:        etoken,
 				TokenExpiry:  tokenExpiryTime,
+				UpdatedAt:    updatedAtTime,
 				ArtPieces:    []model.ArtPiece{p},
 			}
 			entries[eid] = e

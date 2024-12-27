@@ -44,6 +44,7 @@ type Entry struct {
 	ArtPieces    []ArtPiece
 	Token        string
 	TokenExpiry  time.Time
+	UpdatedAt    time.Time
 }
 
 type ArtPiece struct {

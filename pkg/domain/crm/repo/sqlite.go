@@ -22,6 +22,7 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.ContestantEntry) error {
 		e.id,
 		e.contestant_id,
 		e.status,
+		e.updated_at,
 		a.id,
 		a.created_at,
 		a.key,
@@ -50,10 +51,10 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.ContestantEntry) error {
 	}
 	entries := map[string]model.ContestantEntry{}
 	for rows.Next() {
-		var eid, econtestantid, estatus, acreatedat, akey, cemail, cfirstname, clastname, cphone string
+		var eid, econtestantid, estatus, eupdatedat, acreatedat, akey, cemail, cfirstname, clastname, cphone string
 		var aid int64
 		var cconsentconditions, cconsentmarketing bool
-		err := rows.Scan(&eid, &econtestantid, &estatus, &aid, &acreatedat, &akey, &cemail, &cfirstname, &clastname, &cphone, &cconsentconditions, &cconsentmarketing)
+		err := rows.Scan(&eid, &econtestantid, &estatus, &eupdatedat, &aid, &acreatedat, &akey, &cemail, &cfirstname, &clastname, &cphone, &cconsentconditions, &cconsentmarketing)
 		if err != nil {
 			return fmt.Errorf("could not scan row: %w", err)
 		}
@@ -82,6 +83,7 @@ func (r *SQLiteRepo) Read(ctx context.Context, e *model.ContestantEntry) error {
 				PhoneNumber:       cphone,
 				ConsentConditions: cconsentconditions,
 				ConsentMarketing:  cconsentmarketing,
+				UpdatedAt:         eupdatedat,
 			}
 			entries[eid] = e
 		}
@@ -100,6 +102,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantEntryQuer
 		e.id,
 		e.contestant_id,
 		e.status,
+		e.updated_at,
 		a.id,
 		a.created_at,
 		a.key,
@@ -129,14 +132,19 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantEntryQuer
 	}
 	entries := map[string]model.ContestantEntry{}
 	for rows.Next() {
-		var eid, econtestantid, estatus, acreatedat, akey, cemail, cfirstname, clastname, cphone string
+		var eid, econtestantid, estatus, eupdatedat, acreatedat, akey, cemail, cfirstname, clastname, cphone string
 		var aid int64
 		var cconsentconditions, cconsentmarketing bool
-		err := rows.Scan(&eid, &econtestantid, &estatus, &aid, &acreatedat, &akey, &cemail, &cfirstname, &clastname, &cphone, &cconsentconditions, &cconsentmarketing)
+		err := rows.Scan(&eid, &econtestantid, &estatus, &eupdatedat, &aid, &acreatedat, &akey, &cemail, &cfirstname, &clastname, &cphone, &cconsentconditions, &cconsentmarketing)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
 		status := estatus
+		updatedat, err := time.Parse(time.RFC3339, eupdatedat)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse updated at: %w", err)
+		}
+		eupdatedat = updatedat.Format(time.DateTime)
 		createdAt, err := time.Parse(time.RFC3339, acreatedat)
 		if err != nil {
 			return nil, fmt.Errorf("could not parse created at: %w", err)
@@ -161,6 +169,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.ContestantEntryQuer
 				PhoneNumber:       cphone,
 				ConsentConditions: cconsentconditions,
 				ConsentMarketing:  cconsentmarketing,
+				UpdatedAt:         eupdatedat,
 			}
 			entries[eid] = e
 		}

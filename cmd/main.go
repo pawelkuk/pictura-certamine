@@ -76,6 +76,7 @@ func serve() error {
 
 	crmHandler := crmhandler.Handler{
 		Repo: contestantentryrepo,
+		S3:   s3Client,
 	}
 
 	r := gin.Default()
@@ -87,6 +88,7 @@ func serve() error {
 	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)
 
 	r.GET("/crm", crmHandler.GetAll)
+	r.GET("/:env/:entryid/:filename", crmHandler.GetFile)
 	r.NoRoute(contestHandler.HandleNotFound)
 	err = r.Run(":8080")
 	return err

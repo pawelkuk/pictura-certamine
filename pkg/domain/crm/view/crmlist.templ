@@ -1,6 +1,9 @@
 package view
 
-import "github.com/pawelkuk/pictura-certamine/pkg/domain/crm/model"
+import (
+	"github.com/pawelkuk/pictura-certamine/pkg/domain/crm/model"
+	"strings"
+)
 
 templ CRMList(arr []model.ContestantEntry, err error) {
 	@Base() {
@@ -25,6 +28,7 @@ templ CRMList(arr []model.ContestantEntry, err error) {
 						<th scope="col">First Name</th>
 						<th scope="col">Last Name</th>
 						<th scope="col">Phone Number</th>
+						<th scope="col">Entered At</th>
 						<th scope="col">Status</th>
 						<th scope="col">Conditions</th>
 						<th scope="col">Marketing</th>
@@ -38,6 +42,7 @@ templ CRMList(arr []model.ContestantEntry, err error) {
 							<td>{ item.FirstName }</td>
 							<td>{ item.LastName }</td>
 							<td>{ item.PhoneNumber }</td>
+							<td>{ item.UpdatedAt }</td>
 							<td>{ item.Status }</td>
 							<td>
 								if item.ConsentConditions {
@@ -68,7 +73,7 @@ templ CRMList(arr []model.ContestantEntry, err error) {
 							<td>
 								<ul>
 									for _, link := range item.ArtPieces {
-										<li><a href={ templ.URL(link.Key) }>{ link.Key }</a></li>
+										<li><a href={ templ.URL(link.Key) } target="_blank">{ strings.Split(link.Key, "/")[2] }</a></li>
 									}
 								</ul>
 							</td>

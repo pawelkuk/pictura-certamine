@@ -17,7 +17,11 @@
 - [ ] typography
 - [ ] UI form looks
 - [ ] captcha
+- [ ] what reverse proxy
+- [ ] backup sqlite to s3 (research how to)
 - [ ] (optional) maybe a rating module
+- [ ] (optional) add logging
+- [ ] (optional) add metrics
 
 ## External Systems
 

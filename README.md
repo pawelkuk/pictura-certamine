@@ -3,21 +3,21 @@
 ## Features
 
 - [x] form with user data nad multiple pictures
-- [ ] upload picture to file system and backup to s3
-- [ ] captcha
 - [x] confirmation email
 - [x] saving progress of form
 - [x] sending errors to sentry
 - [x] manage cookies (only required, used for performance and all)
 - [x] handle duplicate email
-- [ ] translations
 - [x] generic 404 page
 - [x] list view crm
-- [ ] files download
+- [x] files download
 - [ ] export to excel/csv
 - [ ] admin user that can view crm
-- [ ] (optional) maybe a rating module
+- [ ] translations
 - [ ] typography
+- [ ] UI form looks
+- [ ] captcha
+- [ ] (optional) maybe a rating module
 
 ## External Systems
 

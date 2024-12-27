@@ -359,6 +359,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.EntryQueryFilter) (
 		}
 		if e, ok := entries[eid]; ok {
 			e.ArtPieces = append(e.ArtPieces, p)
+			entries[eid] = e
 		} else {
 			e := model.Entry{
 				ID:           eid,

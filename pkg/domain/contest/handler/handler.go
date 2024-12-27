@@ -123,6 +123,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 	}
 	entr, err := model.ParseEntry(cntstnt.ID, string(model.EntryStatusPending), nil) // TODO make cleaner api
 	if err != nil {
+		_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
 		cfi.Error = err
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
@@ -131,12 +132,16 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 	multiForm, _ := c.MultipartForm()
 	files, ok := multiForm.File["art-piece"]
 	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "could not find art pieces under art-pice key"})
+		_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
+		cfi.Error = errors.New("could not find art pieces under art-pice key")
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
 		return
 	}
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
+			_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
 			cfi.Error = err
 			c.Writer.WriteHeader(http.StatusBadRequest)
 			view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
@@ -145,6 +150,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		buff := make([]byte, fileHeader.Size)
 		_, err = file.Read(buff)
 		if err != nil && !errors.Is(err, io.EOF) {
+			_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
 			cfi.Error = err
 			c.Writer.WriteHeader(http.StatusBadRequest)
 			view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
@@ -156,6 +162,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 			buff,
 		)
 		if err != nil {
+			_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
 			cfi.Error = err
 			c.Writer.WriteHeader(http.StatusBadRequest)
 			view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
@@ -165,6 +172,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 	}
 	err = h.EntryRepo.Create(c.Request.Context(), entr)
 	if err != nil {
+		_ = h.ContestantRepo.Delete(c.Request.Context(), cntstnt)
 		cfi.Error = err
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)

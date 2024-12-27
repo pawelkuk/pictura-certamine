@@ -14,6 +14,8 @@ import (
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/contest/handler"
 	contestant "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/contestant"
 	entry "github.com/pawelkuk/pictura-certamine/pkg/domain/contest/repo/entry"
+	crmhandler "github.com/pawelkuk/pictura-certamine/pkg/domain/crm/handler"
+	contestantentry "github.com/pawelkuk/pictura-certamine/pkg/domain/crm/repo"
 	"github.com/pawelkuk/pictura-certamine/pkg/sdk/mail"
 	"github.com/pawelkuk/pictura-certamine/pkg/sdk/s3"
 )
@@ -50,6 +52,8 @@ func serve() error {
 		return fmt.Errorf("could not open db: %w", err)
 	}
 	contestantrepo := &contestant.SQLiteRepo{DB: db}
+	contestantentryrepo := &contestantentry.SQLiteRepo{DB: db}
+
 	entryrepo := &entry.SQLiteRepo{DB: db}
 	s3Client, err := s3.NewMinioClient(cfg.S3AccessKey, cfg.S3SecretKey, cfg.S3Endpoint)
 	if err != nil {
@@ -62,7 +66,7 @@ func serve() error {
 	} else {
 		mailClient = mail.NewSendgridSender(cfg.SendgridApiKey)
 	}
-	h := handler.ContestHandler{
+	contestHandler := handler.ContestHandler{
 		ContestantRepo: contestantrepo,
 		EntryRepo:      entryrepo,
 		S3:             s3Client,
@@ -70,14 +74,20 @@ func serve() error {
 		Config:         *cfg,
 	}
 
+	crmHandler := crmhandler.Handler{
+		Repo: contestantentryrepo,
+	}
+
 	r := gin.Default()
 	r.Static("/assets", "./frontend")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
-	r.GET("/", h.HandleGet)
-	r.POST("/", h.HandlePost)
-	r.GET("/confirm/:token", h.HandleGetConfirm)
-	r.GET("/success/:contestantid", h.HandlePostSuccess)
-	r.NoRoute(h.HandleNotFound)
+	r.GET("/", contestHandler.HandleGet)
+	r.POST("/", contestHandler.HandlePost)
+	r.GET("/confirm/:token", contestHandler.HandleGetConfirm)
+	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)
+
+	r.GET("/crm", crmHandler.GetAll)
+	r.NoRoute(contestHandler.HandleNotFound)
 	err = r.Run(":8080")
 	return err
 }

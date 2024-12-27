@@ -7,13 +7,13 @@
 - [ ] captcha
 - [x] confirmation email
 - [x] saving progress of form
-- [ ] being able to have multiple contests
 - [x] sending errors to sentry
 - [x] manage cookies (only required, used for performance and all)
 - [x] handle duplicate email
 - [ ] translations
 - [x] generic 404 page
-- [ ] list view crm
+- [x] list view crm
+- [ ] files download
 - [ ] export to excel/csv
 - [ ] admin user that can view crm
 - [ ] (optional) maybe a rating module

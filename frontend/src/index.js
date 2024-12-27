@@ -13,6 +13,8 @@ import SlRating from "@shoelace-style/shoelace/dist/components/rating/rating.js"
 import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path.js";
 import * as FilePond from "filepond";
 import * as CookieConsent from "vanilla-cookieconsent";
+import { DataTable } from "simple-datatables";
+import "simple-datatables/dist/style.css";
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath("/assets/dist/shoelace");
 
@@ -90,4 +92,11 @@ CookieConsent.run({
       },
     },
   },
+});
+
+let dataTable = new DataTable("#crm-contest-list", {
+  searchable: true,
+  fixedHeight: false,
+  perPage: 100,
+  perPageSelect: [10, 100, 1000],
 });

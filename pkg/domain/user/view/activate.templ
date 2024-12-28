@@ -1,0 +1,33 @@
+package view
+
+templ Activate(confirmationLink string) {
+	@Base() {
+		<h1>Hi!</h1>
+		<p>Click on the button below to activate your account</p>
+		<sl-button href={ confirmationLink }>Confirm</sl-button>
+		<p>If you can not see the button please click the link below:</p>
+		<br/>
+		<p>
+			{ confirmationLink }
+		</p>
+	}
+}
+
+templ ActivateSuccess(err error) {
+	@Base() {
+		if err != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>An error has occurred</strong>
+				<br/>
+				{ err.Error() }
+			</sl-alert>
+			<br/>
+		} else {
+			<h1>Success!</h1>
+			<p>You've activated your admin account.</p>
+			<sl-button href="/auth/login">Login</sl-button>
+		}
+	}
+}

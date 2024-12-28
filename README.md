@@ -13,6 +13,7 @@
 - [x] files download
 - [ ] export to excel/csv
 - [ ] admin user that can view crm
+- [ ] command that creates a link that enables to register a user
 - [ ] translations
 - [ ] typography
 - [ ] UI form looks

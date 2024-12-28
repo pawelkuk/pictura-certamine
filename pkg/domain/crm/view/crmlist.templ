@@ -7,6 +7,9 @@ import (
 
 templ CRMList(arr []model.ContestantEntry, err error) {
 	@Base() {
+		<form action="/auth/logout" method="post">
+			<sl-button type="submit" variant="primary">Logout</sl-button>
+		</form>
 		if err != nil {
 			<br/>
 			<sl-alert variant="danger" open>

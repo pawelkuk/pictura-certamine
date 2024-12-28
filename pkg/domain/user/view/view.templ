@@ -1,0 +1,65 @@
+
+package view
+
+import "fmt"
+
+templ Base() {
+	<html>
+		<head>
+			<meta charset="utf-8"/>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+			<title>CRM</title>
+			<meta name="description" content=""/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="stylesheet" href="/assets/dist/main.css"/>
+		</head>
+		<body>
+			{ children... }
+			<script src="/assets/dist/bundle.js" async defer></script>
+		</body>
+	</html>
+}
+
+templ UserCreate(authorization_token, email string, err error) {
+	@Base() {
+		if err != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>An error has occurred</strong>
+				<br/>
+				{ err.Error() }
+			</sl-alert>
+			<br/>
+		}
+		if email != "" && authorization_token != "" {
+			<form class="contest" action={ templ.SafeURL(fmt.Sprintf("/user/%s", authorization_token)) } method="post">
+				<sl-input
+					type="email"
+					name="email"
+					label="Email"
+					value={ email }
+					disabled
+					required
+				></sl-input>
+				<sl-input
+					type="password"
+					name="password"
+					label="Password"
+					required
+				></sl-input>
+				<sl-button type="submit" variant="primary">Create Admin</sl-button>
+			</form>
+		}
+	}
+}
+
+templ UserCreateSuccess() {
+	@Base() {
+		<h1>Success!</h1>
+		<p>You've created your admin account.</p>
+		<p>Before you can login you have to activate it.</p>
+		<p>An activation link was sent to your email account.</p>
+		<p>You can close this window now.</p>
+	}
+}

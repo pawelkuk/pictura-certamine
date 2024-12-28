@@ -1,0 +1,77 @@
+package view
+
+templ Base() {
+	<html>
+		<head>
+			<meta charset="utf-8"/>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+			<title>CRM</title>
+			<meta name="description" content=""/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="stylesheet" href="/assets/dist/main.css"/>
+		</head>
+		<body>
+			{ children... }
+			<script src="/assets/dist/bundle.js" async defer></script>
+		</body>
+	</html>
+}
+
+templ Login(email string, emailErr, passwordErr, otherErr error) {
+	@Base() {
+		if emailErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Email error:</strong>
+				<br/>
+				{ emailErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		if passwordErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Password error:</strong>
+				<br/>
+				{ passwordErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		if otherErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Error:</strong>
+				<br/>
+				{ otherErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		<form action="/auth/login" method="post">
+			<sl-input
+				type="email"
+				name="email"
+				label="Email"
+				if email !="" {
+					value={ email }
+				}
+				if emailErr != nil {
+					data-invalid
+				}
+				required
+			></sl-input>
+			<sl-input
+				type="password"
+				name="password"
+				label="Password"
+				if passwordErr != nil {
+					data-invalid
+				}
+				required
+			></sl-input>
+			<sl-button type="submit" variant="primary">Login</sl-button>
+		</form>
+	}
+}

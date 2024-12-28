@@ -1,4 +1,4 @@
-.PHONY: migrate_contest_up migrate_contest_down run
+.PHONY: migrate_contest_up migrate_contest_down run migrate_auth_up migrate_auth_down migrate_user_up migrate_user_down migrate_up migrate_down
 migrate_contest_up:
 	migrate -path pkg/domain/contest/db/migration/ \
 	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=contest_migrations" \
@@ -8,16 +8,42 @@ migrate_contest_down:
 	migrate -path pkg/domain/contest/db/migration/ \
 	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=contest_migrations" \
 	 -verbose down -all
+
+migrate_auth_up:
+	migrate -path pkg/domain/auth/db/migration/ \
+	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=auth_migrations" \
+	 -verbose up
+
+migrate_auth_down:
+	migrate -path pkg/domain/auth/db/migration/ \
+	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=auth_migrations" \
+	 -verbose down -all
+
+migrate_user_up:
+	migrate -path pkg/domain/user/db/migration/ \
+	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=user_migrations" \
+	 -verbose up
+
+migrate_user_down:
+	migrate -path pkg/domain/user/db/migration/ \
+	 -database "sqlite3://data/pictura-certamine.db?x-migrations-table=user_migrations" \
+	 -verbose down -all
+
+migrate_up: migrate_auth_up migrate_user_up migrate_contest_up
+	echo "migrate_up done" 
+
+migrate_down: migrate_auth_down migrate_user_down migrate_contest_down
 	rm ./**/pictura-certamine.db
+	echo "migrate_down done"
 
 run: templ
-	go run cmd/main.go
+	go run cmd/app/main.go
 
 templ: bundle
 	templ generate
 
 debug: templ
-	dlv debug cmd/main.go
+	dlv debug cmd/app/main.go
 
 bundle:
 	cd frontend && npm run build && cd ..

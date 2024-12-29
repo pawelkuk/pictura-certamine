@@ -10,6 +10,7 @@ templ CRMList(arr []model.ContestantEntry, err error) {
 		<form action="/auth/logout" method="post">
 			<sl-button type="submit" variant="primary">Logout</sl-button>
 		</form>
+		<sl-button variant="neutral" href="/crm/export" target="_blank">Download CSV</sl-button>
 		if err != nil {
 			<br/>
 			<sl-alert variant="danger" open>

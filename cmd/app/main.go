@@ -82,8 +82,9 @@ func serve() error {
 	}
 
 	crmHandler := crmhandler.Handler{
-		Repo: contestantentryrepo,
-		S3:   s3Client,
+		Repo:   contestantentryrepo,
+		S3:     s3Client,
+		Config: *cfg,
 	}
 
 	userHandler := userhandler.Handler{
@@ -107,6 +108,7 @@ func serve() error {
 	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)
 
 	r.GET("/crm", authMiddleware.Handle, crmHandler.GetAll)
+	r.GET("/crm/export", authMiddleware.Handle, crmHandler.GetCSV)
 	r.GET("/:env/:entryid/:filename", authMiddleware.Handle, crmHandler.GetFile)
 
 	r.GET("/user/:authorization_token", userHandler.Get)

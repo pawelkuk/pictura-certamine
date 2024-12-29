@@ -11,18 +11,22 @@
 - [x] generic 404 page
 - [x] list view crm
 - [x] files download
-- [ ] export to excel/csv
+- [x] export to excel/csv
 - [x] admin user that can view crm
 - [x] command that creates a link that enables to register a user
-- [ ] translations
 - [ ] typography
 - [ ] UI form looks
-- [ ] captcha
-- [ ] what reverse proxy
+- [ ] translations
+- [ ] what reverse proxy (treafik)
+- [ ] setting up certificates
 - [ ] backup sqlite to s3 (research how to)
+- [ ] setting up customer's email as sender
+- [ ] deployment
+- [ ] captcha
 - [ ] (optional) maybe a rating module
 - [ ] (optional) add logging
 - [ ] (optional) add metrics
+- [ ] (optional) tests
 
 ## External Systems
 

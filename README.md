@@ -14,8 +14,8 @@
 - [x] export to excel/csv
 - [x] admin user that can view crm
 - [x] command that creates a link that enables to register a user
-- [ ] typography
-- [ ] UI form looks
+- [x] typography
+- [ ] UI form looks (wip)
 - [ ] translations
 - [ ] what reverse proxy (treafik)
 - [ ] setting up certificates

@@ -8,6 +8,7 @@
 
 body {
   font-family: "neutra_displaymedium", Arial, sans-serif;
+  font-size: 1.2rem;
 }
 
 .contest sl-input,
@@ -106,3 +107,37 @@ tfoot th {
 tfoot td {
   font-weight: bold;
 } */
+
+.navbar {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.2em;
+  display: flex;
+}
+
+.navbar a {
+  text-decoration: none;
+  padding: 1em 2em;
+  display: block;
+  color: black;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+:root {
+  --sl-font-sans: "neutra_displaymedium", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --sl-font-size-medium: 1.2rem;
+}
+
+.blue-box {
+  color: white;
+  text-align: center;
+  background: #024c8e;
+  padding: 1rem 5rem;
+}

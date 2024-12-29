@@ -1,5 +1,4 @@
 import _ from "lodash";
-import "./style.css";
 import "@shoelace-style/shoelace/dist/themes/light.css";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "filepond/dist/filepond.min.css";
@@ -15,6 +14,7 @@ import * as FilePond from "filepond";
 import * as CookieConsent from "vanilla-cookieconsent";
 import { DataTable } from "simple-datatables";
 import "simple-datatables/dist/style.css";
+import "./style.css";
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath("/assets/dist/shoelace");
 

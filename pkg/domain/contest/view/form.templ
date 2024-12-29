@@ -13,6 +13,8 @@ type ContestFormInput struct {
 
 templ ContestForm(data ContestFormInput) {
 	@Base() {
+		@Navbar()
+		@BlueBox()
 		<h1>Contest Form</h1>
 		if data.Error != nil {
 			<br/>

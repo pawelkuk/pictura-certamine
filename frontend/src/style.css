@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "neutra_displaymedium";
+  src: url("./font/neutra_display_medium-webfont.woff2") format("woff2"),
+    url("./font/neutra_display_medium-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "neutra_displaymedium", Arial, sans-serif;
+}
+
 .contest sl-input,
 .contest sl-checkbox {
   display: block;

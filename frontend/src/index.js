@@ -5,6 +5,7 @@ import "filepond/dist/filepond.min.css";
 import "@shoelace-style/shoelace/dist/themes/dark.css";
 import SlButton from "@shoelace-style/shoelace/dist/components/button/button.js";
 import SlIcon from "@shoelace-style/shoelace/dist/components/icon/icon.js";
+import SlIconButton from "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
 import SlInput from "@shoelace-style/shoelace/dist/components/input/input.js";
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.js";
 import SlCheckbox from "@shoelace-style/shoelace/dist/components/checkbox/checkbox.js";

@@ -19,9 +19,21 @@ templ ContestForm(data ContestFormInput) {
 		<dialog
 			id="contest-form-dialog"
 		>
+			<sl-icon-button
+				action="action"
+				onclick="window.history.go(-1); return false;"
+				id="x-circle"
+				name="x-circle"
+			></sl-icon-button>
+			<sl-icon-button
+				action="action"
+				onclick="window.history.go(-1); return false;"
+				id="arrow-left-circle"
+				name="arrow-left-circle"
+			></sl-icon-button>
 			<h1>Contest Form</h1>
+			<br/>
 			if data.Error != nil {
-				<br/>
 				<sl-alert variant="danger">
 					<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
 					<strong>An error has occurred</strong>

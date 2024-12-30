@@ -154,14 +154,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><br><sl-input name=\"phone\" label=\"Phone number\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"phone\" label=\"Phone number\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(data.PhoneNumber)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 69, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 68, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -177,14 +177,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><div><label for=\"art-piece\">Contest files*</label> <input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox class=\"required\" name=\"consent-conditions\" required>I accept contest conditions</sl-checkbox> <sl-checkbox name=\"consent-marketing\">I consent to marketing materials</sl-checkbox><br><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Contest files*</label><div class=\"abc\"><input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox class=\"required\" name=\"consent-conditions\" required>I accept contest conditions</sl-checkbox> <sl-checkbox name=\"consent-marketing\">I consent to marketing materials</sl-checkbox><br><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(data.ContestID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 98, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 97, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {

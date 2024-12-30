@@ -1,99 +1,104 @@
 package view
 
 type ContestFormInput struct {
-	FirstName   string
-	LastName    string
-	PhoneNumber string
-	Email       string
-	ArtPiece    string
-	ContestID   string
-	ErrMap      map[string]string
-	Error       error
+	FirstName    string
+	LastName     string
+	PhoneNumber  string
+	Email        string
+	ArtPiece     string
+	ContestID    string
+	ErrMap       map[string]string
+	Error        error
+	IsFormHidden bool
 }
 
 templ ContestForm(data ContestFormInput) {
 	@Base() {
 		@Navbar()
 		@BlueBox()
-		<h1>Contest Form</h1>
-		if data.Error != nil {
-			<br/>
-			<sl-alert variant="danger" open>
-				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
-				<strong>An error has occurred</strong>
+		<dialog
+			id="contest-form-dialog"
+		>
+			<h1>Contest Form</h1>
+			if data.Error != nil {
 				<br/>
-				{ data.Error.Error() }
-			</sl-alert>
-			<br/>
-		}
-		<form class="contest" action="" method="post" enctype="multipart/form-data">
-			<sl-input
-				name="first-name"
-				label="First name"
-				value={ data.FirstName }
-				if _, ok := data.ErrMap["FirstName"]; ok {
-					data-invalid
-				}
-				required
-			></sl-input>
-			<br/>
-			<sl-input
-				name="last-name"
-				label="Last name"
-				value={ data.FirstName }
-				if _, ok := data.ErrMap["LastName"]; ok {
-					data-invalid
-				}
-				required
-			></sl-input>
-			<br/>
-			<sl-input
-				type="email"
-				name="email"
-				label="Email"
-				value={ data.Email }
-				if _, ok := data.ErrMap["Email"]; ok {
-					data-invalid
-				}
-				required
-			></sl-input>
-			<br/>
-			<br/>
-			<sl-input
-				name="phone"
-				label="Phone number"
-				value={ data.PhoneNumber }
-				type="tel"
-				if _, ok := data.ErrMap["PhoneNumber"]; ok {
-					data-invalid
-				}
-				required
-			></sl-input>
-			<br/>
-			<div>
-				<label for="art-piece">Contest files*</label>
+				<sl-alert variant="danger">
+					<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+					<strong>An error has occurred</strong>
+					<br/>
+					{ data.Error.Error() }
+				</sl-alert>
+				<br/>
+			}
+			<form class="contest" action="" method="post" enctype="multipart/form-data">
+				<sl-input
+					name="first-name"
+					label="First name"
+					value={ data.FirstName }
+					if _, ok := data.ErrMap["FirstName"]; ok {
+						data-invalid
+					}
+					required
+				></sl-input>
+				<br/>
+				<sl-input
+					name="last-name"
+					label="Last name"
+					value={ data.FirstName }
+					if _, ok := data.ErrMap["LastName"]; ok {
+						data-invalid
+					}
+					required
+				></sl-input>
+				<br/>
+				<sl-input
+					type="email"
+					name="email"
+					label="Email"
+					value={ data.Email }
+					if _, ok := data.ErrMap["Email"]; ok {
+						data-invalid
+					}
+					required
+				></sl-input>
+				<br/>
+				<br/>
+				<sl-input
+					name="phone"
+					label="Phone number"
+					value={ data.PhoneNumber }
+					type="tel"
+					if _, ok := data.ErrMap["PhoneNumber"]; ok {
+						data-invalid
+					}
+					required
+				></sl-input>
+				<br/>
+				<div>
+					<label for="art-piece">Contest files*</label>
+					<input
+						type="file"
+						accept="image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4"
+					/>
+				</div>
+				<br/>
+				<sl-checkbox
+					class="required"
+					name="consent-conditions"
+					required
+				>I accept contest conditions</sl-checkbox>
+				<sl-checkbox
+					name="consent-marketing"
+				>I consent to marketing materials</sl-checkbox>
+				<br/>
 				<input
-					type="file"
-					accept="image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4"
+					type="hidden"
+					id="contest-id"
+					name="contest-id"
+					value={ data.ContestID }
 				/>
-			</div>
-			<br/>
-			<sl-checkbox
-				class="required"
-				name="consent-conditions"
-				required
-			>I accept contest conditions</sl-checkbox>
-			<sl-checkbox
-				name="consent-marketing"
-			>I consent to marketing materials</sl-checkbox>
-			<br/>
-			<input
-				type="hidden"
-				id="contest-id"
-				name="contest-id"
-				value={ data.ContestID }
-			/>
-			<sl-button type="submit" variant="primary">Submit</sl-button>
-		</form>
+				<sl-button type="submit" variant="primary">Submit</sl-button>
+			</form>
+		</dialog>
 	}
 }

@@ -31,8 +31,17 @@ type ContestHandler struct {
 	Config         config.Config
 }
 
+type dialog struct {
+	Dialog string `form:"dialog"`
+}
+
 func (h *ContestHandler) HandleGet(c *gin.Context) {
-	err := view.ContestForm(view.ContestFormInput{ContestID: "abcd"}).Render(c.Request.Context(), c.Writer)
+	cfi := view.ContestFormInput{ContestID: "abcd", IsFormHidden: true}
+	dialog := dialog{}
+	if c.ShouldBind(&dialog) == nil {
+		cfi.IsFormHidden = false
+	}
+	err := view.ContestForm(cfi).Render(c.Request.Context(), c.Writer)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

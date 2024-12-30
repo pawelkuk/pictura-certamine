@@ -15,7 +15,7 @@
 - [x] admin user that can view crm
 - [x] command that creates a link that enables to register a user
 - [x] typography
-- [ ] UI form looks (wip)
+- [ ] UI form looks (wip - add form in modal e.g. https://developer.mozilla.org/en-US/docs/Web/CSS/:modal)
 - [ ] translations
 - [ ] what reverse proxy (treafik)
 - [ ] setting up certificates

@@ -94,9 +94,21 @@ CookieConsent.run({
   },
 });
 
-let dataTable = new DataTable("#crm-contest-list", {
-  searchable: true,
-  fixedHeight: false,
-  perPage: 100,
-  perPageSelect: [10, 100, 1000],
-});
+const t = document.querySelector("#crm-contest-list");
+if (t != null) {
+  new DataTable(t, {
+    searchable: true,
+    fixedHeight: false,
+    perPage: 100,
+    perPageSelect: [10, 100, 1000],
+  });
+}
+
+const showContestForm = document.getElementById("participate");
+const contestFormDialog = document.getElementById("contest-form-dialog");
+if (showContestForm != null) {
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("dialog") != null) {
+    contestFormDialog.showModal();
+  }
+}

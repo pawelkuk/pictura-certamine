@@ -16,6 +16,13 @@
 - [x] command that creates a link that enables to register a user
 - [x] typography
 - [ ] UI form looks (wip - add form in modal e.g. https://developer.mozilla.org/en-US/docs/Web/CSS/:modal)
+  - [x] modal
+  - [ ] add links to pdfs
+  - [ ] change font to one which supports unicode characters
+  - [ ] footer
+  - [ ] show error message on contest form (or figure out why alert collides with dialog window)
+  - [ ] banner (when graphics are going to be provided)
+  - [ ] blur on cookie banner
 - [ ] translations
 - [ ] what reverse proxy (treafik)
 - [ ] setting up certificates

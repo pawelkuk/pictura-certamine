@@ -1,0 +1,23 @@
+tls:
+  certificates:
+    - certFile: "/etc/traefik/certs/concurs-captain-america.ro.certificate.crt"
+      keyFile: "/etc/traefik/certs/concurs-captain-america.ro.key"
+# http:
+#   routers:
+#     secure-router:
+#       entryPoints:
+#         - web-secure
+#       rule: "Host(`concurs-captain-america.ro`)"
+#       service: my-service
+#       tls: {}
+#     insecure-router:
+#       entryPoints:
+#         - web
+#       rule: "Host(`concurs-captain-america.ro`)"
+#       service: my-service
+
+#   services:
+#     my-service:
+#       loadBalancer:
+#         servers:
+#           - url: "http://example-service:80"

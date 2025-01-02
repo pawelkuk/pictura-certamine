@@ -1,27 +1,39 @@
-# syntax=docker/dockerfile:1
+# =============================================================================
+#  Multi-stage Dockerfile Example
+# =============================================================================
+#  This is a simple Dockerfile that will build an image of scratch-base image.
+#  Usage:
+#    docker build -t pictura-certamine:local . && docker run --rm pictura-certamine:local
+# =============================================================================
 
-# Build the application from source
-FROM golang:1.23.4 AS build-stage
+# -----------------------------------------------------------------------------
+#  Build Stage
+# -----------------------------------------------------------------------------
+FROM golang:1.23.4-alpine3.21 AS build
 
 WORKDIR /app
+# Important:
+#   Because this is a CGO enabled package, you are required to set it as 1.
+ENV CGO_ENABLED=1
+
+RUN apk add --no-cache \
+    # Important: required for go-sqlite3
+    gcc \
+    # Required for Alpine
+    musl-dev
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /pictura-certamine ./cmd/app/main.go
+RUN GOOS=linux go build -o /appbin -ldflags='-s -w -extldflags "-static"' ./cmd/app/main.go
 
+# -----------------------------------------------------------------------------
+#  Main Stage
+# -----------------------------------------------------------------------------
+FROM scratch
 
-# Deploy the application binary into a lean image
-FROM gcr.io/distroless/base-debian11 AS build-release-stage
+COPY --from=build /appbin /appbin
 
-WORKDIR /
-
-COPY --from=build-stage /pictura-certamine /pictura-certamine
-
-EXPOSE 8080
-
-USER nonroot:nonroot
-
-ENTRYPOINT ["/pictura-certamine"]
+ENTRYPOINT [ "/appbin" ]

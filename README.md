@@ -24,11 +24,11 @@
   - [ ] banner (when graphics are going to be provided)
   - [ ] blur on cookie banner
 - [ ] translations
-- [ ] what reverse proxy (treafik)
-- [ ] setting up certificates
-- [ ] backup sqlite to s3 (research how to)
-- [ ] setting up customer's email as sender
-- [ ] deployment
+- [x] what reverse proxy (treafik)
+- [x] setting up certificates
+- [ ] backup sqlite to s3 (research how to; cronjob maybe)
+- [x] setting up customer's email as sender
+- [ ] deployment (almost ready)
 - [ ] captcha
 - [ ] (optional) maybe a rating module
 - [ ] (optional) add logging

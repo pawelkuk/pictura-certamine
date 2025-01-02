@@ -23,7 +23,7 @@
   - [ ] show error message on contest form (or figure out why alert collides with dialog window)
   - [ ] banner (when graphics are going to be provided)
   - [ ] blur on cookie banner
-- [ ] translations
+- [ ] translations (i18n https://github.com/gin-contrib/i18n/blob/master/_example/main.go)
 - [x] what reverse proxy (treafik)
 - [x] setting up certificates
 - [ ] backup sqlite to s3 (research how to; cronjob maybe)

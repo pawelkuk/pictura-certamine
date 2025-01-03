@@ -46,7 +46,30 @@ CookieConsent.run({
     },
     analytics: {},
   },
-
+  // onChange: ({ cookie }) => {
+  //   console.log("on change");
+  // },
+  onConsent: ({ cookie }) => {
+    const cookieBannerBlur = document.getElementById("cookie-banner-blur");
+    if (cookieBannerBlur != null) {
+      cookieBannerBlur.style.display = "none";
+    }
+  },
+  // onFirstConsent: ({ cookie }) => {
+  //   console.log("on first consent");
+  // },
+  // onModalHide: ({ cookie }) => {
+  //   console.log("on modal hide");
+  // },
+  // onModalShow: ({ cookie }) => {
+  //   console.log("on modal show");
+  // },
+  onModalReady: ({ cookie }) => {
+    const cookieBannerBlur = document.getElementById("cookie-banner-blur");
+    if (cookieBannerBlur != null) {
+      cookieBannerBlur.style.display = "block";
+    }
+  },
   language: {
     default: "en",
     translations: {

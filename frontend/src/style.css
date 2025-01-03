@@ -127,3 +127,21 @@ body {
   top: 1rem;
   font-size: 2rem;
 }
+
+#cc-main {
+  --cc-font-family: "neutra_displaymedium", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#cookie-banner-blur {
+  display: none;
+  backdrop-filter: blur(10px);
+  /* cover whole window */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+}

@@ -22,7 +22,7 @@
   - [ ] footer
   - [ ] show error message on contest form (or figure out why alert collides with dialog window)
   - [ ] banner (when graphics are going to be provided)
-  - [ ] blur on cookie banner
+  - [x] blur on cookie banner
 - [ ] translations (i18n https://github.com/gin-contrib/i18n/blob/master/_example/main.go)
 - [x] what reverse proxy (treafik)
 - [x] setting up certificates

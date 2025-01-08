@@ -1,5 +1,7 @@
 package view
 
+import "fmt"
+
 templ Base() {
 	<html>
 		<head>
@@ -72,6 +74,116 @@ templ Login(email string, emailErr, passwordErr, otherErr error) {
 				required
 			></sl-input>
 			<sl-button type="submit" variant="primary">Login</sl-button>
+		</form>
+		<sl-button
+			outline
+			size="small"
+			href="/auth/reset"
+		>
+			Reset password
+		</sl-button>
+	}
+}
+
+templ Reset(email string, emailErr, otherErr error) {
+	@Base() {
+		if otherErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Error:</strong>
+				<br/>
+				{ otherErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		if emailErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Email error:</strong>
+				<br/>
+				{ emailErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		<form action="/auth/reset" method="post">
+			<sl-input
+				type="email"
+				name="email"
+				label="Email"
+				if email !="" {
+					value={ email }
+				}
+				if emailErr != nil {
+					data-invalid
+				}
+				required
+			></sl-input>
+			<sl-button type="submit" variant="primary">Reset password</sl-button>
+		</form>
+	}
+}
+
+templ ResetConfirm() {
+	@Base() {
+		<p>
+			You should have received an email with a password reset link.
+		</p>
+	}
+}
+
+templ ResetPasswordEmail(resetPasswordLink string) {
+	@Base() {
+		<p>To change your password go to the link provided below:</p>
+		<p>
+			{ resetPasswordLink }
+		</p>
+		<p>
+			If you don't want to change your password you are safe to discard this message.
+		</p>
+	}
+}
+
+templ NewPassword(token, password string, passwordErr, otherErr error) {
+	@Base() {
+		if otherErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Error:</strong>
+				<br/>
+				{ otherErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		if passwordErr != nil {
+			<br/>
+			<sl-alert variant="danger" open>
+				<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+				<strong>Email error:</strong>
+				<br/>
+				{ passwordErr.Error() }
+			</sl-alert>
+			<br/>
+		}
+		<form action={ templ.SafeURL(fmt.Sprintf("/auth/password/%s", token)) } method="post">
+			<sl-input
+				type="password"
+				name="password"
+				label="Password"
+				if passwordErr != nil {
+					data-invalid
+				}
+				required
+			></sl-input>
+			<sl-input
+				type="password"
+				name="repeat-password"
+				label="Repeat password"
+				required
+			></sl-input>
+			<sl-button type="submit" variant="primary">Change Password</sl-button>
 		</form>
 	}
 }

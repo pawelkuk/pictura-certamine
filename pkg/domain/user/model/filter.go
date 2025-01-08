@@ -11,4 +11,5 @@ type QueryFilter struct {
 	Email              *mail.Address
 	AuthorizationToken *string
 	ActivationToken    *string
+	PasswordResetToken *string
 }

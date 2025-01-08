@@ -18,6 +18,7 @@ type User struct {
 	PasswordHash       string
 	IsActive           bool
 	ActivationToken    string
+	PasswordResetToken string
 }
 
 func (u *User) MatchPassword(password string) error {
@@ -101,4 +102,9 @@ func WithID(id int64) func(*User) error {
 		u.ID = id
 		return nil
 	}
+}
+
+func (u *User) GeneratePasswordResetToken() string {
+	u.PasswordResetToken = generateRandomString(64)
+	return u.PasswordResetToken
 }

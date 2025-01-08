@@ -1,0 +1,13 @@
+{
+  "welcome": "hello",
+  "welcomeWithName": "hello {{ .name }}",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "birthday": "Birthday",
+  "email": "Email",
+  "contestFiles": "Contest files",
+  "acceptContestCondition": "I accept contest conditions",
+  "acceptMarketingCondition": "I consent to marketing materials",
+  "submit": "Submit",
+  "errorOccurred": "An error has occurred"
+}

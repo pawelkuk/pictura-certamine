@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS user (
     password TEXT NOT NULL,
     authorization_token TEXT NOT NULL UNIQUE,
     is_active BOOLEAN NOT NULL CHECK (is_active IN (0, 1)),
-    activation_token TEXT NOT NULL UNIQUE
+    activation_token TEXT NOT NULL,
+    password_reset_token TEXT NOT NULL
 );

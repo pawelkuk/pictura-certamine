@@ -16,9 +16,9 @@ type SQLiteRepo struct {
 
 func (r *SQLiteRepo) Create(ctx context.Context, user *model.User) error {
 	result, err := r.DB.ExecContext(ctx,
-		`insert into user(email, password, authorization_token, is_active, activation_token) values(?, ?, ?, ?, ?)
+		`insert into user(email, password, authorization_token, is_active, activation_token, password_reset_token) values(?, ?, ?, ?, ?, ?)
 		returning id`,
-		user.Email.Address, user.PasswordHash, user.AuthorizationToken, user.IsActive, user.ActivationToken,
+		user.Email.Address, user.PasswordHash, user.AuthorizationToken, user.IsActive, user.ActivationToken, user.PasswordResetToken,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create user: %w", err)
@@ -32,20 +32,21 @@ func (r *SQLiteRepo) Create(ctx context.Context, user *model.User) error {
 }
 func (r *SQLiteRepo) Read(ctx context.Context, user *model.User) error {
 	row := r.DB.QueryRowContext(ctx,
-		"select id, authorization_token, password, email, is_active, activation_token from user where id = ?", user.ID)
+		"select id, authorization_token, password, email, is_active, activation_token, password_reset_token from user where id = ?", user.ID)
 	if row.Err() != nil {
 		return fmt.Errorf("could not query user with id=%d: %w", user.ID, row.Err())
 	}
-	var authorizationToken, email, password, activationToken string
+	var authorizationToken, email, password, activationToken, passwordResetToken string
 	var id int64
 	var isActive bool
-	err := row.Scan(&id, &authorizationToken, &password, &email, &isActive, &activationToken)
+	err := row.Scan(&id, &authorizationToken, &password, &email, &isActive, &activationToken, &passwordResetToken)
 	if err != nil {
 		return fmt.Errorf("could not scan row: %w", err)
 	}
 	user.ID = id
 	user.AuthorizationToken = authorizationToken
 	user.ActivationToken = activationToken
+	user.PasswordResetToken = passwordResetToken
 	user.PasswordHash = password
 	user.IsActive = isActive
 	address, err := mail.ParseAddress(email)
@@ -57,8 +58,8 @@ func (r *SQLiteRepo) Read(ctx context.Context, user *model.User) error {
 }
 func (r *SQLiteRepo) Update(ctx context.Context, user *model.User) error {
 	_, err := r.DB.ExecContext(ctx,
-		`update user set authorization_token = ?, password = ?, email = ?, is_active = ?, activation_token = ? where id = ?`,
-		user.AuthorizationToken, user.PasswordHash, user.Email.Address, user.IsActive, user.ActivationToken, user.ID,
+		`update user set authorization_token = ?, password = ?, email = ?, is_active = ?, activation_token = ?, password_reset_token = ? where id = ?`,
+		user.AuthorizationToken, user.PasswordHash, user.Email.Address, user.IsActive, user.ActivationToken, user.PasswordResetToken, user.ID,
 	)
 	if err != nil {
 		return fmt.Errorf("could not update user: %w", err)
@@ -76,7 +77,7 @@ func (r *SQLiteRepo) Delete(ctx context.Context, user *model.User) error {
 func (r *SQLiteRepo) Query(ctx context.Context, filter model.QueryFilter) ([]model.User, error) {
 	q := `
 	SELECT
-		id, authorization_token, password, email, is_active, activation_token
+		id, authorization_token, password, email, is_active, activation_token, password_reset_token
 	FROM user
 	`
 	buf := bytes.NewBufferString(q)
@@ -89,10 +90,10 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.QueryFilter) ([]mod
 	users := []model.User{}
 	for rows.Next() {
 		u := &model.User{}
-		var authorizationToken, email, password, activationToken string
+		var authorizationToken, email, password, activationToken, passwordResetToken string
 		var id int64
 		var isActive bool
-		err := rows.Scan(&id, &authorizationToken, &password, &email, &isActive, &activationToken)
+		err := rows.Scan(&id, &authorizationToken, &password, &email, &isActive, &activationToken, &passwordResetToken)
 		if err != nil {
 			return nil, fmt.Errorf("could not scan row: %w", err)
 		}
@@ -100,6 +101,7 @@ func (r *SQLiteRepo) Query(ctx context.Context, filter model.QueryFilter) ([]mod
 		u.PasswordHash = password
 		u.IsActive = isActive
 		u.ActivationToken = activationToken
+		u.PasswordResetToken = passwordResetToken
 		address, err := mail.ParseAddress(email)
 		if err != nil {
 			return nil, fmt.Errorf("could not parse email: %w", err)

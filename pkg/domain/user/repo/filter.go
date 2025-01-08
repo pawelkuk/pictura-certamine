@@ -30,6 +30,11 @@ func applyFilter(filter model.QueryFilter, args *[]any, buf *bytes.Buffer) {
 		*args = append(*args, filter.ActivationToken)
 	}
 
+	if filter.PasswordResetToken != nil {
+		wc = append(wc, "password_reset_token LIKE ?")
+		*args = append(*args, filter.PasswordResetToken)
+	}
+
 	if len(wc) > 0 {
 		buf.WriteString(" WHERE ")
 		buf.WriteString(strings.Join(wc, " AND "))

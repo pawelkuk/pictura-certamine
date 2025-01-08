@@ -2,14 +2,19 @@ package main
 
 import (
 	"database/sql"
+	"embed"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/caarlos0/env/v11"
 	sentry "github.com/getsentry/sentry-go"
 	sentrygin "github.com/getsentry/sentry-go/gin"
+	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	authhandler "github.com/pawelkuk/pictura-certamine/pkg/domain/auth/handler"
 	"github.com/pawelkuk/pictura-certamine/pkg/domain/auth/middleware"
 	auth "github.com/pawelkuk/pictura-certamine/pkg/domain/auth/repo"
@@ -23,7 +28,11 @@ import (
 	user "github.com/pawelkuk/pictura-certamine/pkg/domain/user/repo"
 	"github.com/pawelkuk/pictura-certamine/pkg/sdk/mail"
 	"github.com/pawelkuk/pictura-certamine/pkg/sdk/s3"
+	"golang.org/x/text/language"
 )
+
+//go:embed i18n/*
+var fs embed.FS
 
 func main() {
 
@@ -94,12 +103,42 @@ func serve() error {
 	}
 
 	authHandler := authhandler.Handler{
-		UserRepo: userrepo,
-		Repo:     authrepo,
+		UserRepo:   userrepo,
+		Repo:       authrepo,
+		MailClient: mailClient,
+		Config:     *cfg,
 	}
 	authMiddleware := middleware.Middleware{Repo: authrepo, Config: *cfg}
 
 	r := gin.Default()
+
+	// apply i18n middleware
+	r.Use(ginI18n.Localize(ginI18n.WithBundle(&ginI18n.BundleCfg{
+		DefaultLanguage:  language.Romanian,
+		FormatBundleFile: "json",
+		AcceptLanguage:   []language.Tag{language.Romanian, language.English, language.Polish},
+		RootPath:         "./i18n/",
+		UnmarshalFunc:    json.Unmarshal,
+		// After commenting this line, use defaultLoader
+		// it will be loaded from the file
+		Loader: &ginI18n.EmbedLoader{FS: fs},
+	})))
+
+	r.GET("/i18n", func(c *gin.Context) {
+		c.String(http.StatusOK, ginI18n.MustGetMessage(c, "welcome"))
+	})
+
+	r.GET("/i18n/:name", func(c *gin.Context) {
+		c.String(http.StatusOK, ginI18n.MustGetMessage(
+			c,
+			&i18n.LocalizeConfig{
+				MessageID: "welcomeWithName",
+				TemplateData: map[string]string{
+					"name": c.Param("name"),
+				},
+			}))
+	})
+
 	r.Static("/assets", "./frontend")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 	r.GET("/", contestHandler.HandleGet)
@@ -117,8 +156,10 @@ func serve() error {
 
 	r.GET("/auth/login", authHandler.LoginGet)
 	r.POST("/auth/login", authHandler.LoginPost)
-	// r.GET("/auth/reset", authHandler.ResetGet)
-	// r.POST("/auth/reset", authHandler.ResetPost)
+	r.GET("/auth/reset", authHandler.ResetGet)
+	r.POST("/auth/reset", authHandler.ResetPost)
+	r.GET("/auth/password/:password_reset_token", authHandler.PasswordGet)
+	r.POST("/auth/password/:password_reset_token", authHandler.PasswordPost)
 	r.POST("/auth/logout/", authMiddleware.Handle, authHandler.Logout)
 
 	r.NoRoute(contestHandler.HandleNotFound)

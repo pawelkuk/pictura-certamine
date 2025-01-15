@@ -8,7 +8,7 @@ package view
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Navbar() templ.Component {
+func TextParagraphsUp() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,7 +26,7 @@ func Navbar() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><ul class=\"navbar\"><li><img class=\"marvel\" src=\"/assets/img/marvel.png\"></li><li id=\"participate\"><a href=\"/?dialog=open\">Participate</a></li><li><a href=\"\" target=\"_blank\">Terms and conditions</a></li><li><a href=\"\" target=\"_blank\">Conditions www</a></li><li><a href=\"\" target=\"_blank\">Privacy policy</a></li></ul></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"paragraphs-container\"><h1>Konkurs Mój ulubiony bohater Marvela</h1><h3>Wykaż się kreatywnością - wykonaj ciekawą pracę konkursową przedstawiającą  Twojego ulubionego bohatera Marvela i wygraj</h3><p>Możesz wygrać 3-dniowy wyjazd do Disneyland Paris dla 4 osób.  Szczegóły znajdziesz w <a href=\"/\">Regulaminie</a>. </p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

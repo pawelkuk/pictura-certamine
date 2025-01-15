@@ -16,6 +16,11 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import { DataTable } from "simple-datatables";
 import "simple-datatables/dist/style.css";
 import "./style.css";
+import "../img/banner.png";
+import "../img/disney_paris.png";
+import "../img/disneyland_day.png";
+import "../img/iron_man_night.png";
+import "../img/marvel.png";
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath("/assets/dist/shoelace");
 

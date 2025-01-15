@@ -8,7 +8,7 @@ package view
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Navbar() templ.Component {
+func Banner() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,7 +26,7 @@ func Navbar() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><ul class=\"navbar\"><li><img class=\"marvel\" src=\"/assets/img/marvel.png\"></li><li id=\"participate\"><a href=\"/?dialog=open\">Participate</a></li><li><a href=\"\" target=\"_blank\">Terms and conditions</a></li><li><a href=\"\" target=\"_blank\">Conditions www</a></li><li><a href=\"\" target=\"_blank\">Privacy policy</a></li></ul></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"banner\"><img src=\"/assets/img/banner.png\"><div class=\"content\"><span class=\"background\">Weź udział w konkursie \"Mój ulubiony bohater Marvela\" i wygraj przygodę w Disneylandzie w Paryżu</span> <span class=\"white\">Idź do</span> <img src=\"/assets/img/qrcode.png\" alt=\"qr code\"> <span class=\"white\">www.link-do-konkursu.ro</span> <span class=\"warnbox\">Konkurs trwa od 27.01.25 r. do 28.03.2025 r.</span></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

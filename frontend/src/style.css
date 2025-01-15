@@ -98,6 +98,9 @@ body {
   text-align: center;
   background: #024c8e;
   padding: 1rem 5rem;
+  width: 80%;
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 :modal {
@@ -144,4 +147,76 @@ body {
   width: 100%;
   height: 100%;
   z-index: 100000;
+}
+
+.marvel {
+  width: 8rem;
+  padding: 0.5em 1em;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.banner img {
+  width: 100%;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+}
+
+.banner .content {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner .content img {
+  width: 40%;
+  border-style: solid;
+  border-color: #c02929;
+  border-width: 5px;
+}
+
+.banner .content span {
+  text-align: center;
+}
+
+.banner .content span.white {
+  color: rgb(224, 224, 224);
+}
+
+.banner .content span.background {
+  background-color: #3d7be1cf;
+  border-radius: 5px;
+  margin: 0 1rem;
+  margin-bottom: 1rem;
+  color: rgb(240, 240, 240);
+}
+
+.banner .content span.warnbox {
+  background-color: white;
+  color: #c02929;
+  padding: 0.5rem;
+  border-radius: 10px/70%;
+  border-width: 2px;
+  border-color: #c02929;
+  border-style: solid;
+  margin-top: 1rem;
+}
+
+.paragraphs-container {
+  padding: 1rem 0;
+  width: 90%;
+  margin: 0 auto;
+  max-width: 960px;
 }

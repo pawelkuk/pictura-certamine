@@ -38,7 +38,7 @@ FilePond.create(inputElement, {
   name: "art-piece",
   className: "art-piece-file-upload",
   multiple: true,
-  // credits: false,
+  credits: false,
   // server: "/upload",
   required: true,
 });

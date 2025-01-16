@@ -173,6 +173,18 @@ body {
   max-width: 800px;
 }
 
+.blue-box a {
+  color: white;
+}
+
+.blue-box a:hover {
+  background: #ffffff15;
+}
+
+.blue-box a:visited {
+  color: white;
+}
+
 :modal {
   border-radius: 1rem;
   border-width: 0;
@@ -305,4 +317,144 @@ body {
 
 .prize img {
   width: 100%;
+}
+
+.hasbro {
+  width: 4rem;
+  padding: 0.3rem 0 0 0;
+}
+
+a:visited {
+  color: black;
+}
+a {
+  color: black;
+}
+
+.mobile {
+  display: none;
+}
+
+.menu-btn:checked ~ .menu {
+  max-height: 240px;
+}
+.menu-btn:checked ~ .menu-icon .navicon {
+  background: transparent;
+}
+.menu-btn:checked ~ .menu-icon .navicon:before {
+  transform: rotate(-45deg);
+}
+.menu-btn:checked ~ .menu-icon .navicon:after {
+  transform: rotate(45deg);
+}
+.menu-btn:checked ~ .menu-icon .navicon:before,
+.menu-btn:checked ~ .menu-icon .navicon:after {
+  top: 0;
+}
+.navicon {
+  background: #333;
+  display: block;
+  height: 2px;
+  width: 18px;
+  position: relative;
+}
+.navicon:before {
+  top: 5px;
+}
+.navicon:after {
+  top: -5px;
+}
+.navicon:before,
+.navicon:after {
+  background: #333;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  transition: all 0.2s ease-out;
+}
+
+#menu-btn {
+  position: absolute;
+  top: -100%;
+  left: -100%;
+}
+
+.menu-icon {
+  grid-area: hamburger;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  padding: 30px 20px 30px 0;
+  position: relative;
+  user-select: none;
+  visibility: visible;
+}
+
+.menu {
+  grid-area: nav;
+  max-width: unset;
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.menu a {
+  padding: 20px 20px;
+  border-right: 1px solid #f4f4f4;
+  width: 100%;
+  text-align: center;
+}
+
+.mobile a {
+  text-decoration: none;
+}
+.mobile a:hover {
+  text-decoration: underline;
+}
+
+.banner img.show-desktop {
+  display: block;
+}
+.banner img.show-mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 900px) {
+  .blue-box {
+    padding: 1rem 5%;
+    width: 90%;
+  }
+  nav.desktop {
+    display: none;
+  }
+  .mobile {
+    display: grid;
+    grid-template-areas:
+      "title   title   hamburger"
+      "nav     nav     nav";
+  }
+  .banner img.show-desktop {
+    display: none;
+  }
+  .banner img.show-mobile {
+    display: block;
+  }
+  .banner .content {
+    width: 100%;
+    height: 45%;
+    padding: 1rem 0;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .banner .content {
+    font-size: 0.8rem;
+  }
 }

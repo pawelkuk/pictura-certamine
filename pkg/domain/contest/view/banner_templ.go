@@ -26,7 +26,7 @@ func Banner() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"banner\"><img src=\"/assets/img/banner.png\"><div class=\"content\"><span class=\"background\">Weź udział w konkursie \"Mój ulubiony bohater Marvela\" i wygraj przygodę w Disneylandzie w Paryżu</span> <span class=\"white\">Idź do</span> <img src=\"/assets/img/qrcode.png\" alt=\"qr code\"> <span class=\"white\">www.link-do-konkursu.ro</span> <span class=\"warnbox\">Konkurs trwa od 27.01.25 r. do 28.03.2025 r.</span></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"banner\"><img class=\"show-desktop\" src=\"/assets/img/banner.png\"> <img class=\"show-mobile\" src=\"/assets/img/banner_mobile.png\"><div class=\"content\"><span class=\"background\">Weź udział w konkursie \"Mój ulubiony bohater Marvela\" i wygraj przygodę w Disneylandzie w Paryżu</span> <span class=\"white\">Idź do</span> <img src=\"/assets/img/qrcode.png\" alt=\"qr code\"> <span class=\"white\">www.link-do-konkursu.ro</span> <span class=\"warnbox\">Konkurs trwa od 27.01.25 r. do 28.03.2025 r.</span></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

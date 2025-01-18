@@ -19,9 +19,9 @@
   - [x] modal
   - [ ] add links to pdfs
   - [ ] change font to one which supports unicode characters
-  - [ ] footer
-  - [ ] show error message on contest form (or figure out why alert collides with dialog window)
-  - [ ] banner (when graphics are going to be provided)
+  - [x] footer
+  - [x] show error message on contest form (or figure out why alert collides with dialog window)
+  - [x] banner (when graphics are going to be provided)
   - [x] blur on cookie banner
 - [ ] translations (i18n https://github.com/gin-contrib/i18n/blob/master/_example/main.go)
 - [x] what reverse proxy (treafik)

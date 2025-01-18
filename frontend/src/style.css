@@ -458,3 +458,45 @@ a {
     font-size: 0.8rem;
   }
 }
+
+.disney-logo {
+  width: 4rem;
+  padding: 0.3rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 94%;
+  padding: 3%;
+}
+
+.footer .links {
+  font-size: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #5f5f5f;
+}
+
+.footer .links .link-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.link-section a {
+  padding: 0.1rem 0.5rem;
+  text-decoration: none;
+  color: #5f5f5f;
+}
+
+.link-section a:hover {
+  text-decoration: underline;
+}
+
+.copyrights {
+  padding: 1rem 0 0.5rem 0;
+}

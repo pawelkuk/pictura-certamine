@@ -194,7 +194,9 @@ body {
 }
 
 :modal::backdrop {
-  background: url(./../img/background-sky.png);
+  background: url(./../img/disney-background-web.webp);
+  background-size: cover;
+  background-position: center;
 }
 
 #x-circle {

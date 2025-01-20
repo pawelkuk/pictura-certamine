@@ -26,7 +26,7 @@ func Footer() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"footer\"><div>Śledź Disneya na:</div><div><sl-icon-button href=\"#\" target=\"_blank\" name=\"facebook\"></sl-icon-button> <sl-icon-button href=\"#\" target=\"_blank\" name=\"instagram\"></sl-icon-button> <sl-icon-button href=\"#\" target=\"_blank\" name=\"twitter-x\"></sl-icon-button> <sl-icon-button href=\"#\" target=\"_blank\" name=\"youtube\"></sl-icon-button></div><img class=\"disney-logo\" src=\"/assets/img/disney_logo.png\"><div class=\"links\"><div class=\"link-section\"><a href=\"#\">Pomoc </a> <a href=\"#\">Mapa serwisu</a> <a href=\"#\">Warunki korzystania</a> <a href=\"#\">Polityka prywatności UE</a> <a href=\"#\">Polityka Prywatności Cookie</a> <a href=\"#\">Polityka Zarządzaj ustawieniami</a> <a href=\"#\">Reklamy dopasowane</a> <a href=\"#\">Strategia podatkowa </a> <a href=\"#\">O Nas </a> <a href=\"#\">Polityka prywatnosci dla dziennikarzy </a> <a href=\"#\">The Walt Disney Company</a></div><div class=\"copyrights\">&#x24B8; Disney i podmioty powiązane. Wszelkie prawa zastrzeżone.</div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"footer\"><img class=\"disney-logo\" src=\"/assets/img/disney_logo.png\"><div class=\"links\"><div class=\"copyrights\">&#x24B8; Disney i podmioty powiązane. Wszelkie prawa zastrzeżone.</div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

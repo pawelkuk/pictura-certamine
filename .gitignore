@@ -1,7 +1,7 @@
 out/
 build/
 data/
-.envrc
+*.envrc
 vendor/
 __debug_bin*
 __*

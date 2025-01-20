@@ -16,13 +16,24 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import { DataTable } from "simple-datatables";
 import "simple-datatables/dist/style.css";
 import "./style.css";
+import "../img/background-sky.png";
 import "../img/banner.png";
+import "../img/banner_mobile.png";
+import "../img/disney_logo.png";
 import "../img/disney_paris.png";
 import "../img/disneyland_day.png";
 import "../img/iron_man_night.png";
 import "../img/marvel.png";
+import "../img/marvel_apla.png";
+import "../img/marvel_left.png";
+import "../img/marvel_ramka.png";
+import "../img/marvel_right.png";
+import "../img/prize.png";
+import "../img/qrcode.png";
+import "../img/disney-background-web.webp";
+import "../img/hasbro.svg";
 // Set the base path to the folder you copied Shoelace's assets to
-setBasePath("/assets/dist/shoelace");
+setBasePath("/assets/shoelace");
 
 // Get a reference to the file input element
 const inputElement = document.querySelector('input[type="file"]');

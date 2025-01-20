@@ -28,7 +28,7 @@ services:
 
   pictura-certamine:
     # A container that exposes an API to show its IP address
-    image: pictura-certamine:0.0.0
+    image: pawelkuk/pictura-certamine:0.0.0
     labels:
       # Create a router called pictura-certamine listening on the websecure entrypoint
       - "traefik.http.routers.pictura-certamine.entrypoints=websecure"

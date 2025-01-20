@@ -47,3 +47,12 @@ debug: templ
 
 bundle:
 	cd frontend && npm run build && cd ..
+
+build-image:
+	docker build -t pawelkuk/pictura-certamine:0.0.0 .
+
+push-image:
+	docker push pawelkuk/pictura-certamine:0.0.0 
+
+rsync:
+	rsync -r . ubuntu@c5:/home/ubuntu/workspace

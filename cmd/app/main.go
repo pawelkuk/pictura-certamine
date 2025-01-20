@@ -139,7 +139,7 @@ func serve() error {
 			}))
 	})
 
-	r.Static("/assets", "./frontend")
+	r.Static("/assets", "./frontend/dist")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 	r.GET("/", contestHandler.HandleGet)
 	r.POST("/", contestHandler.HandlePost)

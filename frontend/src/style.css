@@ -397,6 +397,14 @@ a {
   width: 18px;
   position: relative;
 }
+
+.danger-box {
+  padding: 1rem 2rem;
+  border-style: solid;
+  border-radius: 8px;
+  color: red;
+}
+
 .navicon:before {
   top: 5px;
 }

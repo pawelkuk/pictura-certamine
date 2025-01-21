@@ -103,7 +103,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if data.Error != nil {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<sl-alert variant=\"danger\"><sl-icon slot=\"icon\" name=\"exclamation-octagon\"></sl-icon> <strong>An error has occurred</strong><br>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"danger-box\"><sl-icon slot=\"icon\" name=\"exclamation-octagon\"></sl-icon> <strong>An error has occurred</strong><br>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -116,7 +116,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</sl-alert><br>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><br>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -139,7 +139,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if _, ok := data.ErrMap["FirstName"]; ok {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-invalid")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-user-invalid")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -162,7 +162,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if _, ok := data.ErrMap["LastName"]; ok {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-invalid")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-user-invalid")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -185,7 +185,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if _, ok := data.ErrMap["Email"]; ok {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-invalid")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-user-invalid")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -208,7 +208,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if _, ok := data.ErrMap["PhoneNumber"]; ok {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-invalid")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-user-invalid")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

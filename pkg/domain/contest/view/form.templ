@@ -39,12 +39,12 @@ templ ContestForm(data ContestFormInput) {
 			<h1>Contest Form</h1>
 			<br/>
 			if data.Error != nil {
-				<sl-alert variant="danger">
+				<div class="danger-box">
 					<sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
 					<strong>An error has occurred</strong>
 					<br/>
 					{ data.Error.Error() }
-				</sl-alert>
+				</div>
 				<br/>
 			}
 			<form class="contest" action="" method="post" enctype="multipart/form-data">
@@ -53,7 +53,7 @@ templ ContestForm(data ContestFormInput) {
 					label="First name"
 					value={ data.FirstName }
 					if _, ok := data.ErrMap["FirstName"]; ok {
-						data-invalid
+						data-user-invalid
 					}
 					required
 				></sl-input>
@@ -63,7 +63,7 @@ templ ContestForm(data ContestFormInput) {
 					label="Last name"
 					value={ data.FirstName }
 					if _, ok := data.ErrMap["LastName"]; ok {
-						data-invalid
+						data-user-invalid
 					}
 					required
 				></sl-input>
@@ -74,7 +74,7 @@ templ ContestForm(data ContestFormInput) {
 					label="Email"
 					value={ data.Email }
 					if _, ok := data.ErrMap["Email"]; ok {
-						data-invalid
+						data-user-invalid
 					}
 					required
 				></sl-input>
@@ -85,7 +85,7 @@ templ ContestForm(data ContestFormInput) {
 					value={ data.PhoneNumber }
 					type="tel"
 					if _, ok := data.ErrMap["PhoneNumber"]; ok {
-						data-invalid
+						data-user-invalid
 					}
 					required
 				></sl-input>

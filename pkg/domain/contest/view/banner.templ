@@ -1,23 +1,24 @@
 package view
 
 templ Banner() {
-	<div class="banner">
+	<div onclick="location.href='/?dialog=open';" class="banner">
 		<img class="show-desktop" src="/assets/img/banner.png"/>
 		<img class="show-mobile" src="/assets/img/banner_mobile.png"/>
 		<div class="content">
 			<span class="background">
-				Weź udział w konkursie "Mój ulubiony bohater Marvela"
-				i wygraj przygodę w Disneylandzie w Paryżu
-			</span>
-			<span class="white">
-				Idź do
+				Participă la concursul 
+				<br/>
+				„Eroul meu preferat Marvel”
+				<br/>
+				și câștigă o aventură în Disneyland Paris
 			</span>
 			<img src="/assets/img/qrcode.png" alt="qr code"/>
-			<span class="white">
-				www.link-do-konkursu.ro
-			</span>
 			<span class="warnbox">
-				Konkurs trwa od 27.01.25 r. do 28.03.2025 r.
+				<div class="warnbox-content">
+					Concursul se desfășoară 
+					<br/>
+					în perioada 27.01.2025 - 06.03.2025.
+				</div>
 			</span>
 		</div>
 	</div>

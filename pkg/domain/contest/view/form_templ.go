@@ -66,15 +66,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = TextParagraphsUp().Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div class=\"big-orange-background\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -82,11 +74,15 @@ func ContestForm(data ContestFormInput) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
+			templ_7745c5c3_Err = PrizeSection().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = PrizeSection().Render(ctx, templ_7745c5c3_Buffer)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = Conditions().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,7 +94,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <dialog id=\"contest-form-dialog\"><sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"x-circle\" name=\"x-circle\"></sl-icon-button> <sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"arrow-left-circle\" name=\"arrow-left-circle\"></sl-icon-button><h1>Contest Form</h1><br>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <dialog id=\"contest-form-dialog\"><sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"x-circle\" name=\"x-circle\"></sl-icon-button> <sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"arrow-left-circle\" name=\"arrow-left-circle\"></sl-icon-button><h1>Participă la concursul <br>Eroul&nbsp;meu preferat Marvel</h1><br>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -110,7 +106,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(data.Error.Error())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 46, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 48, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -121,14 +117,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"contest\" action=\"\" method=\"post\" enctype=\"multipart/form-data\"><sl-input name=\"first-name\" label=\"First name\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"contest\" action=\"\" method=\"post\" enctype=\"multipart/form-data\"><sl-input name=\"first-name\" label=\"Prenumele\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(data.FirstName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 54, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 56, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -144,14 +140,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"last-name\" label=\"Last name\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"last-name\" label=\"Nume\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(data.FirstName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 64, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 66, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -167,14 +163,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input type=\"email\" name=\"email\" label=\"Email\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input type=\"email\" name=\"email\" label=\"Adresa de e-mail\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(data.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 75, Col: 23}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 77, Col: 23}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -190,14 +186,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"phone\" label=\"Phone number\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"phone\" label=\"Numărul de telefon\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(data.PhoneNumber)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 85, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 87, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -213,20 +209,20 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Contest files*</label><div class=\"abc\"><input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox class=\"required\" name=\"consent-conditions\" required>I accept contest conditions</sl-checkbox> <sl-checkbox name=\"consent-marketing\">I consent to marketing materials</sl-checkbox><br><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Adăugă lucrarea de concurs aici*</label><div class=\"abc\"><input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox size=\"small\" class=\"required\" name=\"consent-conditions\" required>Prin prezenta declar că am citit <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">Regulamentul Concursului</a> „Eroul meu preferat Marvel” și accept conținutul acestuia</sl-checkbox> <sl-checkbox size=\"small\" class=\"required\" name=\"consent-marketing\" required>Prin prezenta declar că am citit <a class=\"form-link\" href=\"/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf\" target=\"_blank\">Informațiile privind prelucrarea datelor cu caracter personal*</a> și <a class=\"form-link\" href=\"/assets/img/politica_de_confidentialitate.pdf\" target=\"_blank\">Politica de confidențialitate</a></sl-checkbox> <input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(data.ContestID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 114, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 119, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <sl-button type=\"submit\" variant=\"primary\">Submit</sl-button></form></dialog>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><br><div class=\"submit-button-form-wrapper\"><input class=\"submit-button-form\" type=\"submit\" value=\"Înregistrează lucrarea de concurs\"></div><br></form><p class=\"small\">Pentru a participa în cadrul concursului în perioada 27.01- 6.03.2025, cumpără un produs (e) Marvel de la Hasbro în Carrefour (lista produselor care participă la campanie). Folosește orice tehnică pentru a realiza o lucrare de concurs interesantă care îl prezintă pe eroul tău preferat Marvel. Poți:<ul><li class=\"small-li\">redacta o declarație interesantă (doc., pdf., jpg., png., tiff., gif.) sau</li><li class=\"small-li\">realiza o fotografie originală (jpg., png., tiff., gif., pdf. sau</li><li class=\"small-li\">realiza o lucrare artistică (jpg., png., tiff., gif., pdf. sau,</li><li class=\"small-li\">înregistra un fișier audio (format WAV, mp3, WMA, M4A) </li><li class=\"small-li\">înregistra un videoclip (format MP4).</li></ul></p><p class=\"small\">Apoi introdu detaliile mai jos și adaugă lucrarea. Nu uita să păstrezi dovada originală a achiziției. Câștigătorul va fi rugat să furnizeze datele din dovada achiziției pentru a verifica dacă au fost îndeplinite condițiile de participare la concurs.  Dacă ești minor, trebuie să ai consimțământul reprezentantului legal sau al  tutorelui legal pentru a participa la concurs, pe care, în cazul unei victorii, vei fi obligat să îl trimiți în conformitate cu Regulamentul (conținutul consimțământului  necesar este Anexa 1 la Regulament): <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">CONSIMȚĂMÂNT</a> Poți citi Regulamentul aici:  <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">REGULAMENT</a></p></dialog>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

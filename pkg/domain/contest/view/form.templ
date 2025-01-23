@@ -17,9 +17,11 @@ templ ContestForm(data ContestFormInput) {
 		<div id="cookie-banner-blur"></div>
 		@Navbar()
 		@Banner()
-		@TextParagraphsUp()
-		@BlueBox()
-		@PrizeSection()
+		<div class="big-orange-background">
+			@BlueBox()
+			@PrizeSection()
+		</div>
+		@Conditions()
 		@Footer()
 		<dialog
 			id="contest-form-dialog"
@@ -36,7 +38,7 @@ templ ContestForm(data ContestFormInput) {
 				id="arrow-left-circle"
 				name="arrow-left-circle"
 			></sl-icon-button>
-			<h1>Contest Form</h1>
+			<h1>Participă la concursul <br/> Eroul&nbsp;meu preferat Marvel</h1>
 			<br/>
 			if data.Error != nil {
 				<div class="danger-box">
@@ -50,7 +52,7 @@ templ ContestForm(data ContestFormInput) {
 			<form class="contest" action="" method="post" enctype="multipart/form-data">
 				<sl-input
 					name="first-name"
-					label="First name"
+					label="Prenumele"
 					value={ data.FirstName }
 					if _, ok := data.ErrMap["FirstName"]; ok {
 						data-user-invalid
@@ -60,7 +62,7 @@ templ ContestForm(data ContestFormInput) {
 				<br/>
 				<sl-input
 					name="last-name"
-					label="Last name"
+					label="Nume"
 					value={ data.FirstName }
 					if _, ok := data.ErrMap["LastName"]; ok {
 						data-user-invalid
@@ -71,7 +73,7 @@ templ ContestForm(data ContestFormInput) {
 				<sl-input
 					type="email"
 					name="email"
-					label="Email"
+					label="Adresa de e-mail"
 					value={ data.Email }
 					if _, ok := data.ErrMap["Email"]; ok {
 						data-user-invalid
@@ -81,7 +83,7 @@ templ ContestForm(data ContestFormInput) {
 				<br/>
 				<sl-input
 					name="phone"
-					label="Phone number"
+					label="Numărul de telefon"
 					value={ data.PhoneNumber }
 					type="tel"
 					if _, ok := data.ErrMap["PhoneNumber"]; ok {
@@ -90,7 +92,7 @@ templ ContestForm(data ContestFormInput) {
 					required
 				></sl-input>
 				<br/>
-				<label for="art-piece">Contest files*</label>
+				<label for="art-piece">Adăugă lucrarea de concurs aici*</label>
 				<div class="abc">
 					<input
 						type="file"
@@ -99,22 +101,48 @@ templ ContestForm(data ContestFormInput) {
 				</div>
 				<br/>
 				<sl-checkbox
+					size="small"
 					class="required"
 					name="consent-conditions"
 					required
-				>I accept contest conditions</sl-checkbox>
+				>Prin prezenta declar că am citit <a class="form-link" href="/assets/img/REGULILE_CONCURSULUI.pdf" target="_blank">Regulamentul Concursului</a> „Eroul meu preferat Marvel” și accept conținutul acestuia</sl-checkbox>
 				<sl-checkbox
+					size="small"
+					class="required"
 					name="consent-marketing"
-				>I consent to marketing materials</sl-checkbox>
-				<br/>
+					required
+				>Prin prezenta declar că am citit <a class="form-link" href="/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf" target="_blank">Informațiile privind prelucrarea datelor cu caracter personal*</a> și <a class="form-link" href="/assets/img/politica_de_confidentialitate.pdf" target="_blank">Politica de confidențialitate</a></sl-checkbox>
 				<input
 					type="hidden"
 					id="contest-id"
 					name="contest-id"
 					value={ data.ContestID }
 				/>
-				<sl-button type="submit" variant="primary">Submit</sl-button>
+				<br/>
+				<div class="submit-button-form-wrapper">
+					<input class="submit-button-form" type="submit" value="Înregistrează lucrarea de concurs"/>
+				</div>
+				<br/>
 			</form>
+			<p class="small">
+				Pentru a participa în cadrul concursului în perioada 27.01- 6.03.2025, cumpără un produs (e) Marvel de la Hasbro în Carrefour (lista produselor care participă la campanie). Folosește orice tehnică pentru a realiza o lucrare de concurs interesantă care îl prezintă pe eroul tău preferat Marvel. Poți:
+				<ul>
+					<li class="small-li">redacta o declarație interesantă (doc., pdf., jpg., png., tiff., gif.) sau</li>
+					<li class="small-li">realiza o fotografie originală (jpg., png., tiff., gif., pdf. sau</li>
+					<li class="small-li">realiza o lucrare artistică (jpg., png., tiff., gif., pdf. sau,</li>
+					<li class="small-li">înregistra un fișier audio (format WAV, mp3, WMA, M4A) </li>
+					<li class="small-li">înregistra un videoclip (format MP4).</li>
+				</ul>
+			</p>
+			<p class="small">
+				Apoi introdu detaliile mai jos și adaugă lucrarea.
+				Nu uita să păstrezi dovada originală a achiziției. Câștigătorul va fi rugat să furnizeze datele din dovada achiziției pentru a verifica dacă au fost îndeplinite condițiile de participare la concurs. 
+				Dacă ești minor, trebuie să ai consimțământul reprezentantului legal sau al 
+				tutorelui legal pentru a participa la concurs, pe care, în
+				cazul unei victorii, vei fi obligat să îl trimiți în conformitate cu Regulamentul (conținutul consimțământului 
+				necesar este Anexa 1 la Regulament): <a class="form-link" href="/assets/img/REGULILE_CONCURSULUI.pdf" target="_blank">CONSIMȚĂMÂNT</a>
+				Poți citi Regulamentul aici:  <a class="form-link" href="/assets/img/REGULILE_CONCURSULUI.pdf" target="_blank">REGULAMENT</a>
+			</p>
 		</dialog>
 	}
 }

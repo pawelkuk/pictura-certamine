@@ -141,7 +141,7 @@ func serve() error {
 
 	r.Static("/assets", "./frontend/dist")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
-	r.GET("/", contestHandler.HandleGet)
+	r.GET("/", authMiddleware.Handle, contestHandler.HandleGet)
 	r.POST("/", contestHandler.HandlePost)
 	r.GET("/confirm/:token", contestHandler.HandleGetConfirm)
 	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)

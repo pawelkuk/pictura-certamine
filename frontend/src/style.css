@@ -160,17 +160,26 @@ body {
   --sl-font-sans: "Sarabun-Regular", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol";
-  --sl-font-size-medium: 1.2rem;
 }
 
 .blue-box {
+  background-image: url(../img/blue_background.png);
+  background-size: cover;
   color: white;
   text-align: center;
-  background: #024c8e;
   padding: 1rem 5rem;
   width: 80%;
   margin: 0 auto;
   max-width: 800px;
+}
+
+.blue-box .small {
+  font-size: 0.8rem;
+}
+
+dialog .small,
+.small-li {
+  font-size: 0.8rem;
 }
 
 .blue-box a {
@@ -186,15 +195,17 @@ body {
 }
 
 :modal {
-  border-radius: 1rem;
+  background-image: url(../img/form_backgorund.png);
+  background-size: cover;
   border-width: 0;
   margin-top: 4rem;
   height: 80%;
-  width: 400px;
+  width: 500px;
+  color: rgb(224, 224, 224);
 }
 
 :modal::backdrop {
-  background: url(./../img/disney-background-web.webp);
+  background: url(./../img/orange_background.png);
   background-size: cover;
   background-position: center;
 }
@@ -265,7 +276,7 @@ body {
 }
 
 .banner .content img {
-  width: 40%;
+  width: 25%;
   border-style: solid;
   border-color: #c02929;
   border-width: 5px;
@@ -280,22 +291,59 @@ body {
 }
 
 .banner .content span.background {
-  background-color: #3d7be1cf;
   border-radius: 5px;
   margin: 0 1rem;
   margin-bottom: 1rem;
   color: rgb(240, 240, 240);
+  font-size: 1.4rem;
 }
 
 .banner .content span.warnbox {
-  background-color: white;
-  color: #c02929;
-  padding: 0.5rem;
-  border-radius: 10px/70%;
-  border-width: 2px;
-  border-color: #c02929;
-  border-style: solid;
+  color: black;
+  position: relative;
+  width: 90%;
   margin-top: 1rem;
+}
+.blue-box .button {
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.blue-box .button::after {
+  content: url(../img/button_wez_udzial.svg);
+  width: 10rem;
+  position: relative;
+  display: block;
+  padding: 0 0;
+}
+
+.blue-box .button:hover {
+  cursor: pointer;
+}
+
+.banner .content span.warnbox::after {
+  content: url(../img/button_konkurs_trwa.svg);
+  display: inline-block;
+  width: 100%;
+  /* height: 20rem; */
+  position: absolute;
+  top: -0.8vw;
+  left: 0;
+}
+.blue-box .button-content {
+  color: black;
+  z-index: 1;
+  position: relative;
+  font-size: 4vw;
+  top: 5vw;
+}
+.warnbox-content {
+  z-index: 1;
+  position: relative;
+  font-size: 1vw;
 }
 
 .paragraphs-container {
@@ -373,6 +421,29 @@ a {
 .mobile {
   display: none;
 }
+.submit-button-form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button-form {
+  background: transparent;
+  background-image: url(../img/button_submit_long.svg);
+  color: transparent;
+  border: none;
+  width: 23.1rem;
+  background-size: cover;
+  padding: 1rem 0rem;
+  cursor: pointer;
+}
+/* .submit-button-form::after {
+  content: url(../img/button_submit.svg);
+  width: 40%;
+  position: relative;
+  display: block;
+  padding: 0 30%;
+} */
 
 .menu-btn:checked ~ .menu {
   max-height: 240px;
@@ -474,6 +545,9 @@ a {
 }
 
 @media only screen and (max-width: 900px) {
+  .banner .content img {
+    display: none;
+  }
   .blue-box {
     padding: 1rem 5%;
     width: 90%;
@@ -515,6 +589,13 @@ a {
   .wrapper .content {
     font-size: 1rem;
   }
+  .banner .content span.warnbox::after {
+    top: -1.8vw;
+  }
+
+  .warnbox-content {
+    font-size: 2.8vw;
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -525,7 +606,16 @@ a {
     font-size: 0.8rem;
   }
 }
-
+@media only screen and (max-width: 430px) {
+  .submit-button-form {
+    background: transparent;
+    background-image: url(../img/button_submit_short.svg);
+    background-size: cover;
+    border: none;
+    width: 15rem;
+    padding: 1rem 0rem;
+  }
+}
 .disney-logo {
   width: 4rem;
   padding: 0.3rem;
@@ -565,5 +655,22 @@ a {
 }
 
 .copyrights {
+  font-size: 1rem;
   padding: 1rem 0 0.5rem 0;
+}
+
+.form-link {
+  text-decoration: underline;
+  color: #f4f4f4;
+}
+
+.form-link:visited {
+  color: #f4f4f4;
+}
+
+.big-orange-background {
+  width: 100%;
+  background: url(../img/orange_background.png);
+  background-size: cover;
+  background-position: center;
 }

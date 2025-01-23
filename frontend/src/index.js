@@ -32,6 +32,9 @@ import "../img/prize.png";
 import "../img/qrcode.png";
 import "../img/disney-background-web.webp";
 import "../img/hasbro.svg";
+import "../img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf";
+import "../img/politica_de_confidentialitate.pdf";
+import "../img/REGULILE_CONCURSULUI.pdf";
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath("/assets/shoelace");
 

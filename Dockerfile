@@ -32,7 +32,7 @@ RUN GOOS=linux go build -o /appbin -ldflags='-s -w -extldflags "-static"' ./cmd/
 # -----------------------------------------------------------------------------
 #  Main Stage
 # -----------------------------------------------------------------------------
-FROM scratch
+FROM gcr.io/distroless/static-debian12
 
 COPY --from=build /appbin /appbin
 

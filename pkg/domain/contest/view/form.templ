@@ -39,7 +39,7 @@ templ ContestForm(data ContestFormInput) {
 				id="arrow-left-circle"
 				name="arrow-left-circle"
 			></sl-icon-button>
-			<h1>Participă la concursul <br/> Eroul&nbsp;meu preferat Marvel</h1>
+			<h1>Participă la concursul <br/> „Eroul&nbsp;meu preferat Marvel”</h1>
 			<br/>
 			if data.Error != nil {
 				<div class="danger-box">
@@ -63,7 +63,7 @@ templ ContestForm(data ContestFormInput) {
 				<br/>
 				<sl-input
 					name="last-name"
-					label="Nume"
+					label="Numele"
 					value={ data.FirstName }
 					if _, ok := data.ErrMap["LastName"]; ok {
 						data-user-invalid
@@ -133,6 +133,7 @@ templ ContestForm(data ContestFormInput) {
 						target="_blank"
 					>Politica de confidențialitate</a>
 				</sl-checkbox>
+				<p>*Câmp obligatoriu</p>
 				<input
 					type="hidden"
 					id="contest-id"

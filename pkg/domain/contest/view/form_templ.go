@@ -95,7 +95,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <dialog id=\"contest-form-dialog\"><sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"x-circle\" name=\"x-circle\"></sl-icon-button> <sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"arrow-left-circle\" name=\"arrow-left-circle\"></sl-icon-button><h1>Participă la concursul <br>Eroul&nbsp;meu preferat Marvel</h1><br>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <dialog id=\"contest-form-dialog\"><sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"x-circle\" name=\"x-circle\"></sl-icon-button> <sl-icon-button action=\"action\" onclick=\"window.history.go(-1); return false;\" id=\"arrow-left-circle\" name=\"arrow-left-circle\"></sl-icon-button><h1>Participă la concursul <br>„Eroul&nbsp;meu preferat Marvel”</h1><br>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -141,7 +141,7 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"last-name\" label=\"Nume\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><sl-input name=\"last-name\" label=\"Numele\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -210,14 +210,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Adăugă lucrarea de concurs aici*</label><div class=\"abc\"><input type=\"file\"></div><br><sl-checkbox size=\"small\" class=\"required\" name=\"consent-conditions\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">Regulamentul Concursului</a> „Eroul meu preferat de la Marvel” și accept conținutul acestuia</sl-checkbox> <sl-checkbox size=\"small\" class=\"required\" name=\"consent-marketing\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf\" target=\"_blank\">Informațiile privind prelucrarea datelor cu caracter personal*</a> și  <a class=\"form-link\" href=\"/assets/img/politica_de_confidentialitate.pdf\" target=\"_blank\">Politica de confidențialitate</a></sl-checkbox> <input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Adăugă lucrarea de concurs aici*</label><div class=\"abc\"><input type=\"file\"></div><br><sl-checkbox size=\"small\" class=\"required\" name=\"consent-conditions\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">Regulamentul Concursului</a> „Eroul meu preferat de la Marvel” și accept conținutul acestuia</sl-checkbox> <sl-checkbox size=\"small\" class=\"required\" name=\"consent-marketing\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf\" target=\"_blank\">Informațiile privind prelucrarea datelor cu caracter personal*</a> și  <a class=\"form-link\" href=\"/assets/img/politica_de_confidentialitate.pdf\" target=\"_blank\">Politica de confidențialitate</a></sl-checkbox><p>*Câmp obligatoriu</p><input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(data.ContestID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 140, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 141, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {

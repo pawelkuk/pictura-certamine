@@ -1,22 +1,16 @@
 package view
 
-templ Confirm(firstName, confirmationLink string) {
-	@Base() {
-		<h1>Hi { firstName },</h1>
-		<p>Your registration is almost successful.</p>
-		<p>Click on the button below to confirm you participation in the contest.</p>
-		<sl-button href={ confirmationLink }>Confirm</sl-button>
-		<p>If you can not see the button please click the link below:</p>
-		<br/>
-		<p>
-			{ confirmationLink }
-		</p>
-	}
-}
-
-templ ConfirmSuccess() {
-	@Base() {
-		<h1>Success!</h1>
-		<p>You've entered the contest successfully. Good luck!</p>
-	}
+templ Confirm() {
+	<div
+		style="width:800px;height:343px;background:url(https://concurs-captain-america.ro/assets/img/banner.png);background-size:cover;display:flex;"
+	>
+		>
+		<div style="color: #f4f4f4;width:300px;height:343px;text-align:center;vertical-align:middle;margin-top:140px;">
+			Ați înscris o lucrare în concursul
+			<br/>
+			<strong>„Eroul meu preferat de la Marvel”</strong>.
+			<br/>
+			Vă mulțumim pentru participare!
+		</div>
+	</div>
 }

@@ -8,7 +8,7 @@ package view
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Banner() templ.Component {
+func Banner(contestEnded bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,7 +26,22 @@ func Banner() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div onclick=\"location.href=&#39;/?dialog=open&#39;;\" class=\"banner\"><img class=\"show-desktop\" src=\"/assets/img/banner.png\"> <img class=\"show-mobile\" src=\"/assets/img/banner_mobile.png\"><div class=\"content\"><span class=\"background\">Participă la concursul <br>„Eroul meu preferat Marvel”<br>și câștigă o aventură în Disneyland Paris</span> <img src=\"/assets/img/qrcode.png\" alt=\"qr code\"> <span class=\"warnbox\"><div class=\"warnbox-content\">Concursul se desfășoară <br>în perioada 27.01.2025 - 06.03.2025.</div></span></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div onclick=\"location.href=&#39;/?dialog=open&#39;;\" class=\"banner\"><img class=\"show-desktop\" src=\"/assets/img/banner.png\"> <img class=\"show-mobile\" src=\"/assets/img/banner_mobile.png\"><div class=\"content\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !contestEnded {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"background\">Participă la concursul <br>„Eroul meu preferat Marvel”<br>și câștigă o aventură în Disneyland Paris</span> <img src=\"/assets/img/qrcode.png\" alt=\"qr code\"> <span class=\"warnbox\"><div class=\"warnbox-content\">Concursul se desfășoară <br>în perioada 27.01.2025 - 06.03.2025.</div></span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"background\">Competiția s-a încheiat.</span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

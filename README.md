@@ -15,20 +15,20 @@
 - [x] admin user that can view crm
 - [x] command that creates a link that enables to register a user
 - [x] typography
-- [ ] UI form looks (wip - add form in modal e.g. https://developer.mozilla.org/en-US/docs/Web/CSS/:modal)
+- [x] UI form looks (wip - add form in modal e.g. https://developer.mozilla.org/en-US/docs/Web/CSS/:modal)
   - [x] modal
-  - [ ] add links to pdfs
-  - [ ] change font to one which supports unicode characters
+  - [x] add links to pdfs
+  - [x] change font to one which supports unicode characters
   - [x] footer
   - [x] show error message on contest form (or figure out why alert collides with dialog window)
   - [x] banner (when graphics are going to be provided)
   - [x] blur on cookie banner
-- [ ] translations (i18n https://github.com/gin-contrib/i18n/blob/master/_example/main.go)
+- [ ] #wont_do translations (i18n https://github.com/gin-contrib/i18n/blob/master/_example/main.go)
 - [x] what reverse proxy (treafik)
 - [x] setting up certificates
 - [ ] backup sqlite to s3 (research how to; cronjob maybe)
 - [x] setting up customer's email as sender
-- [ ] deployment (almost ready)
+- [x] deployment (almost ready)
 - [ ] captcha
 - [ ] (optional) maybe a rating module
 - [ ] (optional) add logging

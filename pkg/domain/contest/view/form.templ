@@ -10,13 +10,14 @@ type ContestFormInput struct {
 	ErrMap       map[string]string
 	Error        error
 	IsFormHidden bool
+	ContestEnded bool
 }
 
 templ ContestForm(data ContestFormInput) {
 	@Base() {
 		<div id="cookie-banner-blur"></div>
 		@Navbar()
-		@Banner()
+		@Banner(data.ContestEnded)
 		<div class="big-orange-background">
 			@BlueBox()
 			@PrizeSection()
@@ -120,7 +121,14 @@ templ ContestForm(data ContestFormInput) {
 				/>
 				<br/>
 				<div class="submit-button-form-wrapper">
-					<input class="submit-button-form" type="submit" value="Înregistrează lucrarea de concurs"/>
+					<input
+						if data.ContestEnded {
+							disabled
+						}
+						class="submit-button-form"
+						type="submit"
+						value="Înregistrează lucrarea de concurs"
+					/>
 				</div>
 				<br/>
 			</form>

@@ -35,8 +35,12 @@ type dialog struct {
 	Dialog string `form:"dialog"`
 }
 
+func (h *ContestHandler) contestEnded() bool {
+	return h.Config.ContestEnd.Before(time.Now())
+}
+
 func (h *ContestHandler) HandleGet(c *gin.Context) {
-	cfi := view.ContestFormInput{ContestID: "abcd", IsFormHidden: true}
+	cfi := view.ContestFormInput{ContestID: "abcd", IsFormHidden: true, ContestEnded: h.contestEnded()}
 	dialog := dialog{}
 	if c.ShouldBind(&dialog) == nil {
 		cfi.IsFormHidden = false
@@ -92,12 +96,13 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		form.ConsentMarketing,
 	)
 	cfi := view.ContestFormInput{
-		ContestID:   form.ContestID,
-		FirstName:   form.FirstName,
-		LastName:    form.LastName,
-		PhoneNumber: form.Phone,
-		Email:       form.Email,
-		ErrMap:      errMap,
+		ContestID:    form.ContestID,
+		FirstName:    form.FirstName,
+		LastName:     form.LastName,
+		PhoneNumber:  form.Phone,
+		Email:        form.Email,
+		ErrMap:       errMap,
+		ContestEnded: h.contestEnded(),
 	}
 	if err != nil {
 		formatParseError(err, errMap)
@@ -189,7 +194,7 @@ func (h *ContestHandler) HandlePost(c *gin.Context) {
 		return
 	}
 
-	confirmEmail := h.renderConfirmationEmail(c, cntstnt, entr)
+	confirmEmail := h.renderConfirmationEmail(c, cntstnt)
 	err = h.MailClient.Send(
 		c.Request.Context(),
 		confirmEmail,
@@ -220,17 +225,15 @@ func constructPath(env, filename string, entr *model.Entry) string {
 	return fmt.Sprintf("%s/%s/%s%s", env, entr.ID, slug.Make(filename[:extidx]), filename[extidx:])
 }
 
-func (h *ContestHandler) renderConfirmationEmail(c *gin.Context, cntstnt *model.Contestant, entr *model.Entry) mail.Email {
-	confirmLink := fmt.Sprintf("%s/confirm/%s", h.Config.BaseURL, entr.Token)
+func (h *ContestHandler) renderConfirmationEmail(c *gin.Context, cntstnt *model.Contestant) mail.Email {
 	builder := &strings.Builder{}
-	view.Confirm(cntstnt.FirstName, confirmLink).Render(c.Request.Context(), builder)
-
+	view.Confirm().Render(c.Request.Context(), builder)
 	return mail.Email{
-		To:          cntstnt.Email,
-		Subject:     "Confirm your entry",
 		HTMLContent: builder.String(),
-		Content:     confirmLink,
-		From:        em.Address{Name: "Pictura Certamine", Address: h.Config.SenderEmail},
+		Subject:     "Confirmarea înscrierii la concursul „Eroul meu preferat de la Marvel”",
+		Content:     "Ați înscris o lucrare în concursul „Eroul meu preferat de la Marvel”. Vă mulțumim pentru participare!",
+		From:        em.Address{Name: "Captain America", Address: h.Config.SenderEmail},
+		To:          cntstnt.Email,
 	}
 }
 
@@ -262,44 +265,7 @@ func (h *ContestHandler) HandlePostSuccess(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = view.Success(cont.FirstName).Render(c.Request.Context(), c.Writer)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
-}
-
-func (h *ContestHandler) HandleGetConfirm(c *gin.Context) {
-	token := c.Param("token")
-	if token == "" {
-		c.Writer.WriteHeader(http.StatusNotFound)
-		view.NotFound().Render(c.Request.Context(), c.Writer)
-		return
-	}
-	entries, err := h.EntryRepo.Query(c.Request.Context(), model.EntryQueryFilter{Token: &token})
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if len(entries) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "could not find entry with token"})
-		return
-	}
-	entry := entries[0]
-	if entry.Status == model.EntryStatusConfirmed {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "entry already confirmed"})
-		return
-	}
-	if entry.TokenExpiry.Before(time.Now()) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "token expired, please resend confirmation email"})
-		return
-	}
-	entry.Status = model.EntryStatusConfirmed
-	err = h.EntryRepo.Update(c.Request.Context(), &entry)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err = view.ConfirmSuccess().Render(c.Request.Context(), c.Writer)
+	err = view.Success().Render(c.Request.Context(), c.Writer)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

@@ -12,6 +12,7 @@ type Config struct {
 	SenderEmail    string        `env:"SENDER_EMAIL"`
 	BaseURL        string        `env:"BASE_URL"`
 	SessionRefresh time.Duration `env:"SESSION_REFRESH"`
+	ContestEnd     time.Time     `env:"CONTEST_END"`
 }
 
 const (

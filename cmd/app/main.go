@@ -143,7 +143,6 @@ func serve() error {
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
 	r.GET("/", authMiddleware.Handle, contestHandler.HandleGet)
 	r.POST("/", contestHandler.HandlePost)
-	r.GET("/confirm/:token", contestHandler.HandleGetConfirm)
 	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)
 
 	r.GET("/crm", authMiddleware.Handle, crmHandler.GetAll)

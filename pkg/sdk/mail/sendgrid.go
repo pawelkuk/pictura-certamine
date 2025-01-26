@@ -17,7 +17,7 @@ type SendgridSender struct {
 
 func (s *SendgridSender) Send(ctx context.Context, email Email) error {
 	from := mail.NewEmail(email.From.Name, email.From.Address)
-	to := mail.NewEmail(email.From.Name, email.From.Address)
+	to := mail.NewEmail(email.To.Name, email.To.Address)
 	message := mail.NewSingleEmail(from, email.Subject, to, email.Content, email.HTMLContent)
 	response, err := s.client.Send(message)
 	if err != nil {

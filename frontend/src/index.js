@@ -64,6 +64,8 @@ CookieConsent.run({
       readOnly: true, // this category cannot be disabled
     },
     analytics: {},
+    performance: {},
+    functional: {},
   },
   // onChange: ({ cookie }) => {
   //   console.log("on change");
@@ -90,45 +92,53 @@ CookieConsent.run({
     }
   },
   language: {
-    default: "en",
+    default: "ro",
     translations: {
-      en: {
+      ro: {
         consentModal: {
-          title: "We use cookies",
-          description: "Cookie modal description",
-          acceptAllBtn: "Accept all",
-          acceptNecessaryBtn: "Reject all",
-          showPreferencesBtn: "Manage Individual preferences",
+          title: "Informații despre cookie-uri",
+          description: `Împreună cu partenerii noștri, procesăm informații despre dvs., dispozitivele dvs. și comportamentul dvs. online,  utilizând tehnologii precum cookie-urile, pentru a furniza, analiza și îmbunătăți serviciile noastre, pentru a personaliza conținutul sau în scopuri publicitare pe acest site și pe alte site-uri web, pe aplicații sau platforme și pentru a furniza servicii de social media. Pentru a afla mai multe, vă rugăm să consultați Politica noastră <a href="/assets/img/politica_de_confidentialitate.pdf" target="_blank">privind cookie-urile</a>.`,
+          acceptAllBtn: "Acceptați totul",
+          acceptNecessaryBtn: "Renunțați",
+          showPreferencesBtn: "Managementul preferințelor",
         },
         preferencesModal: {
-          title: "Manage cookie preferences",
-          acceptAllBtn: "Accept all",
-          acceptNecessaryBtn: "Reject all",
-          savePreferencesBtn: "Accept current selection",
+          title: "Centru de preferințe cookie",
+          acceptAllBtn: "Acceptați totul",
+          acceptNecessaryBtn: "Renunțați",
+          savePreferencesBtn: "Acceptați selecția curentă",
           closeIconLabel: "Close modal",
           sections: [
             {
-              title: "Somebody said ... cookies?",
-              description: "I want one!",
+              title:
+                "Gestionarea preferințelor de consimțământ pentru prelucrarea datelor",
+              description:
+                "Deoarece vă respectăm dreptul la confidențialitate, puteți alege să nu vă dați acordul pentru anumite tipuri de cookie-uri. Faceți clic pe fiecare titlu de categorie pentru a afla mai multe și pentru a modifica setările implicite. Vă rugăm să rețineți că blocarea anumitor tipuri de cookie-uri poate afecta negativ utilizarea site-ului nostru web și a serviciilor pe care le putem oferi. Utilizarea acestui instrument va duce la setarea unui cookie pe dispozitivul dvs. pentru a memora preferințele pe care le puteți modifica în orice moment. Pentru a afla mai multe, vă rugăm să consultați Politica noastră privind cookie-urile.",
             },
             {
-              title: "Strictly Necessary cookies",
+              title: "Cookie-urile strict necesare sunt întotdeauna active",
               description:
-                "These cookies are essential for the proper functioning of the website and cannot be disabled.",
-
+                "Aceste cookie-uri sunt esențiale pentru funcționarea site-ului web și pentru funcționalitățile sale de bază și nu pot fi dezactivate în sistemele noastre. De obicei, acestea sunt setate doar ca răspuns la acțiunile dvs., care constituie o solicitare de acțiune, cum ar fi setarea preferințelor de confidențialitate, accesarea, căutarea sau descoperirea conținutului, completarea formularelor sau trimiterea de conținut. Puteți seta browserul să vă blocheze sau să vă avertizeze despre aceste cookie-uri, dar in acest caz, unele părți ale site-ului nu vor funcționa.",
               //this field will generate a toggle linked to the 'necessary' category
               linkedCategory: "necessary",
             },
             {
-              title: "Performance and Analytics",
+              title: "Cookie-uri de performanță",
               description:
-                "These cookies collect information about how you use our website. All of the data is anonymized and cannot be used to identify you.",
-              linkedCategory: "analytics",
+                "Aceste cookie-uri ne permit să numărăm vizitele și sursele de trafic, astfel încât să putem măsura și îmbunătăți performanța site-ului nostru (inclusiv Google Analytics). Acestea ne ajută să știm care pagini sunt cele mai populare și cum navighează vizitatorii pe site. Puteți permite aceste cookie-uri și vă puteți retrage permisiunea în orice moment.",
+              linkedCategory: "performance",
             },
             {
-              title: "More information",
+              title: "Cookie-uri funcționale",
               description:
-                'For any queries in relation to my policy on cookies and your choices, please <a href="#contact-page">contact us</a>',
+                "Folosite de noi pentru a detecta sau a memora alegerile pe care le faceți pentru a vă personaliza utilizarea site-ului nostru web, cum ar fi limba, locația sau alte setări. Puteți permite aceste cookie-uri și vă puteți retrage permisiunea în orice moment. Dezactivarea acestor cookie-uri poate afecta modul în care funcționează site-ul web.",
+              linkedCategory: "functional",
+            },
+            {
+              title: "Cookie-uri de profilare și publicitate",
+              description:
+                "Aceste cookie-uri pot fi setate prin intermediul site-ului nostru de către noi și/sau partenerii noștri de publicitate. Acestea pot fi utilizate pentru a crea un profil al preferințelor dumneavoastră și pentru a afișa reclame relevante pe acest site și pe alte site-uri. Nu pot să stocheze în mod direct informații personale, ci se pot baza pe identificarea unică a browserului și a dispozitivului dvs. de internet. Puteți permite aceste cookie-uri și vă puteți retrage permisiunea în orice moment. Dezactivarea acestor cookie-uri nu afectează funcționarea site-ului web.",
+              linkedCategory: "analytics",
             },
           ],
         },

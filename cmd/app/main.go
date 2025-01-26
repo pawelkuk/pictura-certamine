@@ -76,12 +76,7 @@ func serve() error {
 		return fmt.Errorf("could not create s3 client: %w", err)
 	}
 
-	var mailClient mail.Sender
-	if cfg.Env == config.EnvDevelopment {
-		mailClient = mail.NewStdoutSender()
-	} else {
-		mailClient = mail.NewSendgridSender(cfg.SendgridApiKey)
-	}
+	mailClient := mail.NewSendgridSender(cfg.SendgridApiKey)
 	contestHandler := handler.ContestHandler{
 		ContestantRepo: contestantrepo,
 		EntryRepo:      entryrepo,

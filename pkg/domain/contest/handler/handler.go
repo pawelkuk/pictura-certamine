@@ -36,7 +36,7 @@ type dialog struct {
 }
 
 func (h *ContestHandler) contestEnded() bool {
-	return h.Config.ContestEnd.Before(time.Now())
+	return h.Config.ContestEnd
 }
 
 func (h *ContestHandler) HandleGet(c *gin.Context) {

@@ -210,14 +210,14 @@ func ContestForm(data ContestFormInput) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Adăugă lucrarea de concurs aici*</label><div class=\"abc\"><input type=\"file\" accept=\"image/png, image/jpeg, image/jpg, .tiff, image/gif, .wav, .mp3, .wma, .m4a, .mp4\"></div><br><sl-checkbox size=\"small\" class=\"required\" name=\"consent-conditions\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">Regulamentul Concursului</a> „Eroul meu preferat de la Marvel” și accept conținutul acestuia</sl-checkbox> <sl-checkbox size=\"small\" class=\"required\" name=\"consent-marketing\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf\" target=\"_blank\">Informațiile privind prelucrarea datelor cu caracter personal*</a> și  <a class=\"form-link\" href=\"/assets/img/politica_de_confidentialitate.pdf\" target=\"_blank\">Politica de confidențialitate</a></sl-checkbox> <input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" required></sl-input><br><label for=\"art-piece\">Adăugă lucrarea de concurs aici*</label><div class=\"abc\"><input type=\"file\"></div><br><sl-checkbox size=\"small\" class=\"required\" name=\"consent-conditions\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/REGULILE_CONCURSULUI.pdf\" target=\"_blank\">Regulamentul Concursului</a> „Eroul meu preferat de la Marvel” și accept conținutul acestuia</sl-checkbox> <sl-checkbox size=\"small\" class=\"required\" name=\"consent-marketing\" required>Prin prezenta, declar că am citit  <a class=\"form-link\" href=\"/assets/img/informatii_privind_prelucrarea_datelor_cu_caracter_personal.pdf\" target=\"_blank\">Informațiile privind prelucrarea datelor cu caracter personal*</a> și  <a class=\"form-link\" href=\"/assets/img/politica_de_confidentialitate.pdf\" target=\"_blank\">Politica de confidențialitate</a></sl-checkbox> <input type=\"hidden\" id=\"contest-id\" name=\"contest-id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(data.ContestID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 141, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/domain/contest/view/form.templ`, Line: 140, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {

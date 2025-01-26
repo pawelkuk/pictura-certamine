@@ -55,9 +55,12 @@ push-image:
 	docker push pawelkuk/pictura-certamine:0.0.0 
 
 rsync:
-	rsync -r ./frontend/dist ubuntu@c5:/home/ubuntu/workspace/frontend/dist &&\
+	rsync -r ./frontend ubuntu@c5:/home/ubuntu/workspace/ &&\
 		rsync -r ./.prod.envrc ubuntu@c5:/home/ubuntu/workspace/.prod.envrc &&\
 		rsync -r ./Makefile ubuntu@c5:/home/ubuntu/workspace/Makefile
 
 deploy:
-	docker pull pawelkuk/pictura-certamine:0.0.0 && source .prod.envrc && docker compose down && docker compose up -d
+	docker pull pawelkuk/pictura-certamine:0.0.0 &&\
+		source .prod.envrc &&\
+		docker compose down &&\
+		docker compose up -d

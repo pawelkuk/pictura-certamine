@@ -19,6 +19,7 @@
   "dependencies": {
     "@shoelace-style/shoelace": "^2.19.1",
     "filepond": "^4.32.6",
+    "filepond-plugin-file-validate-type": "^1.2.9",
     "lodash": "^4.17.21",
     "simple-datatables": "^9.2.1",
     "vanilla-cookieconsent": "^3.0.1"

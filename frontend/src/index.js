@@ -12,6 +12,8 @@ import SlCheckbox from "@shoelace-style/shoelace/dist/components/checkbox/checkb
 import SlRating from "@shoelace-style/shoelace/dist/components/rating/rating.js";
 import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path.js";
 import * as FilePond from "filepond";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import * as CookieConsent from "vanilla-cookieconsent";
 import { DataTable } from "simple-datatables";
 import "simple-datatables/dist/style.css";
@@ -37,12 +39,39 @@ import "../img/politica_de_confidentialitate.pdf";
 import "../img/REGULILE_CONCURSULUI.pdf";
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath("/assets/shoelace");
-
+FilePond.registerPlugin(FilePondPluginFileValidateType);
+FilePond.registerPlugin(FilePondPluginFileValidateSize);
 // Get a reference to the file input element
 const inputElement = document.querySelector('input[type="file"]');
 
 // Create a FilePond instance
 FilePond.create(inputElement, {
+  allowFileSizeValidation: true,
+  maxFileSize: "128MB",
+  maxTotalFileSize: "128MB",
+  acceptedFileTypes: [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/gif",
+    "audio/wav",
+    "audio/mpeg",
+    "image/tiff",
+    "application/pdf",
+    "video/mp4",
+    "application/msword",
+    "audio/x-wma",
+    "audio/x-ms-wma",
+    "audio/x-m4a",
+    ".wma",
+  ],
+  fileValidateTypeDetectType: (source, type) =>
+    new Promise((resolve, reject) => {
+      if (/\.wma$/.test(source.name)) return resolve("audio/x-ms-wma");
+
+      // accept detected type
+      resolve(type);
+    }),
   allowDrop: true,
   allowBrowse: true,
   allowRemove: true,

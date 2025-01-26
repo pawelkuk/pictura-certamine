@@ -141,7 +141,11 @@ func serve() error {
 
 	r.Static("/assets", "./frontend/dist")
 	r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
-	r.GET("/", authMiddleware.Handle, contestHandler.HandleGet)
+	if cfg.Env == config.EnvDevelopment {
+		r.GET("/", authMiddleware.Handle, contestHandler.HandleGet)
+	} else {
+		r.GET("/", contestHandler.HandleGet)
+	}
 	r.POST("/", contestHandler.HandlePost)
 	r.GET("/success/:contestantid", contestHandler.HandlePostSuccess)
 

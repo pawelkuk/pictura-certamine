@@ -35,9 +35,12 @@ services:
       # Force TLS
       - "traefik.http.routers.pictura-certamine.tls=true"
       # Apply a host rule specifying the domain the service will respond to
-      - "traefik.http.routers.pictura-certamine.rule=Host(`concurs-captain-america.ro`)"
+      - "traefik.http.routers.pictura-certamine.rule=Host(`concurs-captain-america.ro`) || Host(`www.concurs-captain-america.ro`)"
       # Send traffic to the container via port 8080
       - "traefik.http.services.pictura-certamine-service.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https?://www.concurs-captain-america.ro/(.*)"
+      - "traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://concurs-captain-america.ro/$${1}"
+      - "traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true"
     environment:
       - ENV=${ENV}
       - SENTRY_DSN=${SENTRY_DSN}
